@@ -21,18 +21,18 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 
 ## 1.1 Set up the lab environment
 
-For this lab assignment, we'll be using the `dockerlab` environment. This environment comes with Jenkins and Docker, both are natively installed on the VM. Docker will be used to run the sample app, and Jenkins will be used to build and test the application.
+For this lab assignment, we'll be using the `cicdlab` environment. This environment comes with Jenkins and Docker, both natively installed on the VM. Docker will be used to run the sample app, and Jenkins will be used to build and test the application.
 
 First, we'll need to install the required Ansible roles for provisioning the VM. Run the following command from the root of the repository:
 
 ```console
-bash ./scripts/role-deps.sh ./dockerlab/ansible/site.yml
+bash ./scripts/role-deps.sh ./cicdlab/ansible/site.yml
 ```
 
-Then, start the `dockerlab` VM:
+Then, start the `cicdlab` VM:
 
 ```console
-cd dockerlab
+cd cicdlab
 vagrant up
 ```
 
@@ -47,7 +47,7 @@ Now it's time to verify the sample application can be built and run. The applica
 
 ## 1.3 Create a GitHub repository for the sample application
 
-You will also need a GitHub repository with a sample application. Create a new Git repository on your physical system, where Git and access to GitHub is already configured. Some starter code is provided in directory [cicd-sample-app](../dockerlab/cicd-sample-app/).
+You will also need a GitHub repository with a sample application. Create a new Git repository on your physical system, where Git and access to GitHub is already configured. Some starter code is provided in directory [cicd-sample-app](../cicdlab/cicd-sample-app/).
 
 1. Ensure that Git is configured, e.g. with `git config --global --list` and check that `user.name` and `user.email` are set. If not, make the necessary changes:
 
@@ -174,13 +174,17 @@ And we haven't even discussed any necessary changes to a database schema when ne
 
 ## Possible extensions
 
-You might need to allow other ports through the firewall, e.g. if you want to run app other than the given examples below. In that case, you can add the required ports to the variable `rhbase_firewall_allow_ports` in `dockerlab/ansible/group_vars/all.yml`. All examples below are allowed by default.
-
 - Create a build pipeline for a larger application, e.g. the [Docker Getting Started tutorial](https://github.com/docker/getting-started)
   - Make sure to start the container in the background, so the build step can finish!
 - There is also a [todo app](https://github.com/docker/getting-started/tree/master/app) in the GitHub repository above. Create a build pipeline for this app.
   - You may need to create a new GitHub repository with only the contents of the `app` folder.
   - Use this tutorial for guidance: <https://learn.microsoft.com/en-us/visualstudio/docker/tutorials/docker-tutorial>
-  - You may need to add a new port to the firewall rules.
 - Try an app of your choice
-  - You may need to add a new port to the firewall rules.
+
+## Cleanup
+
+You can remove the virtual machine using the following command **after demonstrating the result**. Removing the virtual machine before demonstrating the result will result in losing all your work!
+
+```bash
+vagrant destroy -f
+```

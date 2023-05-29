@@ -1,0 +1,25 @@
+# group_vars/all.yml
+# Variables visible to all nodes
+---
+# Jenkins requires Java 11
+java_packages:
+  - java-11-openjdk
+
+# Require LTS version for Jenkins
+jenkins_prefer_lts: true
+
+# Enable Jenkins setup wizard
+jenkins_java_options: "-Djenkins.install.runSetupWizard=true"
+
+# Fix "Public key for ... not installed" issue
+jenkins_repo_url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+jenkins_repo_key_url: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+# Allow vagrant user and Jenkins to run Docker commands
+docker_users:
+  - vagrant
+  - jenkins
+
+# Install Docker Compose
+docker_install_compose_plugin: true
+docker_install_compose: false
