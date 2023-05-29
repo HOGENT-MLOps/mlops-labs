@@ -1,0 +1,8 @@
+# Ansible roles in any folder
+**/ansible/roles/
+
+# VS Code settings and stuff
+.vscode
+
+# Vagrant environment local state in any folder
+**/.vagrant/

@@ -1,0 +1,9 @@
+# site.yml
+---
+- name: Setup Jenkins
+  hosts: all
+  roles:
+    - bertvv.rh-base
+    - geerlingguy.java
+    - geerlingguy.jenkins
+    - geerlingguy.docker
