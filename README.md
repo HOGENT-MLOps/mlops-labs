@@ -9,7 +9,8 @@ The goal of these assignments is to get familiar with concepts like container vi
 
 This repository contains some scaffolding code, based on [ansible-skeleton](https://github.com/bertvv/ansible-skeleton), a framework for quickly setting up an Ansible development and testing environment powered by [Vagrant](https://vagrantup.com).
 
-- [dockerlab](dockerlab/): sets up a VM to experiment with container virtualization and CI/CD.
+- [dockerlab](dockerlab/): sets up a VM to experiment with container virtualization.
+- [cicdlab](cicdlab/): sets up a VM to experiment with CI/CD.
 
 ## Author/License information
 
