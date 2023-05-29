@@ -96,6 +96,7 @@ process_args() {
       playbook="${1}"
       ansible_root="${playbook%/*}"
       roles_path="${ansible_root}/roles"
+      echo "Roles will be installed in ${roles_path}"
     fi
   elif [ "${#}" -eq "0" ] && [ ! -f "${playbook}" ]; then
     cat << _EOF_
