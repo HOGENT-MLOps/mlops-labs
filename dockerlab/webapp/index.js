@@ -1,6 +1,6 @@
-const express = require('express');
-const morgan = require('morgan');
-const database = require('./database');
+import express from 'express';
+import morgan from 'morgan';
+import database from './database/index.js';
 
 const PORT = 3000;
 

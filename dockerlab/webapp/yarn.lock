@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@fakerjs/animal@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@fakerjs/animal/-/animal-2.2.0.tgz#3ae30673049b51350638cfc260a396b7806dc75c"
+  integrity sha512-EEFtmbcodyuGd2Sw5bfG513kPtEc1EU7+q14rtoJXQ6oJx1W4trRMDilQeNGeVxwHl90K9m5uTETLxxA1Xinhg==
+  dependencies:
+    load-json-file "^7.0.1"
+
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -846,6 +853,11 @@ js-yaml@4.1.0:
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
     argparse "^2.0.1"
+
+load-json-file@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-7.0.1.tgz#a3c9fde6beffb6bedb5acf104fad6bb1604e1b00"
+  integrity sha512-Gnxj3ev3mB5TkVBGad0JM6dmLiQL+o0t23JPBZ9sd+yvSLk05mFoqKBw5N8gbbkU4TNXyqCgIrl/VM17OgUIgQ==
 
 locate-path@^6.0.0:
   version "6.0.0"

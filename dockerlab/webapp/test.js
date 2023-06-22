@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const { expect } = require('chai');
+import fetch from 'node-fetch';
+import { expect } from 'chai';
 
 const URL = 'http://localhost:3000/animals';
 
@@ -20,10 +20,8 @@ describe('Animals', () => {
 
     const animal = await response.json();
     expect(animal).to.be.an('object').with.keys('id', 'name');
-    expect(animal).to.include({
-      id: 1,
-      name: 'Dog',
-    });
+    expect(animal.id).to.be.a('number').and.to.equal(1);
+    expect(animal.name).to.be.a('string');
   });
 
   it('should 500 and return an error when the animal is not found', async () => {

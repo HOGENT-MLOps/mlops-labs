@@ -1,9 +1,9 @@
-const { MongoClient } = require('mongodb');
-const data = require('./data.json');
+import { MongoClient } from 'mongodb';
+import generateFakeData from './generateFakeData.js';
 
 let client;
 
-async function initialize() {
+export async function initialize() {
   client = new MongoClient(process.env.MONGO_URL, { authSource: 'admin', });
   await client.connect();
 
@@ -12,18 +12,23 @@ async function initialize() {
   const count = await animals.countDocuments();
   if (count === 0) {
     await animals.createIndex({ id: 1 }, { unique: true });
-    await animals.insertMany(data);
+    await animals.insertMany(generateFakeData());
   }
 
   console.log('Database initialized');
 }
 
-async function getAnimals() {
+export async function close() {
+  await client.close();
+  client = null;
+}
+
+export async function getAnimals() {
   const animals = await client.db().collection('animals').find().toArray() || [];
   return animals.map(({ id, name }) => ({ id, name }));
 }
 
-async function getAnimal(id) {
+export async function getAnimal(id) {
   const animal = await client.db().collection('animals').findOne({ id: id });
   if (!animal) {
     throw new Error('Animal not found');
@@ -33,9 +38,3 @@ async function getAnimal(id) {
     name: animal.name,
   };
 }
-
-module.exports = {
-  initialize,
-  getAnimals,
-  getAnimal,
-};

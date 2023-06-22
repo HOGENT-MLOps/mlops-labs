@@ -1,5 +1,5 @@
-if (process.env.MONGO_URL) {
-  module.exports = require('./mongodb');
-} else {
-  module.exports = require('./sqlite');
-}
+import * as mongodb from './mongodb.js';
+import * as sqlite from './sqlite.js';
+
+const database = process.env.MONGO_URL ? mongodb : sqlite;
+export default database;
