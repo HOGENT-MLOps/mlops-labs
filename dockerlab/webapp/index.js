@@ -1,4 +1,5 @@
 import express from 'express';
+import Boom from '@hapi/boom';
 import morgan from 'morgan';
 import database from './database/index.js';
 
@@ -32,10 +33,8 @@ app.get('/animals/:id', asyncMiddleware(async (req, res) => {
 }));
 
 app.use((err, _, res, __) => {
-  console.error(err);
-
-  res.status(500)
-    .send({
+  res.status(Boom.isBoom(err) ? err.output.statusCode : 500)
+    .json({
       error: err.message,
     });
 })

@@ -31,7 +31,7 @@ export async function getAnimals() {
 export async function getAnimal(id) {
   const animal = await client.db().collection('animals').findOne({ id: id });
   if (!animal) {
-    throw new Error('Animal not found');
+    throw Boom.notFound('Animal not found');
   }
   return {
     id: animal.id,

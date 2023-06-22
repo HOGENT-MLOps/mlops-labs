@@ -1,5 +1,6 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite';
+import Boom from '@hapi/boom';
 import generateFakeData from './generateFakeData.js';
 
 let db;
@@ -34,7 +35,7 @@ export async function getAnimals() {
 export async function getAnimal(id) {
   const animal = await db.get('SELECT * FROM animal WHERE id = ?', [id]);
   if (!animal) {
-    throw new Error('Animal not found');
+    throw Boom.notFound('Animal not found');
   }
   return animal;
 }

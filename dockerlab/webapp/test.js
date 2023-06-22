@@ -24,10 +24,10 @@ describe('Animals', () => {
     expect(animal.name).to.be.a('string');
   });
 
-  it('should 500 and return an error when the animal is not found', async () => {
+  it('should 404 and return an error when the animal is not found', async () => {
     const response = await fetch(`${URL}/123`);
 
-    expect(response.status).to.equal(500);
+    expect(response.status).to.equal(404);
 
     const error = await response.json();
     expect(error).to.be.an('object').with.keys('error');
