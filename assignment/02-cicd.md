@@ -4,12 +4,12 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 
 > Windows users are advised to use the Git bash shell for this lab assignment. The commands below are written for a bash shell.
 
-## Learning Goals
+## :mortar_board: Learning Goals
 
 - Creating simple jobs and build pipelines
 - Running the pipeline to build and test an application, and to deploy changes in the application
 
-## Acceptance criteria
+## :memo: Acceptance criteria
 
 - Show that you created a GitHub repository for the sample application
 - Show that the application is running by opening it in a web browser
