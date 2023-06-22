@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { expect } from 'chai';
 
-const URL = 'http://localhost:3000/animals';
+const URL = `${process.env.API_URL || 'http://localhost:3000'}/animals`;
 
 describe('Animals', () => {
   it('should 200 and return all animals', async () => {
