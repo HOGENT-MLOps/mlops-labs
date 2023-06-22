@@ -6,3 +6,7 @@
 
 # Vagrant environment local state in any folder
 **/.vagrant/
+
+# Node.js app dependencies and related files
+**/node_modules/
+**/*.sqlite
