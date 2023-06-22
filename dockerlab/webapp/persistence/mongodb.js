@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import Boom from '@hapi/boom';
 import generateFakeData from './generateFakeData.js';
 
 let client;
@@ -13,9 +14,10 @@ export async function initialize() {
   if (count === 0) {
     await animals.createIndex({ id: 1 }, { unique: true });
     await animals.insertMany(generateFakeData());
+    console.log('Fake data generated');
   }
 
-  console.log('Database initialized');
+  console.log('MongoDB database initialized');
 }
 
 export async function close() {

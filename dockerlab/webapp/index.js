@@ -1,7 +1,7 @@
 import express from 'express';
 import Boom from '@hapi/boom';
 import morgan from 'morgan';
-import database from './database/index.js';
+import persistence from './persistence/index.js';
 
 const PORT = 3000;
 
@@ -23,12 +23,12 @@ app.use((_, res, next) => {
 });
 
 app.get('/animals', asyncMiddleware(async (_, res) => {
-  const animals = await database.getAnimals();
+  const animals = await persistence.getAnimals();
   res.json(animals);
 }));
 
 app.get('/animals/:id', asyncMiddleware(async (req, res) => {
-  const animal = await database.getAnimal(Number(req.params.id));
+  const animal = await persistence.getAnimal(Number(req.params.id));
   res.json(animal);
 }));
 
@@ -39,7 +39,7 @@ app.use((err, _, res, __) => {
     });
 })
 
-database
+persistence
   .initialize()
   .then(() => {
     app.listen(PORT, () => {
