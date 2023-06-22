@@ -129,6 +129,25 @@ To run the tests, start the webapp and database services in the background. If b
 
 If you configured everything correctly, you should see three passing tests. If not, read the error message and try to fix the problem.
 
+## Reflection
+
+This setup oversimplifies the real world. In the real world, you would probably use a managed database service like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or [Amazon RDS](https://aws.amazon.com/rds/). These services are easier to use, are more robust than a self-hosted database but tend to be expensive. Nevertheless, it's important to know how to run a database in a container. You might need it on your local machine, in a CI/CD pipeline or to reduce costs in a small project.
+
+You would also use a managed CI/CD service like [Jenkins](https://www.jenkins.io/) or [GitHub Actions](https://docs.github.com/en/actions) to run the tests and deploy the application. But more on that in a later module.
+
+However, the setup hands you some best practices for app deployment:
+
+- Use Docker to package your application and its dependencies.
+- Don't expose the database port to the outside world.
+- Try to re-use a Dockerfile rather than writing one per environment.
+- Think about the layers you're creating when writing a Dockerfile.
+- Think about backing up your data (even in local environments).
+
+## Possible extensions
+
+- Alter the API setup so that it waits for the database to be ready before starting the API.
+- Alter the test setup so that the container waits for the API to be ready before running the tests.
+
 ## Cleanup
 
 You can remove the virtual machine using the following command **after demonstrating the result**. Removing the virtual machine before demonstrating the result will result in losing all your work!
@@ -136,8 +155,3 @@ You can remove the virtual machine using the following command **after demonstra
 ```bash
 vagrant destroy -f
 ```
-
-## Possible extensions
-
-- Alter the API setup so that it waits for the database to be ready before starting the API.
-- Alter the test setup so that the container waits for the API to be ready before running the tests.
