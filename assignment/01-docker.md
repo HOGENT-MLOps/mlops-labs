@@ -4,10 +4,12 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 ## :mortar_board: Learning Goals
 
-- Creating simple Docker images
-- Mapping ports from the host to the container
-- Using volumes to persist data
-- Using Docker Compose to deploy a multi-container application
+- Understanding the concept of container virtualization
+- Understanding the basic building blocks of Docker
+- Understanding the concept of Docker Compose
+- Being able to build Docker images and run them as Docker containers
+- Being able to use Docker features like port bindings, volumes, environment variables...
+- Being able to manage multiple containers using Docker Compose
 
 ## :memo: Acceptance criteria
 
