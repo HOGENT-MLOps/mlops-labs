@@ -16,6 +16,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show that you can start the API using the MongoDB database
 - Show that you can access the API on port 3000 on the VM
 - Show that you optimized the Docker image size
+- Show the containers in the Portainer dashboard
 - Show that the tests are passing
 - Show your lab report and cheat sheet! It should contain screenshots of consecutive steps and console output of commands you used.
 
@@ -36,13 +37,11 @@ cd dockerlab
 vagrant up
 ```
 
-## 1.2 Set up Portainer
+## 1.2 Configure Portainer
 
 It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface. For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers.
 
-Use the [Portainer docs](https://docs.portainer.io/start/install-ce/server/docker/linux) to set up a Portainer instance on the `dockerlab` VM. Make sure to use the Community Edition (CE) version. Use a `docker-compose.yml` file so it's easier to recreate the Portainer instance if needed.
-
-> :bulb: If you save files in the folder `/vagrant` on the VM, they will be available on your host system in the `dockerlab` folder. So you can be sure that you won't lose any files if you destroy the VM.
+Navigate to <https://192.168.56.20:9443> to access the Portainer dashboard, ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
 
 ## 1.3 Create a Docker image for a simple web application
 
@@ -147,6 +146,7 @@ However, the setup hands you some best practices for app deployment:
 
 - Alter the API setup so that it waits for the database to be ready before starting the API.
 - Alter the test setup so that the container waits for the API to be ready before running the tests.
+- Set up a service from the [Awesome selfhosted list](https://github.com/awesome-selfhosted/awesome-selfhosted)
 
 ## Cleanup
 

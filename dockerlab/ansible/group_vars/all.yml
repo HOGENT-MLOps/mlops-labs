@@ -1,6 +1,10 @@
 # group_vars/all.yml
 # Variables visible to all nodes
 ---
+# Install Ansible Docker module dependencies
+pip_install_packages:
+  - requests
+
 # Allow vagrant user and Jenkins to run Docker commands
 docker_users:
   - vagrant

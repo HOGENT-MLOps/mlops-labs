@@ -3,4 +3,22 @@
 - name: Setup Docker
   hosts: all
   roles:
+    - geerlingguy.pip
     - geerlingguy.docker
+
+  tasks:
+    - name: Create Docker volume for Portainer
+      community.docker.docker_volume:
+        name: portainer_data
+
+    - name: Set up Portainer
+      community.docker.docker_container:
+        name: portainer
+        image: portainer/portainer-ce:latest
+        state: started
+        restart_policy: always
+        published_ports:
+          - "9443:9443"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data
