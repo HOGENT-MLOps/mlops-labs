@@ -40,7 +40,7 @@ At the moment of writing the lab assignment, the tutorials suffer from incompati
 
 :exclamation: Notice the big red box at the top of the tutorials page with the temporary workaround. Make sure to check if you followed the instructions correctly when you encounter errors installing TFX before asking for help.
 
-You can check this issue for the current status of the compatibility issues: <https://github.com/tensorflow/tfx/issues/5897>. If the issue seems fixed, you can try to run the tutorials with Python 3.10 again without the workaround.
+You can check this issue for the current status of the compatibility issues: <https://github.com/tensorflow/tfx/issues/5897>. If the issue seems fixed, you can try to run the tutorials with Python 3.10 without the workaround.
 
 ## Possible extensions
 
