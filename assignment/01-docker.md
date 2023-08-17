@@ -10,6 +10,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Being able to build Docker images and run them as Docker containers
 - Being able to use Docker features like port bindings, volumes, environment variables...
 - Being able to manage multiple containers using Docker Compose
+- Being able to push Docker images to a Docker registry
 
 ## :memo: Acceptance criteria
 
@@ -18,8 +19,9 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show that you can start the API using the MongoDB database
 - Show that you can access the API on port 3000 on the VM
 - Show that you optimized the Docker image size
-- Show the containers in the Portainer dashboard
-- Show that the tests are passing
+- Show all running containers in the Portainer dashboard
+- Show that all tests are passing
+- Show that you pushed the Docker image to Docker Hub and that you can pull it from Docker Hub
 - Show your lab report and cheat sheet! It should contain screenshots of consecutive steps and console output of commands you used.
 
 ## 1.1 Set up the lab environment
@@ -36,7 +38,7 @@ Then, start the `dockerlab` VM:
 
 ```console
 cd dockerlab
-vagrant up
+vagrant up dockerlab
 ```
 
 ## 1.2 Configure Portainer
@@ -56,7 +58,7 @@ All animals are generated when the server starts for the first time, so it's ver
 
 This Node.js application requires some dependencies. These dependencies are listed in the `package.json` file and can be installed using the `yarn install --frozen-lockfile` command. Then use the `yarn start` command to start the application.
 
-> :warning: You'll likely not be able to run these commands on your local machine. You need to run them inside a Docker container, that's what we'll do next.
+> :warning: You'll likely not be able to run these commands on your local or virtual machine. You need to run them inside a Docker container, that's what we'll do next.
 
 Add a `Dockerfile` to this folder to create a Docker image for this application. The Docker image should meet the following requirements:
 
@@ -66,7 +68,7 @@ Add a `Dockerfile` to this folder to create a Docker image for this application.
 - Install the application dependencies with the `yarn install --frozen-lockfile` command.
 - The application should be started using the `yarn start` command (when the container is started).
 
-Test if your Docker image works by running a container based on your image. You should be able to access the application on port 3000 on both endpoints above. You can use the `curl` command to test this.
+Test if your Docker image works by running a container based on your image. You may choose the Docker image name but it might be a good idea to pick `webapp`. You should be able to access the application on port 3000 on both endpoints above. You can use the `curl` command to test this.
 
 ## 1.4 Create a Docker Compose file
 
@@ -98,7 +100,7 @@ Now that the database is persisted on the host system, we can add a second servi
 
 > :exclamation: Before you make any changes, create a copy of the `docker-compose.yml` file and name it `docker-compose-sqlite.yml`.
 
-Extend your existing `docker-compose.yml` file to add a service called `database` that runs a MongoDB database. Make sure that the application can connect to the database by setting the `MONGODB_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
+Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MongoDB database](https://hub.docker.com/_/mongo). Make sure that the application can connect to the database by setting the `MONGODB_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
 
 > :bulb: The API prints a message indicating which database is used. If you see the message "MongoDB database initialized", you know that the application is connected to the MongoDB database.
 >
@@ -108,7 +110,7 @@ Extend your existing `docker-compose.yml` file to add a service called `database
 
 The MongoDB database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
 
-Search through the documentation of the MongoDB Docker image to find out where the data is stored in the container. Create a volume so that the data is stored in the folder `/vagrant/webapp/database` on your VM.
+Search through the documentation of the [MongoDB Docker image](https://hub.docker.com/_/mongo) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area" on your virtual machine, and not in the folder `/vagrant/webapp/database` on the VM.
 
 ## 1.8 Optimizing the Docker image
 
@@ -129,6 +131,30 @@ Add a new service to the Docker Compose file to run the tests. Set the environme
 To run the tests, start the webapp and database services in the background. If both are up and running, run the test container. If you try to start the API and run the tests at the same time, the tests will fail because the API and the database are not ready yet.
 
 If you configured everything correctly, you should see three passing tests. If not, read the error message and try to fix the problem.
+
+## 1.10 Pushing the Docker image to Docker Hub
+
+In a real-world scenario, you would push the Docker image to a Docker registry instead of using your local machine as a repository.
+
+A Docker registry is a repository for Docker images. You can use a public registry like [Docker Hub](https://hub.docker.com/) or a private registry like [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/), [AWS Elastic Container Registry](https://aws.amazon.com/ecr/) or [Google Artifact Registry](https://cloud.google.com/artifact-registry).
+
+We're going to push our `webapp` image to [Docker Hub](https://hub.docker.com/). Sign up or sign in to [Docker Hub](https://hub.docker.com/). Then create a new repository called `webapp`. Make sure it's a **public** repository. It should get a name in the form of `<your-username>/webapp`.
+
+Now that we have a repository, we can push our image to Docker Hub. But first we need to tag our image. You can tag an image using the `docker tag` command. The command should look like this:
+
+```bash
+docker tag webapp <your-username>/webapp
+```
+
+Sign in to Docker Hub using the `docker login` command, your username and password. Now push the image to Docker Hub using the `docker push` command:
+
+```bash
+docker push <your-username>/webapp
+```
+
+To test if your image is successfully pushed to Docker Hub, you can remove all images for the webapp from your local machine and then pull it from Docker Hub. Use `docker image rm` to remove all images for the webapp. Use the `docker images` command to check if all images are removed. You should only have Portainer and MongoDB images left.
+
+If so, copy your current `docker-compose.yml` to `docker-compose-mongo.yml`. Alter the `docker-compose.yml` file so that it uses the image from Docker Hub instead of building the image locally. You should be able to start **and** test the application using the image from Docker Hub. Make sure to first start the webapp and database services in the background and then run the tests.
 
 ## Reflection
 
@@ -157,3 +183,5 @@ You can remove the virtual machine using the following command **after demonstra
 ```bash
 vagrant destroy -f
 ```
+
+You can also remove the repository you created on Docker Hub.
