@@ -1,6 +1,6 @@
-import { MongoClient } from 'mongodb';
-import Boom from '@hapi/boom';
-import generateFakeData from './generateFakeData.js';
+import { MongoClient } from "mongodb";
+import Boom from "@hapi/boom";
+import generateFakeData from "./generateFakeData.js";
 
 let client;
 
