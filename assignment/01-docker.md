@@ -52,7 +52,7 @@ Navigate to <https://192.168.56.20:9443> to access the Portainer dashboard, igno
 In the folder `/vagrant/webapp` on the VM, you'll find a simple web application. The application is written in [Node.js](https://nodejs.org/) and uses [Express](https://expressjs.com/) to serve a simple API on port 3000 with two endpoints:
 
 - `GET /animals`: returns a list of animals
-- `GET /animals/:id`: returns a single animal
+- `GET /animals/:id`: returns a single animal (with the given `id` if exists)
 
 All animals are generated when the server starts for the first time, so it's very likely that you'll get different animals than your fellow students.
 
