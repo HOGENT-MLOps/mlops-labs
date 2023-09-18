@@ -24,7 +24,7 @@ Here's an example. Be sure to check both the source code and how it's rendered i
 $ vagrant status
 Current machine states:
 
-cicdlab                 running (virtualbox)
+dockerlab                 running (virtualbox)
 
 The VM is running. To stop this VM, you can run `vagrant halt` to
 shut it down forcefully, or you can run `vagrant suspend` to simply
@@ -58,17 +58,17 @@ Markdown tables are formatted using the "pipe symbol", `|`, e.g.:
 Keeping the pipe symbols aligned is not mandatory. If you remove all the spaces, it renders exactly the same:
 
 ```markdown
-| Lorem | ipsum dolor |
-| :------------: | :--- |
-| sit amet | markdownum exclamant renarrant |
+|     Lorem      | ipsum dolor                        |
+| :------------: | :--------------------------------- |
+|    sit amet    | markdownum exclamant renarrant     |
 | obvius admissa | Dryopen cognita desectum *et modo* |
 ```
 
 The rendered version looks like:
 
-| Lorem | ipsum dolor |
-| :------------: | :--- |
-| sit amet | markdownum exclamant renarrant |
+|     Lorem      | ipsum dolor                        |
+| :------------: | :--------------------------------- |
+|    sit amet    | markdownum exclamant renarrant     |
 | obvius admissa | Dryopen cognita desectum *et modo* |
 
 Obviously, if you look at the second version of the table in the Markdown source, this isn't very readable. No worries, a good text editor can format Markdown tables and align the pipe symbols. E.g. in VSCode, `Alt+Shift+F` will reformat the current document (`Ctrl+Shift+I` on Linux). Check the documentation of the *Markdown All in One* extension for more info.
