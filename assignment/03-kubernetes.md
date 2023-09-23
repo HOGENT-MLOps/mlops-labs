@@ -1,10 +1,10 @@
 # Lab 3: Container orchestration with Kubernetes
 
+> **Remark:** this lab assignment is still work in progress. It will be updated in the coming weeks, so don't start working on it yet.
+
 The goal of this assignment is to become familiar with [Kubernetes](https://kubernetes.io), Google's container orchestration engine. It will play an important role in the next lab assignments, where you will deploy your own Machine Learning pipelines on a Kubernetes cluster.
 
 ## :mortar_board: Learning goals
-
-> TODO: check the learning goals
 
 - Understanding the concept of container orchestration
 - Understanding the basic architecture of Kubernetes
@@ -14,11 +14,10 @@ The goal of this assignment is to become familiar with [Kubernetes](https://kube
   - Pods
   - Controllers: ReplicaSets, Deployments, Services
   - Organising applications: Labels, Selectors
+  - Jobs, CronJobs
 - Deploying a multi-tier application on a Kubernetes cluster
 
 ## :memo: Acceptance criteria
-
-> TODO: check the acceptance criteria
 
 - Demonstrate that your Kubernetes cluster is running and that you are able to manage it:
   - Open the dashboard to show what's running on the cluster: nodes, pods, services, deployments, etc.
