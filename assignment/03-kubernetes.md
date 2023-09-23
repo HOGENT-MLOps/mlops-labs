@@ -26,7 +26,8 @@ The goal of this assignment is to become familiar with [Kubernetes](https://kube
 - Show that you can scale up and down the number of replicas of an application
 - Show that you can add, remove or change labels and selectors
 - Show that you can manipulate Kubernetes resources using labels and selectors
-- Show your lab notes and cheat sheet with useful commands
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Show that you updated the cheat sheet with the commands you need to remember
 
 ## Additional resources
 

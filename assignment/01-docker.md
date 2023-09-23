@@ -22,7 +22,8 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show all running containers in the Portainer dashboard
 - Show that all tests are passing
 - Show that you pushed the Docker image to Docker Hub and that you can pull it from Docker Hub
-- Show your lab report and cheat sheet! It should contain screenshots of consecutive steps and console output of commands you used.
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Show that you updated the cheat sheet with the commands you need to remember
 
 ## 1.1 Set up the lab environment
 
