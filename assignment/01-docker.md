@@ -97,11 +97,11 @@ If you restart the container, it should not print the message "Fake data generat
 
 ## 1.6 Add a database service
 
-Now that the database is persisted on the host system, we can add a second service to the Docker Compose file to run a more robust database. We'll use a [MongoDB](https://www.mongodb.com/) database for this. The application is configured to automatically connect to a MongoDB database if the environment variable `MONGODB_URL` is set. The application will create the database and the collection if they don't exist yet.
+Now that the database is persisted on the host system, we can add a second service to the Docker Compose file to run a more robust database. We'll use a [MongoDB](https://www.mongodb.com/) database for this. The application is configured to automatically connect to a MongoDB database if the environment variable `MONGO_URL` is set. The application will create the database and the collection if they don't exist yet.
 
 > :exclamation: Before you make any changes, create a copy of the `docker-compose.yml` file and name it `docker-compose-sqlite.yml`.
 
-Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MongoDB database](https://hub.docker.com/_/mongo). Make sure that the application can connect to the database by setting the `MONGODB_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
+Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MongoDB database](https://hub.docker.com/_/mongo). Make sure that the application can connect to the database by setting the `MONGO_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
 
 > :bulb: The API prints a message indicating which database is used. If you see the message "MongoDB database initialized", you know that the application is connected to the MongoDB database.
 >
