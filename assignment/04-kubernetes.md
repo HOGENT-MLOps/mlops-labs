@@ -1,4 +1,4 @@
-# Lab 3: Container orchestration with Kubernetes
+# Lab 4: Container orchestration with Kubernetes
 
 > **Remark:** this lab assignment is still work in progress. It will be updated in the coming weeks, so don't start working on it yet.
 
@@ -260,7 +260,7 @@ Open the Kubernetes documentation site in a web browser and follow the tutorial 
 
 If everything went well, you should be able to submit messages which remain visible after reloading the page. The guestbook application looks like this:
 
-![Guestbook application](./img/03-kubernetes/guestbook.png)
+![Guestbook application](./img/04-kubernetes/guestbook.png)
 
 ## 3.6. Clean up
 
