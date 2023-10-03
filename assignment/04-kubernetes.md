@@ -1,7 +1,5 @@
 # Lab 4: Container orchestration with Kubernetes
 
-> **Remark:** this lab assignment is still work in progress. It will be updated in the coming weeks, so don't start working on it yet.
-
 The goal of this assignment is to become familiar with [Kubernetes](https://kubernetes.io), Google's container orchestration engine. It will play an important role in the next lab assignments, where you will deploy your own Machine Learning pipelines on a Kubernetes cluster.
 
 ## :mortar_board: Learning goals
