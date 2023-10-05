@@ -2,11 +2,16 @@
 
 ## :mortar_board: Learning goals
 
-TODO: add learning goals
+- Create a simple ML workflow with Azure ML
+- Deploy a model to an Azure managed endpoint
 
 ## :memo: Acceptance criteria
 
-TODO: add acceptance criteria
+- Show that you created an Azure ML workspace
+- Show that your ML workflow is working
+- Show that you deployed a model to an Azure managed endpoint
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Show that you updated the cheat sheet with the commands you need to remember
 
 ## 1. Prerequisites
 
