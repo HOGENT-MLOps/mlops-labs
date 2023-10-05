@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test.js",
+    "test": "mocha test.spec.js",
     "lint": "eslint . --ext .js"
   },
   "dependencies": {
