@@ -42,7 +42,7 @@ If you think you will use Kubernetes professionally, or if you want to gain a mu
 - Hightower, K. (2021) *Kubernetes The Hard Way.* Retrieved 2022-09-10 from <https://github.com/kelseyhightower/kubernetes-the-hard-way>
   - Instructions to set up Kubernetes manually. Anyone running Kubernetes in production should know the platform inside out. This guide helps you to install and configure all the necessary components, which is probably the best way to really understand how it works under the hood.
 
-## 3.1. Set up the lab environment
+## 4.1. Set up the lab environment
 
 For this lab assignment, you will need a Kubernetes cluster. You can either use a cloud-based solution (e.g. [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)) or you can set up a local cluster on your own machine. The latter is the preferred option for this lab assignment. You need to install the following tools:
 
@@ -79,7 +79,7 @@ Remark that there's a command that immediately starts multiple nodes: `minikube 
 
 Also remark that when you're running a multi-node cluster, Minikube doesn't handle LoadBalancer access (which is the standard way to expose an application to the internet on a production cluster) very well. If you want to access a web application running on your cluster, you will probably need to enter the IP address of the node that actually runs the application Pod.
 
-## 3.2. Basic operation
+## 4.2. Basic operation
 
 At this point, we assume you have a running instance of Minikube with at least a control plane node and that `kubectl` is configured to communicate with that instance.
 
@@ -95,13 +95,13 @@ Add option `-o wide` if you want to see on which node each.
 
 The `watch` command will repeat the `kubectl` command every second (`-n1`) and show the result.
 
-### 3.2.1. Hello world!
+### 4.2.1. Hello world!
 
 Create your first deployment and service following the instructions in the [Hello Minikube tutorial](https://kubernetes.io/docs/tutorials/hello-minikube/).
 
 Check that you can view the app in a web browser.
 
-### 3.2.2. Working with manifest files
+### 4.2.2. Working with manifest files
 
 Usually, you won't be deploying applications with commands like you did in the previous step. You would write a manifest file that describes the desired state of all objects that are needed to run the application. Kubernetes manifest files are written in [YAML](https://yaml.org/).
 
@@ -143,7 +143,7 @@ For example, increase the number of replicas of the echoserver app (currently tw
 
 **Optional:** If one of the nodes in the cluster becomes unavailable (e.g. `minikube node stop minikube-m03`). What happens? Is the application still available? Are the pods still running? Is a pod automatically rescheduled to another node? What if you restart the node? Will the cluster "heal" itself completely or not?
 
-## 3.3. Labels and selectors
+## 4.3. Labels and selectors
 
 When you use Kubernetes in production, your environment will quickly become quite complex. An application will consist of several pods (frontend, API service, storage/database, etc.), deployments, etc. You may want to host several environments (development, staging/acceptance, production) on the same Kubernetes cluster.
 
@@ -169,7 +169,7 @@ kubectl delete pods -l TAG=VALUE
 
 This also works for other kinds of Kubernetes objects (Deployments, ReplicaSets, Services, etc.). You may also have noticed that services select pods based on labels, this way they aren't tightly coupled to specific pods.
 
-### 3.3.1. Manipulating labels manually
+### 4.3.1. Manipulating labels manually
 
 Labels can be added to existing Kubernetes resources with `kubectl label <item> <key>=<value>`. Add the `--overwrite` option if the key already exists. A label can be removed with `kubectl label <item> <key>-` (i.e. add a dash to the end of the key name).
 
@@ -183,7 +183,7 @@ Remove the `application_type` label from the pod that still has it.
 
 Finally, remove all Kubernetes resources currently running on the cluster (Pods, Deployments, Services).
 
-### 3.3.2. Setting labels in the manifest file
+### 4.3.2. Setting labels in the manifest file
 
 Usually, you won't be managing labels manually. They should instead be specified in the manifest file. You can add a section `labels:` to the `metadata:` section.
 
@@ -208,7 +208,7 @@ Launch the pods by applying the manifest file.
 - Delete all pods in the development environment
 - What is the quickest way to launch the pods you just deleted?
 
-## 3.4. Jobs
+## 4.4. Jobs
 
 Kubernetes can also be used to run batch jobs. These are tasks that are executed once and then stop. For example, you could use Kubernetes to run a Machine Learning pipeline that trains a model and then stops. Or you could use it to run a data pipeline that processes a batch of data and then stops.
 
@@ -244,7 +244,7 @@ By this time you should see pi in the output. If not, wait a few seconds and try
 
 If you want to run a job periodically, it's called a CronJob. Follow the tutorial [Running automated tasks with CronJobs](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/). The necessary manifest file is available in the directory [../kubernetes/3.4](../kubernetes/3.4). Keep lab notes!
 
-## 3.5. Deploy a multi-tier web application
+## 4.5. Deploy a multi-tier web application
 
 Next up is a more complex example: a multi-tier web application. The application consists of three components:
 
@@ -260,7 +260,7 @@ If everything went well, you should be able to submit messages which remain visi
 
 ![Guestbook application](./img/04-kubernetes/guestbook.png)
 
-## 3.6. Clean up
+## 4.6. Clean up
 
 When you're done with the lab assignment (**and only after you successfully demonstrated your setup!**) you can clean up all Kubernetes resources currently running on the cluster. What is the quickest way to delete all objects?
 
