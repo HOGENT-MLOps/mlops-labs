@@ -33,7 +33,7 @@ This lab is written in a Jupyter notebook which you can find in the `ml-workflow
 
 ## 2.2 Follow the instructions in the notebook
 
-From now on, you can follow the instructions in the notebook. You can run the code in the notebook by clicking on the play button next to the code block.
+From now on, you can follow the instructions in the notebook. You can run the code in the notebook by clicking on the play button next to the code block. Some cells contain a `# TODO:` comment. You should fill in the missing information before running the code cell.
 
 **Important!** Make sure you understand all the code that is written for you in the notebook. So don't just run the code, but read it and try to understand it. If you don't understand it, search for information on the Internet. Also read through the code in the cells starting with `%%writefile`. They contain crucial information for understanding how the pipeline actually works.
 
