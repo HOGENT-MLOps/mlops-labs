@@ -37,10 +37,20 @@ From now on, you can follow the instructions in the notebook. You can run the co
 
 **Important!** Make sure you understand all the code that is written for you in the notebook. So don't just run the code, but read it and try to understand it. If you don't understand it, search for information on the Internet. Also read through the code in the cells starting with `%%writefile`. They contain crucial information for understanding how the pipeline actually works.
 
+Also notice that this lab may incur costs on your Azure for Students subscription. Don't let the Azure resources run for too long if not needed. We recommend to finish this lab in one go.
+
 ## 2.3 Download the notebook
 
 When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `azure-ml.ipynb` notebook in the `ml-workflow` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
 
-## 2.4 Possible extensions
+## 2.4 Cleanup
+
+You can remove the Azure resource group **after demonstrating the result**. Removing the resource group before demonstrating the result will result in losing all your work!
+
+Removing a resource group can be done via the Azure portal. Navigate to the [Resource groups](https://portal.azure.com/#blade/HubsExtension/BrowseResourceGroups) page and click on the resource group you want to remove. Click on the **Delete resource group** button and confirm the deletion. This could take a few minutes to complete.
+
+The Azure ML workspace remains in a "recently deleted" state. You can permanently remove a workspace by navigating to the [Azure Machine Learning](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.MachineLearningServices%2Fworkspaces) page and clicking on the **Recently deleted** button. Pick "West Europe" as location, select your Azure ML Workspace and click on the **Permanently delete** button. Confirm the deletion. This could take a few minutes to complete.
+
+## Possible extensions
 
 The notebook contains some possible extensions at the very end. You can try to implement them if you have time left.
