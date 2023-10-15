@@ -10,6 +10,7 @@
 - Show that you created an Azure ML workspace
 - Show that your ML workflow is working
 - Show that you deployed a model to an Azure managed endpoint
+- Show that you are able to make a prediction with the deployed model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
