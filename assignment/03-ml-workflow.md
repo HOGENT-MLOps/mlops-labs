@@ -43,7 +43,7 @@ Also notice that this lab may incur costs on your Azure for Students subscriptio
 
 When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `azure-ml.ipynb` notebook in the `ml-workflow` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
 
-## 2.4 Cleanup
+## 2.4 Clean-up
 
 You can remove the Azure resource group **after demonstrating the result**. Removing the resource group before demonstrating the result will result in losing all your work!
 
