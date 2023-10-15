@@ -177,7 +177,7 @@ However, the setup hands you some best practices for app deployment:
 - Alter the test setup so that the container waits for the API to be ready before running the tests.
 - Set up a service from the [Awesome selfhosted list](https://github.com/awesome-selfhosted/awesome-selfhosted)
 
-## Cleanup
+## Clean-up
 
 You can remove the virtual machine using the following command **after demonstrating the result**. Removing the virtual machine before demonstrating the result will result in losing all your work!
 
