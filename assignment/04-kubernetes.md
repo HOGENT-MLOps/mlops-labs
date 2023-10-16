@@ -105,16 +105,16 @@ Check that you can view the app in a web browser.
 
 Usually, you won't be deploying applications with commands like you did in the previous step. You would write a manifest file that describes the desired state of all objects that are needed to run the application. Kubernetes manifest files are written in [YAML](https://yaml.org/).
 
-In the directory [../kubernetes/3.2](../kubernetes/3.2), you will find examples of some basic manifest files:
+In the directory [../kubernetes/4.2](../kubernetes/4.2), you will find examples of some basic manifest files:
 
-- [echo-deployment.yml](../kubernetes/3.2/echo-deployment.yml): describes a deployment an echo app, it returns the received request to the client
-- [echo-service.yml](../kubernetes/3.2/echo-service.yml): describes a service for the echo app
-- [echo-all.yml](../kubernetes/3.2/echo-all.yml): a file containing both the deployment and service definition.
+- [echo-deployment.yml](../kubernetes/4.2/echo-deployment.yml): describes a deployment an echo app, it returns the received request to the client
+- [echo-service.yml](../kubernetes/4.2/echo-service.yml): describes a service for the echo app
+- [echo-all.yml](../kubernetes/4.2/echo-all.yml): a file containing both the deployment and service definition.
   - This Deployment also contains a ReplicaSet that ensures two pods are running at all times
 
 You will notice that in the last file, some lines only contain `---`. This is YAML syntax to mark the beginning of a new "document" (in YAML terminology). This way, you can combine the definitions of all Kubernetes objects that you want to create in a single YAML file.
 
-Let's deploy the application using the separate files first. Open a terminal in directory `3.2/` and follow the instructions below. Be sure to check the result after each command, or use the trick with the `watch` command introduced previously.
+Let's deploy the application using the separate files first. Open a terminal in directory `4.2/` and follow the instructions below. Be sure to check the result after each command, or use the trick with the `watch` command introduced previously.
 
 ```console
 kubectl apply -f echo-deployment.yml
@@ -187,7 +187,7 @@ Finally, remove all Kubernetes resources currently running on the cluster (Pods,
 
 Usually, you won't be managing labels manually. They should instead be specified in the manifest file. You can add a section `labels:` to the `metadata:` section.
 
-In the manifest file [3.3/example-pods-with-labels.yml](../kubernetes/3.3/example-pods-with-labels.yml), we defined a number of Pods with labels that are representative to how you could do it in practice.
+In the manifest file [4.3/example-pods-with-labels.yml](../kubernetes/4.3/example-pods-with-labels.yml), we defined a number of Pods with labels that are representative to how you could do it in practice.
 
 Let's say you have an application that consists of 3 pods working together: a frontend, backend/API service and a database. You want to host a development, acceptance and production environment on this Kubernetes cluster. The app version running in production is currently v1.0, while acceptance and development are on v2.0. Each pod is owned by different teams (e.g. the web team develops the frontend, the db team manages the database, etc.).
 
@@ -212,7 +212,7 @@ Launch the pods by applying the manifest file.
 
 Kubernetes can also be used to run batch jobs. These are tasks that are executed once and then stop. For example, you could use Kubernetes to run a Machine Learning pipeline that trains a model and then stops. Or you could use it to run a data pipeline that processes a batch of data and then stops.
 
-In the manifest file [3.4/job.yml](../kubernetes/3.4/job.yml) a simple job is defined. It runs a container that computes pi to 2000 places and prints it out.
+In the manifest file [4.4/job.yml](../kubernetes/4.4/job.yml) a simple job is defined. It runs a container that computes pi to 2000 places and prints it out.
 
 Apply the manifest file:
 
@@ -242,7 +242,7 @@ kubectl logs <pod-name>
 
 By this time you should see pi in the output. If not, wait a few seconds and try again or use the `-f` option to follow the logs.
 
-If you want to run a job periodically, it's called a CronJob. Follow the tutorial [Running automated tasks with CronJobs](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/). The necessary manifest file is available in the directory [../kubernetes/3.4](../kubernetes/3.4). Keep lab notes!
+If you want to run a job periodically, it's called a CronJob. Follow the tutorial [Running automated tasks with CronJobs](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/). The necessary manifest file is available in the directory [../kubernetes/4.4](../kubernetes/4.4). Keep lab notes!
 
 ## 4.5. Deploy a multi-tier web application
 
