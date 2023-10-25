@@ -2,14 +2,13 @@
   "name": "demo-webapp",
   "version": "1.0.0",
   "description": "Demo webapp for the course Machine Learning Operations at HOGENT",
-  "main": "index.js",
   "author": "Thomas Aelbrecht <thomas.aelbrecht@hogent.be>",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha test.spec.js",
+    "start": "node src/index.js",
+    "test": "mocha tests/animals.spec.js",
     "lint": "eslint . --ext .js"
   },
   "dependencies": {

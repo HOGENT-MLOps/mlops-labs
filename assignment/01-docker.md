@@ -91,7 +91,7 @@ Use `docker exec` to get a shell inside the container. If you've used an alpine 
 
 List the contents of the `/app` folder. You should notice a `database` folder that is not present on your host system. This folder contains the SQLite database file.
 
-Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `/vagrant/webapp/database` on the VM.
+Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `/vagrant/webapp/database` on the VM and in `dockerlab/webapp/database` on your local system.
 
 If you restart the container, it should not print the message "Fake data generated" anymore. If this is the case, you know that the database is persisted on the host system.
 
@@ -125,7 +125,7 @@ This image is not so difficult and cannot be optimized that much, but it's a bes
 
 ## 1.9 Testing the application
 
-At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `/vagrant/webapp/test.js` file and can be run using the `yarn test` command.
+At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `/vagrant/webapp/tests/animals.spec.js` file and can be run using the `yarn test` command.
 
 Add a new service to the Docker Compose file to run the tests. Set the environment variable `API_URL` to the URL of the `webapp` service. Notice that you can use the service name as hostname in Docker Compose. Use the `depends_on` option to make sure that the application is started before the tests are run. Re-use the existing Docker image to run the tests, **only** change the command in the `docker-compose.yml` file and **not** in the `Dockerfile`.
 
