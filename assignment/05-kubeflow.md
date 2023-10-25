@@ -12,6 +12,15 @@ TODO: add learning goals
 
 TODO: add acceptance criteria
 
+- De student kent de werking van TensorFlow Lite
+- De student kan verschillende use-cases identificeren en uitleggen waarvoor een ML-model op de edge
+  vereist is.
+- De student kan de verschillende technieken uitleggen die worden gebruikt om een ML-model te optimaliseren
+  voor edge-devices, zoals kwantisatie en pruning.
+- De student kan TensorFlow Lite gebruiken om een ML-model te converteren en te optimaliseren voor implementatie
+  op edge devices.
+- De student kan de prestaties van het gemigreerde ML-model op de edge evalueren en optimaliseren.
+
 ## 5.1 Setup Kubeflow
 
 Running Kubeflow locally is tricky because we'll be using the raw Kubernetes manifest files. The [Kubeflow documentation](https://www.kubeflow.org/docs/started/installing-kubeflow/) doesn't recommend to run these raw files and to run Kubeflow in the cloud. For this lab we'll be running a slimmed down version of Kubeflow locally. This version is not recommended for production use, but it's good enough for this lab. This section is entirely based on the following documentation: <https://www.kubeflow.org/docs/components/pipelines/v1/installation/localcluster-deployment/#deploying-kubeflow-pipelines>.
