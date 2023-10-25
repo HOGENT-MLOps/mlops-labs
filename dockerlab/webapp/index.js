@@ -22,6 +22,10 @@ app.use((_, res, next) => {
   next();
 });
 
+app.get('/', (_, res) => {
+  res.send('It works, good job!');
+});
+
 app.get('/animals', asyncMiddleware(async (_, res) => {
   const animals = await persistence.getAnimals();
   res.json(animals);
