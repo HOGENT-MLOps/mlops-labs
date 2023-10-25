@@ -16,7 +16,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 - Show that you created a Docker image for the API
 - Show that you can start the API using the SQLite database
-- Show that you can start the API using the MongoDB database
+- Show that you can start the API using the MySQL database
 - Show that you can access the API on port 3000 on the VM
 - Show that you optimized the Docker image size
 - Show all running containers in the Portainer dashboard
@@ -97,21 +97,23 @@ If you restart the container, it should not print the message "Fake data generat
 
 ## 1.6 Add a database service
 
-Now that the database is persisted on the host system, we can add a second service to the Docker Compose file to run a more robust database. We'll use a [MongoDB](https://www.mongodb.com/) database for this. The application is configured to automatically connect to a MongoDB database if the environment variable `MONGO_URL` is set. The application will create the database and the collection if they don't exist yet.
+Now that the database is persisted on the host system, we can add a second service to the Docker Compose file to run a more robust database. We'll use a [MySQL](https://www.mysql.com/) database for this. The application is configured to automatically connect to a MySQL database if the environment variable `MYSQL_URL` is set. The application will create the database and the collection if they don't exist yet.
 
 > :exclamation: Before you make any changes, create a copy of the `docker-compose.yml` file and name it `docker-compose-sqlite.yml`.
 
-Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MongoDB database](https://hub.docker.com/_/mongo). Make sure that the application can connect to the database by setting the `MONGO_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
+Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MySQL database](https://hub.docker.com/_/mysql). Read the Docker container docs and set the appropriate environment variables to configure the database and user.
 
-> :bulb: The API prints a message indicating which database is used. If you see the message "MongoDB database initialized", you know that the application is connected to the MongoDB database.
+Make sure that the application can connect to the database by setting the `MYSQL_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
+
+> :bulb: The API prints a message indicating which database is used. If you see the message "MySQL database initialized", you know that the application is connected to the MySQL database.
 >
 > :bulb: There is also an HTTP header `X-Database-Used` in every response that indicates which database is used.
 
 ## 1.7 Backup the database
 
-The MongoDB database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
+The MySQL database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
 
-Search through the documentation of the [MongoDB Docker image](https://hub.docker.com/_/mongo) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area" on your virtual machine, and not in the folder `/vagrant/webapp/database` on the VM.
+Search through the documentation of the [MySQL Docker image](https://hub.docker.com/_/mysql) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area" on your virtual machine, and not in the folder `/vagrant/webapp/database` on the VM.
 
 ## 1.8 Optimizing the Docker image
 
@@ -153,13 +155,13 @@ Sign in to Docker Hub using the `docker login` command, your username and passwo
 docker push <your-username>/webapp
 ```
 
-To test if your image is successfully pushed to Docker Hub, you can remove all images for the webapp from your local machine and then pull it from Docker Hub. Use `docker image rm` to remove all images for the webapp. Use the `docker images` command to check if all images are removed. You should only have Portainer and MongoDB images left.
+To test if your image is successfully pushed to Docker Hub, you can remove all images for the webapp from your local machine and then pull it from Docker Hub. Use `docker image rm` to remove all images for the webapp. Use the `docker images` command to check if all images are removed. You should only have Portainer and MySQL images left.
 
-If so, copy your current `docker-compose.yml` to `docker-compose-mongo.yml`. Alter the `docker-compose.yml` file so that it uses the image from Docker Hub instead of building the image locally. You should be able to start **and** test the application using the image from Docker Hub. Make sure to first start the webapp and database services in the background and then run the tests.
+If so, copy your current `docker-compose.yml` to `docker-compose-mysql.yml`. Alter the `docker-compose.yml` file so that it uses the image from Docker Hub instead of building the image locally. You should be able to start **and** test the application using the image from Docker Hub. Make sure to first start the webapp and database services in the background and then run the tests.
 
 ## Reflection
 
-This setup oversimplifies the real world. In the real world, you would probably use a managed database service like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or [Amazon RDS](https://aws.amazon.com/rds/). These services are easier to use, are more robust than a self-hosted database but tend to be expensive. Nevertheless, it's important to know how to run a database in a container. You might need it on your local machine, in a CI/CD pipeline or to reduce costs in a small project.
+This setup oversimplifies the real world. In the real world, you would probably use a managed database service like [Azure Database](https://azure.microsoft.com/en-us/products/mysql) or [Amazon RDS](https://aws.amazon.com/rds/). These services are easier to use, are more robust than a self-hosted database but tend to be expensive. Nevertheless, it's important to know how to run a database in a container. You might need it on your local machine, in a CI/CD pipeline or to reduce costs in a small project.
 
 You would also use a managed CI/CD service like [Jenkins](https://www.jenkins.io/) or [GitHub Actions](https://docs.github.com/en/actions) to run the tests and deploy the application. But more on that in a later module.
 
