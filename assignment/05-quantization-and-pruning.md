@@ -11,16 +11,15 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
 
 ## :memo: Acceptance criteria
 
-- Show that you converted a TensorFlow model to a TensorFlow Lite model
 - Show that you can convert a TensorFlow model to a TensorFlow Lite model with quantization
 - Show that you can train a quantize aware model
 - Show that you can perform weight pruning on a model
-- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-- Show that you understand quantization and pruning:
+- Show that your Jupyter notebook contains all cells' output
+- Show that you understand quantization and pruning (in your own words):
   - Explain quantization and pruning
   - Explain the difference between post-training quantization and quantization aware training
   - Explain the difference between weight pruning and quantization
-- Show that your Jupyter notebook contains all cells' output
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 
 ## 1. Open the notebook
 
