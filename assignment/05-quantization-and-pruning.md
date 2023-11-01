@@ -22,13 +22,13 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
   - Explain the difference between weight pruning and quantization
 - Show that your Jupyter notebook contains all cells' output
 
-## 2.1 Open the notebook
+## 1. Open the notebook
 
 This lab is written in a Jupyter notebook named `quantization-and-pruning.ipynb`, which you can find in the `ml-workflow` folder. Go to <https://colab.research.google.com/> and sign in with your Google account if needed. Choose to upload a notebook and upload the `quantization-and-pruning.ipynb` notebook from the `ml-workflow` folder.
 
 ![Upload notebook](./img/05-quantization-and-pruning/upload-notebook.png)
 
-## 2.2 Follow the instructions in the notebook
+## 2. Follow the instructions in the notebook
 
 From now on, you can follow the instructions in the notebook. You can run the code in the notebook by clicking on the play button next to the code block. Some cells contain a `# TODO:` comment. You should fill in the missing information before running the code cell.
 
