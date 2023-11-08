@@ -44,6 +44,9 @@ cd dockerlab
 vagrant up dockerlab
 ```
 
+> If you're have issues with Vagrant, you may use Docker on your local machine. In that case, you don't need the VM we're using in this lab assignment. You can simply destroy it using `vagrant destroy -f`.
+> Make sure to start Portainer yourself then!
+
 ## 1.2 Configure Portainer
 
 It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface. For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers.
