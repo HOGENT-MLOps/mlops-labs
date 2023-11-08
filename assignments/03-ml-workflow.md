@@ -12,6 +12,10 @@
 - Show that you deployed a model to an Azure managed endpoint
 - Show that you are able to make a prediction with the deployed model
 - Explain how data flows through the pipeline and how this is configured in the code
+- Show that you understand how the pipeline works (in your own words):
+  - Explain how Azure ML knows the inputs and outputs of each step
+  - Explain how Azure ML knows the order of the steps
+  - Explain how Azure ML knows how the inputs and outputs are connected to each other
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you've executed the notebook and pushed it to the repository
 
