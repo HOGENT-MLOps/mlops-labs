@@ -43,7 +43,7 @@ From now on, you can follow the instructions in the notebook. You can run the co
 
 **Important!** Make sure you understand all the code that is written for you in the notebook. So don't just run the code, but read it and try to understand it. If you don't understand it, search for information on the Internet. Also read through the code in the cells starting with `%%writefile`. They contain crucial information for understanding how the pipeline actually works.
 
-Also notice that this lab may incur costs on your Azure for Students subscription. Don't let the Azure resources run for too long if not needed. We recommend to finish this lab in one go.
+:exclamation: Also notice that this lab may incur costs on your Azure for Students subscription. Don't let the Azure resources run for too long if not needed. We recommended to only create the endpoint the moment before you want to demonstrate the result. The pipeline itself is not that expensive, but the endpoint is. If created way before, it may cost you a lot of money.
 
 ## 2.3 Download the notebook
 
