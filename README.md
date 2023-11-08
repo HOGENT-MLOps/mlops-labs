@@ -15,8 +15,8 @@ This repository contains some scaffolding code, based on [ansible-skeleton](http
 
 This assignment and the scaffolding code was written by [Thomas Aelbrecht](https://github.com/thomasaelbrecht/). Some lab assignments are based on assignments created by [Bert Van Vreckem](https://github.com/bertvv/):
 
-- [CI/CD](./assignment/02-cicd.md)
-- [Kubernetes](./assignment/04-kubernetes.md)
+- [CI/CD](./assignments/02-cicd.md)
+- [Kubernetes](./assignments/04-kubernetes.md)
 
 The assignment and all documentation are shared under the [Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0/) license. All code (both scaffolding and testing code) is subject to the MIT license. See [LICENSE.md](LICENSE.md) for details.
 

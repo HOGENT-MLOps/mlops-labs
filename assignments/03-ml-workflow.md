@@ -29,7 +29,7 @@ If you do not have a subscription, you can create one via <https://azure.microso
 
 ## 2.1 Open the notebook
 
-This lab is written in a Jupyter notebook which you can find in the `ml-workflow` folder. Go to <https://colab.research.google.com/> and sign in with your Google account if needed. Choose to upload a notebook and upload the `azure-ml.ipynb` notebook from the `ml-workflow` folder.
+This lab is written in a Jupyter notebook which you can find in the `assignments/notebooks` folder. Go to <https://colab.research.google.com/> and sign in with your Google account if needed. Choose to upload a notebook and upload the `azure-ml.ipynb` notebook from the `assignments/notebooks` folder.
 
 ![Upload notebook](./img/03-ml-workflow/upload-notebook.png)
 
@@ -43,7 +43,7 @@ Also notice that this lab may incur costs on your Azure for Students subscriptio
 
 ## 2.3 Download the notebook
 
-When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `azure-ml.ipynb` notebook in the `ml-workflow` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
+When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `azure-ml.ipynb` notebook in the `assignments/notebooks` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
 
 ## 2.4 Clean-up
 
