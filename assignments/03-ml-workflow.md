@@ -13,7 +13,7 @@
 - Show that you are able to make a prediction with the deployed model
 - Explain how data flows through the pipeline and how this is configured in the code
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-- Show that you updated the cheat sheet with the commands you need to remember
+- Show that you've executed the notebook and pushed it to the repository
 
 ## 1. Prerequisites
 
