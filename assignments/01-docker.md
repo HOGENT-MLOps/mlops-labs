@@ -97,7 +97,7 @@ List the contents of the `/app` folder. You should notice a `database` folder th
 
 Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `/vagrant/webapp/database` on the VM and in `dockerlab/webapp/database` on your local system.
 
-If you restart the container, it should not print the message "Fake data generated" anymore. If this is the case, you know that the database is persisted on the host system.
+Re-run you `docker-compose.yml` file, restarting the container is not sufficient. The webapp container should not print the message "Fake data generated" anymore. If this is the case, you know that the database is persisted on the host system.
 
 ## 1.6 Add a database service
 
