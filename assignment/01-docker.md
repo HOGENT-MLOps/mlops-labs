@@ -50,6 +50,8 @@ It's possible to manage Docker containers using the command line, but it's somet
 
 Navigate to <https://192.168.56.20:9443> to access the Portainer dashboard, ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
 
+> :bulb: If you've waited to long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the Portainer container.
+
 ## 1.3 Create a Docker image for a simple web application
 
 In the folder `/vagrant/webapp` on the VM, you'll find a simple web application. The application is written in [Node.js](https://nodejs.org/) and uses [Express](https://expressjs.com/) to serve a simple API on port 3000 with two endpoints:
