@@ -20,6 +20,7 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
   - Explain the difference between post-training quantization and quantization aware training
   - Explain the difference between weight pruning and quantization
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Show that you've executed the notebook and pushed it to the repository
 
 ## 1. Open the notebook
 
