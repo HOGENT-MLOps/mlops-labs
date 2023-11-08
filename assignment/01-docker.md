@@ -19,6 +19,8 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show that you can start the API using the MySQL database
 - Show that you can access the API on port 3000 on the VM
 - Show that you optimized the Docker image size
+  - You've used an Alpine version of Node.js
+  - You've copied and installed the dependencies in a separate layer
 - Show all running containers in the Portainer dashboard
 - Show that all tests are passing
 - Show that you pushed the Docker image to Docker Hub and that you can pull it from Docker Hub
@@ -63,7 +65,7 @@ This Node.js application requires some dependencies. These dependencies are list
 
 Add a `Dockerfile` to this folder to create a Docker image for this application. The Docker image should meet the following requirements:
 
-- Start from a Docker image for Node.js version 18.x.x (LTS), you're free to choose an alpine version or not.
+- Start from a Docker image for Node.js version 20.x.x (LTS).
 - The application should be reachable on port 3000.
 - Copy the application code in the `/app` folder in the container.
 - Install the application dependencies with the `yarn install --frozen-lockfile` command.
@@ -119,11 +121,15 @@ Search through the documentation of the [MySQL Docker image](https://hub.docker.
 
 You've probably rebuilt the Docker image a couple of times now. If you look at the output of the `docker images` command, you'll see that the application dependencies are installed every time you rebuild the image. This is not ideal, because the dependencies don't change that often. It would be better to install the dependencies once and then reuse the image.
 
-We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `yarn.lock` files to the container and then run the `yarn install` command. Thereafter, copy the application code to the container.
+Your image is probably very big (around 1.2GB), because you might not have used an Alpine version of Node.js. You can use the `docker image ls` command to see the size of your image. The size of the image is important because it's the size of the image that is pulled from the registry and stored on the host system. Check your image's size and write it down in your lab report.
+
+First, change the base image in your `Dockerfile` so that it uses an Alpine version of Node.js. This will reduce the size of the image. Rebuild the image with this Alpine version and check the new image's size and write it down in your lab report.
+
+Next, we're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `yarn.lock` files to the container and then run the `yarn install` command. Thereafter, copy the application code to the container.
 
 A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `node_modules` folder and all Docker related files to the `.dockerignore` file.
 
-This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the layers you're creating. Try to keep the image as small as possible. You can use the `docker history` command to see the layers of an image. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
+This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the base image you're using and the layers you're creating. Try to keep the image as small as possible. You can use the `docker history` command to see the layers of an image. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
 
 ## 1.9 Testing the application
 
