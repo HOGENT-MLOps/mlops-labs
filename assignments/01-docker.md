@@ -134,6 +134,8 @@ Next, we're going to change the Dockerfile so that the dependencies are installe
 
 A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `node_modules` folder and all Docker related files to the `.dockerignore` file.
 
+Rebuild and restart your containers using a Docker compose command. Now run the `ls` command inside your container and check that these files are not present in the container: `docker compose exec webapp ls -la`. If so, you've successfully optimized your Docker image.
+
 This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the base image you're using and the layers you're creating. Try to keep the image as small as possible. You can use the `docker history` command to see the layers of an image. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
 
 ## 1.9 Testing the application
