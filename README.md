@@ -7,7 +7,7 @@ This repository contains the lab assignments for the course Machine Learning Ope
 
 The goal of these assignments is to get familiar with concepts like container virtualization, CI/CD, monitoring, etc. in the context of Machine Learning Operations.
 
-This repository contains some scaffolding code, based on [ansible-skeleton](https://github.com/bertvv/ansible-skeleton), a framework for quickly setting up an Ansible development and testing environment powered by [Vagrant](https://vagrantup.com).
+This repository contains some scaffolding code, based on [vagrant-shell-skeleton](https://github.com/bertvv/vagrant-shell-skeleton/), a framework for quickly setting up an environment powered by [Vagrant](https://vagrantup.com).
 
 - [dockerlab](dockerlab/): sets up a VM to experiment with container virtualization.
 

@@ -31,13 +31,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 For this lab assignment, we'll be using the `dockerlab` environment. This environment comes with Docker installed on the VM.
 
-First, we'll need to install the required Ansible roles for provisioning the VM. Run the following command from the root of the repository:
-
-```console
-bash ./scripts/role-deps.sh ./dockerlab/ansible/site.yml
-```
-
-Then, start the `dockerlab` VM:
+First, we need to start and provision the `dockerlab` VM:
 
 ```console
 cd dockerlab
@@ -45,7 +39,7 @@ vagrant up dockerlab
 ```
 
 > If you're have issues with Vagrant, you may use Docker on your local machine. In that case, you don't need the VM we're using in this lab assignment. You can simply destroy it using `vagrant destroy -f`.
-> Make sure to start Portainer yourself then!
+> Make sure to start Portainer yourself then! There is `docker-compose.yml` file in the `dockerlab/provisioning/dockerlab` folder that you can use to start Portainer.
 
 ## 1.2 Configure Portainer
 
