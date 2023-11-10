@@ -144,7 +144,7 @@ At last, we want to test the application using integration tests written in [Moc
 
 Add a new service to the Docker Compose file to run the tests. Set the environment variable `API_URL` to the URL of the `webapp` service. Notice that you can use the service name as hostname in Docker Compose. Use the `depends_on` option to make sure that the application is started before the tests are run. Re-use the existing Docker image to run the tests, **only** change the command in the `docker-compose.yml` file and **not** in the `Dockerfile`.
 
-To run the tests, start the webapp and database services in the background. If both are up and running, run the test container. If you try to start the API and run the tests at the same time, the tests will fail because the API and the database are not ready yet.
+To run the tests, start the webapp and database services in the background. If both containers are up and running, run the test container **using a separate Docker compose command**. If you try to start the API and run the tests at the same time, the tests will fail because the API and the database are not ready yet.
 
 If you configured everything correctly, you should see three passing tests. If not, read the error message and try to fix the problem.
 
