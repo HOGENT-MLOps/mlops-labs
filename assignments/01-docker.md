@@ -110,6 +110,8 @@ Make sure that the application can connect to the database by setting the `MYSQL
 >
 > :bulb: There is also an HTTP header `X-Database-Used` in every response that indicates which database is used.
 
+You could bind the MySQL port (3306) to a port on your VM, but it's a bad idea to expose your database to the outside world. You should only allow traffic on the port of your web service, the database doesn't need public access. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course. However if you bind the database port to a port on your VM, you can use SSH port forwarding to access the database from your own pc (over an SSH connection).
+
 ## 1.7 Backup the database
 
 The MySQL database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
