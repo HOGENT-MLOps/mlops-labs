@@ -78,11 +78,9 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 2. [Add](https://grafana.com/docs/grafana/latest/administration/data-source-management/?utm_source=grafana_gettingstarted) the Prometheus polling server as a data source.
 
-3. Go to the `Home` > `Explore` section and query the `model_result` metric:
+3. Go to the `Home` > `Explore` section and query the `model_result` metric. You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dash board will do this automatically for you.
 
-    ![](./img/06-monitoring/grafana-query.png)
-
-    You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dash board will do this automatically for you.
+![](./img/06-monitoring/grafana-query.png)
 
 4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a consistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
@@ -93,7 +91,7 @@ You have probably noticed that the interface of Prometheus to query and see metr
     - It shows the history of the past 15 minutes.
     - It shows a red threshold line at $y=0.9$.
 
-        ![](./img/06-monitoring/grafana-threshold.png)
+![](./img/06-monitoring/grafana-threshold.png)
 
 ## 6.4 Alertmanager
 
