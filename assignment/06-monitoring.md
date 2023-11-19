@@ -2,15 +2,15 @@
 
 In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/). You'll create a mock model in Python that spits out test values in the interval [0, 1] every 5 seconds, set up Prometheus to gather the metric from the mocked model, visualize the metric from the model mock using Grafana, and use Alert manager to get notifications when the metric of the model reaches a certain threshold.
 
-<span style="color:red; font-weight: bold">TODO</span>: network scheme
+<div style="color:red; font-weight: bold">TODO</div>: network scheme
 
 ## :mortar_board: Learning Goals
 
-<span style="color:red; font-weight: bold">TODO</span>
+<div style="color:red; font-weight: bold">TODO</div>
 
 ## :memo: Acceptance criteria
 
-<span style="color:red; font-weight: bold">TODO</span>
+<div style="color:red; font-weight: bold">TODO</div>
 
 ## 6.1 Mocking the model
 
@@ -41,13 +41,16 @@ You'll see that your terminal prompt has changed back to normal.
 
 To set up the Prometheus polling server and other services, we'll use `docker compose`. Create a `docker-compose.yml` file with a [Prometheus service](https://hub.docker.com/r/prom/prometheus). You can use the `prometheus.yml` config file below and map it to `/etc/prometheus/prometheus.yml` (remember the Docker lab). Make sure this is persistent (i.e. survives even if the contianer is removed and replaced). Chances are that this will give an error at first, but don't despair as the solution is probably easier than you think. Make sure that you [understand](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) everything in the Prometheus config file.
 
-```yaml
+```yml
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
 scrape_configs:
-    - job_name: "model_mock"
-        scrape_interval: 5s
-        static_configs:
-            - targets:
-                - "localhost:5000"
+  - job_name: model_mock
+    static_configs:
+      - targets:
+          - localhost:5000
 ```
 
 Now, check if your Prometheus polling server can reach the mocked model's Prometheus metric server. Go to the Prometheus page at http://localhost:9090 [^1] and then to `Status` > `Service Discovery`. You should see the following:
@@ -72,7 +75,7 @@ If you select the `Graph` tab instead of the `Table` tab, you'll see the metric 
 
 ## 6.3 Grafana
 
-You have probably noticed that the interface of Prometheus to query and see metrics is limited. Thankfully, we can use [Grafana](https://grafana.com/) to create beautiful dashboards on top of a Prometheus polling server. Add a [Grafana service](https://hub.docker.com/r/grafana/grafana-oss) to your `docker-compose.yml` and start the Docker Compose file. You should be able to access the Grafana website at https://localhost:3000 [^1]. Now let's configure the Grafana service:
+You have probably noticed that the interface of Prometheus to query and see metrics is limited. Thankfully, we can use [Grafana](https://grafana.com/) to create beautiful dashboards on top of a Prometheus polling server. Add a [Grafana service](https://hub.docker.com/r/grafana/grafana-oss) to your `docker-compose.yml` and start the Docker Compose file. You should be able to access the Grafana website at http://localhost:3000 [^1]. Now let's configure the Grafana service:
 
 1. Find out what the default username and password are. First thing to do once you are logged in, is to change the password to something better and private.
 
@@ -86,22 +89,201 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 5. Now create a dashboard which does the following:
 
-    - We see the same graph as the query.
-    - It refreshes every 5 seconds.
-    - It shows the history of the past 15 minutes.
-    - It shows a red threshold line at $y=0.9$.
+   - We see the same graph as the query.
+   - It refreshes every 5 seconds.
+   - It shows the history of the past 15 minutes.
+   - It shows a red threshold line at $y=0.75$.
 
 ![](./img/06-monitoring/grafana-threshold.png)
 
 ## 6.4 Alertmanager
 
-<span style="color:red; font-weight: bold">TODO</span>
+### 6.4.1 Generating alerts
+
+We would like to receive notifications when the mocked model's metric goes above 0.75. Luckily, Prometheus allows use to define [alerting rules]() which can do that (and much more). Create the following file `rules.yml`:
+
+```yml
+groups:
+  - name: example
+    rules:
+      - alert: ModelMockHighAccuracy
+        expr: model_result > 0.75
+        annotations:
+          summary: "Model mock accuracy is very high"
+          description: "Model mock accuracy is very high at {{ $value }}"
+```
+
+Now make sure it is mapped by a volume to your Prometheus service. You also have to update the Prometheus [configuration file](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) so Prometheus knows where to find the rules, and set the `evaluation_interval` to 5s, so every scrape can trigger an alert.
+
+If all went well, you should see the following under `Alerts` in the Prometheus polling service:
+
+![](./img/06-monitoring/prometheus-alert.png)
+
+If the metric as long as the metric stays equal or lower than 0.75, it will remain active. As soon as the metric gets a value higher than 0.75, the alert will be triggered or "fired":
+
+![](./img/06-monitoring/prometheus-alert-firing.png)
+
+You can also see the annotations as they were defined in the rules configuration file:
+
+![](./img/06-monitoring/prometheus-alert-firing-annotations.png)
+
+The alert only stays triggered as long as the metric stays above 0.75. This means that after 5s it will probably be reset to inactive as the chance is high the next value is equal or lower than 0.75. You can see this for yourself: open the Grafana dashboard and the Prometheus alerts page side by side. Track the metric in real time on the Grafana Dashboard. As soon as the metric gets a value above 0.75, reload the Prometheus alert page to see if it triggered.
+_Tip: change 0.75 to something that accours more often for testing so you don't have to wait so long till the alert is triggered._
+
+Although Prometheus is responsible for triggering alerts based on metrics, it only has basic functionality. Just like we can use Grafana for better visualizations, we can use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) for better alert handling. It's benefits are:
+
+- You can hook up various type of receivers: mail, Matrix, Slack, Teams, Discord, ... .
+- It supports grouping, inhibition, and silencing. What do these terms mean? How do they differ from each other? Make sure you understand all of this!
+
+Add an [AlertManager service]() to your `docker-compose.yml`. Now you'll also have to update your Prometheus polling server's config so Prometheus knows to where it must send the alerts:
+
+```yml
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
+```
+
+If all goes well, you'll be able to to the AlertManager page at http://localhost:9093 and see the following page:
+
+![](./img/06-monitoring/alertmanager-no-alerts.png)
+
+As long as there haven't been any results, the page will be empty. Keep a watch on your Grafana dashboard so you can see when an alert should be triggered. At that moment, refresh the page and you'll see the alert:
+
+![](./img/06-monitoring/alertmanager-alert-fired.png)
+
+You can press on `Info` to see the annotations.
+
+<div style="color:red; font-weight: bold">TODO
+
+False positives, False negatives, ...
+
+</div>
+
+### 6.4.5 Adding a receiver
+
+There are various channels possible on which you can receive notifications. As students don't have permissions to create a Microsoft Team and you probably use Discord to talk to other students, we'll set up a [Discord](https://discord.com/) receiver, so you get notified if the mocked model's metric reaches a value above 0.75. Discord isn't the most professional tool for this, but it is free and is supported by default in AlertManager. Note that except for the receivers listed in the [documentation](https://prometheus.io/docs/alerting/latest/configuration/), there are also a lot of third party receivers available not listed in the documentation.
+
+1. Create a Discord account if you haven't already got one.
+2. [Create] an new server(https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-). Make sure it has a [text channel](https://support.discord.com/hc/en-us/articles/4412085582359-Text-Channels-Text-Chat-In-Voice-Channels). Normally a new default server has a `# general` text channel, so you can use that or create another.
+3. Read [Discord's "Intro to Webhooks" article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) . You can find more information about webhooks on the links below. Make sure you understand how a webhook works and how it differs from a traditional API!
+
+   ![](./img/06-monitoring/webhook.png)
+
+   - https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API
+   - https://www.make.com/en/blog/what-are-webhooks
+   - https://sendgrid.com/en-us/blog/whats-webhook
+
+4. Create the Discord webhook.
+5. Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlerManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
+
+   ```yml
+   route:
+     group_by: ["..."]
+     group_wait: 0s
+     group_interval: 1s
+     repeat_interval: 1h
+     receiver: discord
+
+   receivers:
+     - name: discord
+       discord_configs:
+         - # <TODO> ...
+           send_resolved: false
+   ```
+
+If all goes well, you should start seeing Discord notifications whenever the mocked model's metric goes above 0.75:
+
+![](./img/06-monitoring/discord-alert.png)
+
+<div style="color:red; font-weight: bold">TODO</div>
+
+## 6.5 A more realistic use case
+
+Monitoring is often used to not just monitor the accuracy of models, but for various metrics, such as server CPU/RAM load, storage shortages, ... . We'll use a virtual machine here to see how this can be done with Prometheus, Grafana and AlertManager. If we want to monitor the hardware metrics from a Linux machine, we can use [Node Exporter](https://prometheus.io/docs/guides/node-exporter/). This sets up a Prometheus metrics server for all available hardware metrics on the machine. You don't need the `modelmock.py` script anymore, so you can shut it off from here.
+
+## 6.5.1 Set up monitoring and visualization
+
+1. Create an [AlmaLinux](https://almalinux.org/) virtual machine however you want (manual, [osboxes.org](https://www.osboxes.org/), [Vagrant](https://www.vagrantup.com/), ...). Just make sure it has the latest AlmaLinux version, and it is accessible from your host machine.
+2. Install Node Exporter on the VM. _Tip: there is already a node exporter package in the repositories from AlmaLinux, but you'll have to do an extra step to be able to install it. Don't install Docker in the VM, getting the already existing package is a lot easier! Also, have you ever heard of `dnf search`? It is a very handy command!_
+3. Don't forget to make sure Node Exporter is running. _Tip: if you have installed the already existing package, you just need to do `sudo systemctl enable --now prometheus-node-exporter`._
+4. Check if Node Exporter is accessible inside the VM:
+
+   ```console
+   [vagrant@localhost ~]$ curl localhost:9100/metrics
+   # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+   # TYPE go_gc_duration_seconds summary
+   go_gc_duration_seconds{quantile="0"} 0
+   go_gc_duration_seconds{quantile="0.25"} 0
+   go_gc_duration_seconds{quantile="0.5"} 0
+   go_gc_duration_seconds{quantile="0.75"} 0
+   go_gc_duration_seconds{quantile="1"} 0
+   go_gc_duration_seconds_sum 0
+   go_gc_duration_seconds_count 0
+   # HELP go_goroutines Number of goroutines that currently exist.
+   # TYPE go_goroutines gauge
+   go_goroutines 7
+   # HELP go_info Information about the Go environment.
+   # TYPE go_info gauge
+   go_info{version="go1.17.5"} 1
+   # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+   # TYPE go_memstats_alloc_bytes gauge
+   go_memstats_alloc_bytes 1.43752e+06
+   # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+   # TYPE go_memstats_alloc_bytes_total counter
+   ```
+
+5. Check if Node Exporter is accessible by your host machine. If not, use your Linux and networking skills to troubleshoot.
+6. Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
+
+   ![](./img/06-monitoring/prometheus-vm-target.png)
+
+7. We could start building our own dashboard for all these metrics, but thankfully other people have build these already. Grafana allows us to share and use dashboard to and from other people. Import the [Node Exporter Full dashboard](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). If all goes well you should start to see the visualizations for the VM:
+
+   ![](./img/06-monitoring/grafana-vm.png)
+
+8. Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stresstest. Install `stress-ng` through `dnf`:
+
+   ```console
+   [vagrant@localhost ~]$ stress-ng --cpu 1 --timeout 5m
+   stress-ng: info:  [3423] setting to a 60 second run per stressor
+   stress-ng: info:  [3423] dispatching hogs: 1 cpu
+   ```
+
+   Change the value of the `--cpu` option to the amount of CPU cores you have assigned to the VM. When `stress-ng` starts you should see the following:
+
+   1. CPU is a 100%
+   2. The CPU load on the graph goes to 100%
+   3. You can even see when you download something (such as `stress-ng` from the repositories during install).
+
+   ![](./img/06-monitoring/grafana-vm-stress.png)
+
+9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
+
+## 6.5.2 Set up alerting
+
+Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping, ... . Let's take the first case: let's monitor the CPU and send out an alert if is high for 2 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here. What does this do?
+
+Additionally, often we want also to be alerted if a situation has been restored to a good situation. This is called resolving. When we used the mocked model's metric, we explicitly disabled this with `send_resolved: false` in `alertmanager.yml` as it was unnecessary then. Remove this so resolve alerts will be send to Discord (resolving is actually the default behavior).
+
+Eventually, you should be able to demonstrate the following workflow:
+
+1. Start the stresstest in the VM.
+2. Wait for 30 s and stop the stresstest. There should be no warning in Discord.
+3. Again, start the stresstest in the VM.
+4. Wait for 4 min and stop the stresstest. You should see an alert in Discord.
+5. Wait for some more time. You should see a resolve alert in Discord that tells you that the alert is no longer valid, the metric once again behaves as expected.
+
+<div style="color:red; font-weight: bold">TODO</div>
 
 ## Possible extensions
 
--   Show that python packages installed in the virtual environment, are not installed on your host machine.
--   Add another [type](https://prometheus.io/docs/concepts/metric_types/) of metric to the script, and visualize it on the Grafana dashboard.
+- Show that python packages installed in the virtual environment, are not installed on your host machine.
+- Add another [type](https://prometheus.io/docs/concepts/metric_types/) of metric to the script, and visualize it on the Grafana dashboard.
 
-<span style="color:red; font-weight: bold">TODO</span>
+<div style="color:red; font-weight: bold">TODO</div>
+
+- Monitor Dockers with cAdvisor. TODO
 
 [^1]: These are the default ports, but obviously depends on the settings you have configured.
