@@ -23,10 +23,12 @@ To set up the mocked model, we'll use a [virtual environment](https://docs.pytho
 
 Follow the following steps to create a virtual environment and start the Prometheus metric server for the mocked model:
 
-1. Create an environment: `python -m venv venv`. What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
-2. Activate the environment: `source venv/bin/activate`. Your terminal prompt will be changed to indicate that you are in a virtual environment.
-3. Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
-4. Execute the mock: `python modelmock.py`
+1. Go to the `monitoring` folder in the root of your repository.
+2. Create an environment: `python -m venv venv`. What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
+3. Activate the environment: `source venv/bin/activate`. Your terminal prompt will be changed to indicate that you are in a virtual environment.
+   - Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
+4. Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
+5. Execute the mock: `python modelmock.py`
 
 Now, surf to http://localhost:5000/ [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
 
@@ -85,7 +87,8 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 ![](./img/06-monitoring/grafana-query.png)
 
-4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a consistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
+4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
+   - Also make sure the Grafana data is not tracked by git. Alter your `.gitignore` file if necessary.
 
 5. Now create a dashboard which does the following:
 
