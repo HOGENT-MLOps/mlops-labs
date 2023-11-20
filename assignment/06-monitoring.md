@@ -1,8 +1,58 @@
 # Lab 6: Monitoring and logging
 
-In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/). You'll create a mock model in Python that spits out test values in the interval [0, 1] every 5 seconds, set up Prometheus to gather the metric from the mocked model, visualize the metric from the model mock using Grafana, and use Alert manager to get notifications when the metric of the model reaches a certain threshold.
+In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
-<div style="color:red; font-weight: bold">TODO</div>: network scheme
+First, you'll create a mock model in Python that spits out test values in the interval [0, 1] every 5 seconds, set up Prometheus to gather the metric from the mocked model, visualize the metric from the model mock using Grafana, and use Alert manager to get notifications on Discord when the metric of the model reaches a certain threshold.
+
+```plantuml
+@startuml
+node "Host" {
+  [modelmock.py]
+
+  node "Docker" {
+    [Prometheus]
+    [Grafana]
+    [AlertManager]
+  }
+}
+
+cloud "Internet" {
+    [Discord]
+}
+
+[modelmock.py] --> [Prometheus]
+[Prometheus] --> [Grafana]
+[Prometheus] --> [AlertManager]
+[AlertManager] --> [Discord]
+@enduml
+```
+
+Next, we'll create a VM and start monitoring various metrics of that VM such as CPU usage thanks to Node Exporter. If the VM shows abnormal activity, we'll again receive notifications on Discord.
+
+```plantuml
+@startuml
+node "Host" {
+  node "Docker" {
+    [Prometheus]
+    [Grafana]
+    [AlertManager]
+  }
+
+  node "VM" {
+    [Node Exporter]
+  }
+}
+
+cloud "Internet" {
+    [Discord]
+}
+
+[Node Exporter] --> [Prometheus]
+[Prometheus] --> [Grafana]
+[Prometheus] --> [AlertManager]
+[AlertManager] --> [Discord]
+@enduml
+```
 
 ## :mortar_board: Learning Goals
 
