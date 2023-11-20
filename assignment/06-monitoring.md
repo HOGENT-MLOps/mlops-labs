@@ -155,7 +155,7 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 3.  Go to the `Home` > `Explore` section and query the `model_result` metric. You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dash board will do this automatically for you.
 
-    ![](./img/06-monitoring/grafana-query.png)
+![](./img/06-monitoring/grafana-query.png)
 
 4.  Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
@@ -168,7 +168,7 @@ You have probably noticed that the interface of Prometheus to query and see metr
     -   It shows the history of the past 15 minutes.
     -   It shows a red threshold line at $y=0.75$.
 
-    ![](./img/06-monitoring/grafana-threshold.png)
+![](./img/06-monitoring/grafana-threshold.png)
 
 ## 6.4 Alertmanager
 
@@ -237,11 +237,11 @@ There are various channels possible on which you can receive notifications. As s
 2.  [Create] an new server(https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-). Make sure it has a [text channel](https://support.discord.com/hc/en-us/articles/4412085582359-Text-Channels-Text-Chat-In-Voice-Channels). Normally a new default server has a `# general` text channel, so you can use that or create another.
 3.  Read [Discord's "Intro to Webhooks" article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) . You can find more information about webhooks on the links below. Make sure you understand how a webhook works and how it differs from a traditional API!
 
-    ![](./img/06-monitoring/webhook.png)
-
     -   https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API
     -   https://www.make.com/en/blog/what-are-webhooks
     -   https://sendgrid.com/en-us/blog/whats-webhook
+
+![](./img/06-monitoring/webhook.png)
 
 4.  Create the Discord webhook.
 5.  Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlerManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
@@ -303,11 +303,11 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 5.  Check if Node Exporter is accessible by your host machine. If not, use your Linux and networking skills to troubleshoot.
 6.  Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
 
-    ![](./img/06-monitoring/prometheus-vm-target.png)
+![](./img/06-monitoring/prometheus-vm-target.png)
 
 7.  We could start building our own dashboard for all these metrics, but thankfully other people have build these already. Grafana allows us to share and use dashboard to and from other people. Import the [Node Exporter Full dashboard](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). If all goes well you should start to see the visualizations for the VM:
 
-    ![](./img/06-monitoring/grafana-vm.png)
+![](./img/06-monitoring/grafana-vm.png)
 
 8.  Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stresstest. Install `stress-ng` through `dnf`:
 
@@ -323,7 +323,7 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
     2.  The CPU load on the graph goes to 100%
     3.  You can even see when you download something (such as `stress-ng` from the repositories during install).
 
-    ![](./img/06-monitoring/grafana-vm-stress.png)
+![](./img/06-monitoring/grafana-vm-stress.png)
 
 9.  If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
