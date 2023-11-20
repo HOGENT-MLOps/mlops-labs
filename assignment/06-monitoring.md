@@ -1,4 +1,4 @@
-# Lab 6: Monitoring and logging
+# Lab 6: Monitoring and alerting
 
 In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
@@ -354,7 +354,7 @@ Timeline of events:
 
 ### 6.5.3 Alerting fatigue
 
-In a real life situation, most time will probably be spend tuning the parameters of the monitoring configuration and alert rules. It is hard, but essential to make sure you do not have too much false positives, but als not too much false negatives (you won't know about a lot of problems). False positives give a lot of alerts: this will lead to "alert fatigue" where you think most of the alerts will not be imported or true, as most of them are false positives anyway. False negatives means that you don't know about most things going wrong as you don't get alerts for those problems. You should already know these terms (_false/true positive/negative_) from other machine learning courses. The balance between these terms is specific to each use case and situation, and it takes a lot of tuning to get it to an acceptable level.
+In a real life situation, most time will probably be spend tuning the parameters of the monitoring configuration and alert rules. It is hard, but essential to make sure you do not have too much false positives, but als not too much false negatives. False positives give a lot of alerts: this will lead to "alert fatigue" where you think most of the alerts will not be imported or true, as most of them are false positives anyway. False negatives means that you don't know about most things going wrong as you don't get alerts for those problems. You should already know these terms (_false/true positive/negative_) from other machine learning courses. The balance between these terms is specific to each use case and situation, and it takes a lot of tuning to get it to an acceptable level.
 
 ![](./img/06-monitoring/false-true-pos-neg.webp)
 
@@ -371,7 +371,5 @@ In a real life situation, most time will probably be spend tuning the parameters
 - Install Docker on the VM and start up some containers. Show that you can monitor these using [cAdvisor](https://prometheus.io/docs/guides/cadvisor/) .
 - Explain the difference between `group_wait`, `group_interval` and `repeat_interval` in the `alertmanager.yml` configuration file.
 - Set up another type of receiver (e.g. The [Matrix.org protocol](https://element.io/) can be a good and free choice). Can you use it at the same time as the Discord receiver?
-
-<div style="color:red; font-weight: bold">TODO</div>
 
 [^1]: These are the default ports, but obviously depends on the settings you have configured.
