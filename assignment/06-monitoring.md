@@ -56,7 +56,14 @@ cloud "Internet" {
 
 ## :mortar_board: Learning Goals
 
-<div style="color:red; font-weight: bold">TODO</div>
+-   Understanding the concept of monitoring
+-   Understanding the concept of alerting
+-   Understanding how Prometheus, Grafana, AlertManager, a receiver, and Node Exporter work together
+-   Being able to set up monitoring using Prometheus
+    -   Monitoring of an application or the result of an ML pipeline
+    -   Monitoring of a VM or host
+-   Being able to set up visualization dashboards using Grafana
+-   Being able to set up alerting using Alert Manager and a receiver such as Discord
 
 ## :memo: Acceptance criteria
 
@@ -76,7 +83,7 @@ Follow the following steps to create a virtual environment and start the Prometh
 1.  Go to the `monitoring` folder in the root of your repository.
 2.  Create an environment: `python -m venv venv`. What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 3.  Activate the environment: `source venv/bin/activate`. Your terminal prompt will be changed to indicate that you are in a virtual environment.
-    - Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
+    -   Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
 4.  Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
 5.  Execute the mock: `python modelmock.py`
 
@@ -95,14 +102,14 @@ To set up the Prometheus polling server and other services, we'll use `docker co
 
 ```yml
 global:
-  scrape_interval: 5s
-  evaluation_interval: 5s
+    scrape_interval: 5s
+    evaluation_interval: 5s
 
 scrape_configs:
-  - job_name: model_mock
-    static_configs:
-      - targets:
-          - localhost:5000
+    - job_name: model_mock
+      static_configs:
+          - targets:
+                - localhost:5000
 ```
 
 Now, check if your Prometheus polling server can reach the mocked model's Prometheus metric server. Go to the Prometheus page at http://localhost:9090 [^1] and then to `Status` > `Service Discovery`. You should see the following:
@@ -139,14 +146,14 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 4.  Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
-    - Also make sure the Grafana data is not tracked by git. Alter your `.gitignore` file if necessary.
+    -   Also make sure the Grafana data is not tracked by git. Alter your `.gitignore` file if necessary.
 
 5.  Now create a dashboard which does the following:
 
-    - We see the same graph as the query.
-    - It refreshes every 5 seconds.
-    - It shows the history of the past 15 minutes.
-    - It shows a red threshold line at $y=0.75$.
+    -   We see the same graph as the query.
+    -   It refreshes every 5 seconds.
+    -   It shows the history of the past 15 minutes.
+    -   It shows a red threshold line at $y=0.75$.
 
     ![](./img/06-monitoring/grafana-threshold.png)
 
@@ -158,13 +165,13 @@ We would like to receive notifications when the mocked model's metric goes above
 
 ```yml
 groups:
-  - name: example
-    rules:
-      - alert: ModelMockHighAccuracy
-        expr: model_result > 0.75
-        annotations:
-          summary: "Model mock accuracy is very high"
-          description: "Model mock accuracy is very high at {{ $value }}"
+    - name: example
+      rules:
+          - alert: ModelMockHighAccuracy
+            expr: model_result > 0.75
+            annotations:
+                summary: "Model mock accuracy is very high"
+                description: "Model mock accuracy is very high at {{ $value }}"
 ```
 
 Now make sure it is mapped by a volume to your Prometheus service. You also have to update the Prometheus [configuration file](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) so Prometheus knows where to find the rules, and set the `evaluation_interval` to 5s, so every scrape can trigger an alert.
@@ -186,17 +193,17 @@ _Tip: change 0.75 to something that accours more often for testing so you don't 
 
 Although Prometheus is responsible for triggering alerts based on metrics, it only has basic functionality. Just like we can use Grafana for better visualizations, we can use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) for better alert handling. It's benefits are:
 
-- You can hook up various type of receivers: mail, Matrix, Slack, Teams, Discord, ... .
-- It supports grouping, inhibition, and silencing. What do these terms mean? How do they differ from each other? Make sure you understand all of this!
+-   You can hook up various type of receivers: mail, Matrix, Slack, Teams, Discord, ... .
+-   It supports grouping, inhibition, and silencing. What do these terms mean? How do they differ from each other? Make sure you understand all of this!
 
 Add an [AlertManager service]() to your `docker-compose.yml`. Now you'll also have to update your Prometheus polling server's config so Prometheus knows to where it must send the alerts:
 
 ```yml
 alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-            - localhost:9093
+    alertmanagers:
+        - static_configs:
+              - targets:
+                    - localhost:9093
 ```
 
 If all goes well, you'll be able to to the AlertManager page at http://localhost:9093 and see the following page:
@@ -219,26 +226,26 @@ There are various channels possible on which you can receive notifications. As s
 
     ![](./img/06-monitoring/webhook.png)
 
-    - https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API
-    - https://www.make.com/en/blog/what-are-webhooks
-    - https://sendgrid.com/en-us/blog/whats-webhook
+    -   https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API
+    -   https://www.make.com/en/blog/what-are-webhooks
+    -   https://sendgrid.com/en-us/blog/whats-webhook
 
 4.  Create the Discord webhook.
 5.  Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlerManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
 
     ```yml
     route:
-      group_by: ["..."]
-      group_wait: 0s
-      group_interval: 1s
-      repeat_interval: 1h
-      receiver: discord
+        group_by: ["..."]
+        group_wait: 0s
+        group_interval: 1s
+        repeat_interval: 1h
+        receiver: discord
 
     receivers:
-      - name: discord
-        discord_configs:
-          - # <TODO> ...
-            send_resolved: false
+        - name: discord
+          discord_configs:
+              - # <TODO> ...
+                send_resolved: false
     ```
 
 If all goes well, you should start seeing Discord notifications whenever the mocked model's metric goes above 0.75:
@@ -345,12 +352,12 @@ Discord:
 
 Timeline of events:
 
-- 13u37m40: start first stresstest.
-- 13u39m40: end first stresstest.
-- 13u42m40: start second stresstest.
-- 13u46m31: Alert on Discord.
-- 13u47m40: end first stresstest.
-- 13u47m46: Resolve alert on Discord.
+-   13u37m40: start first stresstest.
+-   13u39m40: end first stresstest.
+-   13u42m40: start second stresstest.
+-   13u46m31: Alert on Discord.
+-   13u47m40: end first stresstest.
+-   13u47m46: Resolve alert on Discord.
 
 ### 6.5.3 Alerting fatigue
 
@@ -366,10 +373,10 @@ In a real life situation, most time will probably be spend tuning the parameters
 
 ## Possible extensions
 
-- Show that python packages installed in the virtual environment, are not installed on your host machine.
-- Add another [type](https://prometheus.io/docs/concepts/metric_types/) of metric to the script, and visualize it on the Grafana dashboard.
-- Install Docker on the VM and start up some containers. Show that you can monitor these using [cAdvisor](https://prometheus.io/docs/guides/cadvisor/) .
-- Explain the difference between `group_wait`, `group_interval` and `repeat_interval` in the `alertmanager.yml` configuration file.
-- Set up another type of receiver (e.g. The [Matrix.org protocol](https://element.io/) can be a good and free choice). Can you use it at the same time as the Discord receiver?
+-   Show that python packages installed in the virtual environment, are not installed on your host machine.
+-   Add another [type](https://prometheus.io/docs/concepts/metric_types/) of metric to the script, and visualize it on the Grafana dashboard.
+-   Install Docker on the VM and start up some containers. Show that you can monitor these using [cAdvisor](https://prometheus.io/docs/guides/cadvisor/) .
+-   Explain the difference between `group_wait`, `group_interval` and `repeat_interval` in the `alertmanager.yml` configuration file.
+-   Set up another type of receiver (e.g. The [Matrix.org protocol](https://element.io/) can be a good and free choice). Can you use it at the same time as the Discord receiver?
 
 [^1]: These are the default ports, but obviously depends on the settings you have configured.
