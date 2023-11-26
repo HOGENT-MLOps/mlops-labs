@@ -91,7 +91,7 @@ First, you have to set up the mocked model in [modelmock.py](../monitoring/model
 
 To set up the mocked model, we'll use a [virtual environment](https://docs.python.org/3/library/venv.html). This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
 
-> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking’s virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
+> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
 > ~ Carl Meyer
 
 Follow the steps below to create a virtual environment and start the Prometheus metric server for the mocked model.
@@ -158,7 +158,7 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 3. Go to the `Home` > `Explore` section and query the `model_result` metric. You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dashboard will do this automatically for you.
 
-![](./img/06-monitoring/grafana-query.png)
+    ![](./img/06-monitoring/grafana-query.png)
 
 4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
@@ -205,7 +205,7 @@ You can also see the annotations as they were defined in the rules configuration
 ![](./img/06-monitoring/prometheus-alert-firing-annotations.png)
 
 The alert only stays triggered as long as the metric stays above 0.75. This means that after 5s it will probably be reset to inactive as the chance is high the next value is equal or lower than 0.75. You can see this for yourself: open the Grafana dashboard and the Prometheus alerts page side by side. Track the metric in real time on the Grafana Dashboard. As soon as the metric gets a value above 0.75, reload the Prometheus alert page to see if it triggered.
-_Tip: change 0.75 to something that accours more often for testing so you don't have to wait so long till the alert is triggered._
+_Tip: change 0.75 to something that occurs more often for testing so you don't have to wait so long till the alert is triggered._
 
 Although Prometheus is responsible for triggering alerts based on metrics, it only has basic functionality. Just like we can use Grafana for better visualizations, we can use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) for better alert handling. It's benefits are:
 
@@ -244,10 +244,10 @@ There are various channels possible on which you can receive notifications. As s
     - <https://www.make.com/en/blog/what-are-webhooks>
     - <https://sendgrid.com/en-us/blog/whats-webhook>
 
-![](./img/06-monitoring/webhook.png)
+    ![](./img/06-monitoring/webhook.png)
 
 4. Create the Discord webhook.
-5. Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlerManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
+5. Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlertManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
 
     ```yml
     route:
@@ -306,13 +306,13 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 5. Check if Node Exporter is accessible by your host machine. If not, use your Linux and networking skills to troubleshoot.
 6. Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
 
-![](./img/06-monitoring/prometheus-vm-target.png)
+    ![](./img/06-monitoring/prometheus-vm-target.png)
 
 7. We could start building our own dashboard for all these metrics, but thankfully other people have build these already. Grafana allows us to share and use dashboard to and from other people. Import the [Node Exporter Full dashboard](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). If all goes well you should start to see the visualizations for the VM:
 
-![](./img/06-monitoring/grafana-vm.png)
+    ![](./img/06-monitoring/grafana-vm.png)
 
-8. Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stresstest. Install `stress-ng` through `dnf`:
+8. Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stress test. Install `stress-ng` through `dnf`:
 
     ```console
     $ stress-ng --cpu 1 --timeout 5m
@@ -326,22 +326,22 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
     2. The CPU load on the graph goes to 100%
     3. You can even see when you download something (such as `stress-ng` from the repositories during install).
 
-![](./img/06-monitoring/grafana-vm-stress.png)
+    ![](./img/06-monitoring/grafana-vm-stress.png)
 
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
 ### 6.5.2 Set up alerting
 
-Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swappin... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here. What does this do? You can find some inspiration on this [blogpost](https://www.robustperception.io/understanding-machine-cpu-usage/) and on [Awesome Prometheus alerts](https://samber.github.io/awesome-prometheus-alerts/) for creating the rule. Make sure you can explain the rule syntax!
+Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here. What does this do? You can find some inspiration on this [blogpost](https://www.robustperception.io/understanding-machine-cpu-usage/) and on [Awesome Prometheus alerts](https://samber.github.io/awesome-prometheus-alerts/) for creating the rule. Make sure you can explain the rule syntax!
 
-Additionally, often we want also to be alerted if a situation has been restored to a good situation. This is called resolving. When we used the mocked model's metric, we explicitly disabled this with `send_resolved: false` in `alertmanager.yml` as it was unnecessary then. Remove this so resolve alerts will be send to Discord (resolving is actually the default behavior).
+Additionally, often we want also to be alerted if a situation has been restored to a good situation. This is called resolving. When we used the mocked model's metric, we explicitly disabled this with `send_resolved: false` in `alertmanager.yml` as it was unnecessary then. Remove this so resolve alerts will be send to Discord (resolving is actually the default behaviour).
 
 Eventually, you should be able to demonstrate the following workflow:
 
-1. Start the stresstest in the VM.
-2. Wait for 2 min and stop the stresstest (_tip: use the `--timeout` option in `stress-ng`_). There should be no warning in Discord.
-3. Again, start the stresstest in the VM.
-4. Wait for 5 min and stop the stresstest. You should see an alert in Discord when the CPU was high for about 3 min. You should see a resolve alert in Discord when the CPU load goes low again that tells you that the alert is no longer valid and the metric once again behaves as expected.
+1. Start the stress test in the VM.
+2. Wait for 2 min and stop the stress test (_tip: use the `--timeout` option in `stress-ng`_). There should be no warning in Discord.
+3. Again, start the stress test in the VM.
+4. Wait for 5 min and stop the stress test. You should see an alert in Discord when the CPU was high for about 3 min. You should see a resolve alert in Discord when the CPU load goes low again that tells you that the alert is no longer valid and the metric once again behaves as expected.
 
 #### An example:
 
@@ -368,11 +368,11 @@ Discord:
 
 Timeline of events:
 
-- 13u37m40: start first stresstest.
-- 13u39m40: end first stresstest.
-- 13u42m40: start second stresstest.
+- 13u37m40: start first stress test.
+- 13u39m40: end first stress test.
+- 13u42m40: start second stress test.
 - 13u46m31: Alert on Discord.
-- 13u47m40: end first stresstest.
+- 13u47m40: end first stress test.
 - 13u47m46: Resolve alert on Discord.
 
 ### 6.5.3 Alerting fatigue
