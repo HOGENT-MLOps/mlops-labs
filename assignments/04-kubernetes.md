@@ -91,6 +91,12 @@ You can get an near real-time view on what happens on your cluster by issuing th
 watch -n1 kubectl get all
 ```
 
+:exclamation: This doesn't work in PowerShell, but you can use `watch` in Git Bash. You can also simulate the same behavior with a `while` loop in PowerShell:
+
+```powershell
+while (1) { kubectl get all; sleep 1 }
+```
+
 Add option `-o wide` if you want to see on which node each.
 
 The `watch` command will repeat the `kubectl` command every second (`-n1`) and show the result.
