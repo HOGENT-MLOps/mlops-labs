@@ -272,6 +272,7 @@ minikube delete
 
 ## Possible extensions
 
+- Add one or more extra nodes to your Kubernetes cluster and experiment with the multi-node setup
 - Try to deploy one or more apps from the [DigitalOcean Kubernetes Sample Apps](https://github.com/digitalocean/kubernetes-sample-apps)
   - These applications make use of [namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) and [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). Deploy the apps and try to understand how they work and how they are configured. The repository contains a `README.md` file per app with instructions for deployment.
   - You should be able to deploy the following apps: bookinfo, emojivoto and podinfo. The other apps require extra software to be installed, you can ignore these apps or experiment with them if you want.
