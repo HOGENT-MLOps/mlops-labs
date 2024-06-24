@@ -17,7 +17,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show that you created a Docker image for the API
 - Show that you can start the API using the SQLite database
 - Show that you can start the API using the MySQL database
-- Show that you can access the API on port 3000 on the VM
+- Show that you can access the API on port 3000
 - Show that you optimized the Docker image size
   - You've used an Alpine version of Node.js
   - You've copied and installed the dependencies in a separate layer
@@ -29,29 +29,25 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 ## 1.1 Set up the lab environment
 
-For this lab assignment, we'll be using the `dockerlab` environment. This environment comes with Docker installed on the VM.
+Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Make the right choice based on your operating system:
 
-First, we need to start and provision the `dockerlab` VM:
-
-```console
-cd dockerlab
-vagrant up dockerlab
-```
-
-> If you're have issues with Vagrant, you may use Docker on your local machine. In that case, you don't need the VM we're using in this lab assignment. You can simply destroy it using `vagrant destroy -f`.
-> Make sure to start Portainer yourself then! There is `docker-compose.yml` file in the `dockerlab/provisioning/dockerlab` folder that you can use to start Portainer.
+- Windows: use [Docker Desktop](https://docs.docker.com/desktop/) in combination with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
+- macOS: use [Docker Desktop](https://docs.docker.com/desktop/)
+- Linux: use [Docker Engine](https://docs.docker.com/engine/install/) and **not** Docker Desktop
 
 ## 1.2 Configure Portainer
 
-It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface. For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers.
+It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface.
 
-Navigate to <https://192.168.56.20:9443> to access the Portainer dashboard, ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
+For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers. You'll find a file `docker-compose.portainer.yml` in the folder `dockerlab`. This file contains the configuration to run a Portainer container. Start the Portainer container!
+
+If all went well, you should be able to access the Portainer dashboard via <https://192.168.56.20:9443>. Ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
 
 > :bulb: If you've waited to long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the Portainer container.
 
 ## 1.3 Create a Docker image for a simple web application
 
-In the folder `/vagrant/webapp` on the VM, you'll find a simple web application. The application is written in [Node.js](https://nodejs.org/) and uses [Express](https://expressjs.com/) to serve a simple API on port 3000 with two endpoints:
+You'll find a simple web application in the folder `dockerlab/webapp`. The application is written in [Node.js](https://nodejs.org/) and uses [Express](https://expressjs.com/) to serve a simple API on port 3000 with two endpoints:
 
 - `GET /animals`: returns a list of animals
 - `GET /animals/:id`: returns a single animal (with the given `id` if exists)
@@ -74,11 +70,11 @@ Test if your Docker image works by running a container based on your image. You 
 
 ## 1.4 Create a Docker Compose file
 
-A `docker run` command can become quite long when you need to specify all the options. Luckily, there's a tool called [Docker Compose](https://docs.docker.com/compose/) that allows you to define a multi-container application in a single file. Docker Compose is already installed on the `dockerlab` VM.
+A `docker run` command can become quite long when you need to specify all the options. Luckily, there's a tool called [Docker Compose](https://docs.docker.com/compose/) that allows you to define a multi-container application in a single file. Docker Compose is already installed for those who use Docker Desktop. If you're using Docker Engine, you need to install Docker Compose separately using the [instructions on the Docker website](https://docs.docker.com/compose/install/linux/#install-using-the-repository).
 
 > :warning: Docker Compose is now a plugin and should be used as `docker compose` and **not** `docker-compose`.
 
-Create a `docker-compose.yml` file in the `/vagrant/webapp` folder to define a service called `webapp`. This services starts the web application image you created in the previous step.
+Create a `docker-compose.yml` file in the `dockerlab/webapp` folder to define a service called `webapp`. This services starts the web application image you created in the previous step.
 
 > :bulb: It's a good idea to use the `build` option when your still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.
 
@@ -92,7 +88,9 @@ Use `docker exec` to get a shell inside the container. If you've used an alpine 
 
 List the contents of the `/app` folder. You should notice a `database` folder that is not present on your host system. This folder contains the SQLite database file.
 
-Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `/vagrant/webapp/database` on the VM and in `dockerlab/webapp/database` on your local system.
+Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `dockerlab/webapp/database`.
+
+Prevent this file from being added to the repository by adding the `dockerlab/webapp/database` folder to the `.gitignore` file.
 
 Re-run you `docker-compose.yml` file, restarting the container is not sufficient. The webapp container should not print the message "Fake data generated" anymore. If this is the case, you know that the database is persisted on the host system.
 
@@ -110,13 +108,13 @@ Make sure that the application can connect to the database by setting the `MYSQL
 >
 > :bulb: There is also an HTTP header `X-Database-Used` in every response that indicates which database is used.
 
-You could bind the MySQL port (3306) to a port on your VM, but it's a bad idea to expose your database to the outside world. You should only allow traffic on the port of your web service, the database doesn't need public access. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course. However if you bind the database port to a port on your VM, you can use SSH port forwarding to access the database from your own pc (over an SSH connection).
+In a real-world scenario, you could bind the MySQL port (3306) to a port on your VM, but it's a bad idea to expose your database to the outside world. You should only allow traffic on the port of your web service, the database doesn't need public access. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course. However if you bind the database port to a port on your VM, you can use SSH port forwarding to access the database from your own pc (over an SSH connection).
 
 ## 1.7 Backup the database
 
 The MySQL database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
 
-Search through the documentation of the [MySQL Docker image](https://hub.docker.com/_/mysql) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area" on your virtual machine, and not in the folder `/vagrant/webapp/database` on the VM.
+Search through the documentation of the [MySQL Docker image](https://hub.docker.com/_/mysql) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area", and not in the folder `dockerlab/webapp/database`.
 
 ## 1.8 Optimizing the Docker image
 
@@ -136,7 +134,7 @@ This image is not so difficult and cannot be optimized that much, but it's a bes
 
 ## 1.9 Testing the application
 
-At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `/vagrant/webapp/tests/animals.spec.js` file and can be run using the `yarn test` command.
+At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `dockerlab/webapp/tests/animals.spec.js` file and can be run using the `yarn test` command.
 
 Add a new service to the Docker Compose file to run the tests. Set the environment variable `API_URL` to the URL of the `webapp` service. Notice that you can use the service name as hostname in Docker Compose. Use the `depends_on` option to make sure that the application is started before the tests are run. Re-use the existing Docker image to run the tests, **only** change the command in the `docker-compose.yml` file and **not** in the `Dockerfile`.
 
@@ -190,10 +188,4 @@ However, the setup hands you some best practices for app deployment:
 
 ## Clean-up
 
-You can remove the virtual machine using the following command **after demonstrating the result**. Removing the virtual machine before demonstrating the result will result in losing all your work!
-
-```bash
-vagrant destroy -f
-```
-
-You can also remove the repository you created on Docker Hub.
+**After demonstrating the results**, you can remove all containers and volumes using the `docker compose down` command with the right options (like `-v` or `-f`). Also make sure all images are removed from your local machine. Which command do you need to use to remove everything?
