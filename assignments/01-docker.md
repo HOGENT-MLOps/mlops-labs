@@ -126,13 +126,17 @@ Your image is probably very big (around 1.2GB), because you might not have used 
 
 First, change the base image in your `Dockerfile` so that it uses an Alpine version of Node.js. This will reduce the size of the image. Rebuild the image with this Alpine version and check the new image's size and write it down in your lab report.
 
-Next, we're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `yarn.lock` files to the container and then run the `yarn install` command. Thereafter, copy the application code to the container.
+If you want to inspect all layers of an image, you can use the `docker history` command. This command shows all layers of an image and the size of each layer. The size of the layers is important because it's the size of the layer that is pulled from the registry and stored on the host system. Check the layers of your image and write the output down in your lab report.
+
+Optimizing the order of the commands in the Dockerfile can reduce the image size or the time it takes to (re)build the image. We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `yarn.lock` files to the container and then run the `yarn install` command. Thereafter, copy the application code to the container.
+
+Rebuild the image, check the new image's size and inspect the layers. Write the new layers down in your lab report. Do you see a difference? If so, what is the difference? Alter something in the JavaScript code and rebuild the image. Do you see a difference in the time it takes to rebuild the image? If so, why is that?
 
 A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `node_modules` folder and all Docker related files to the `.dockerignore` file.
 
 Rebuild and restart your containers using a Docker compose command. Now run the `ls` command inside your container and check that these files are not present in the container: `docker compose exec webapp ls -la`. If so, you've successfully optimized your Docker image.
 
-This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the base image you're using and the layers you're creating. Try to keep the image as small as possible. You can use the `docker history` command to see the layers of an image. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
+This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the base image you're using and the layers you're creating. Try to keep the image as small as possible. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
 
 ## 1.9 Testing the application
 
