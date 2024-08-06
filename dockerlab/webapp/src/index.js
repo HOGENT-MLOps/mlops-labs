@@ -23,7 +23,7 @@ app.use((_, res, next) => {
 });
 
 app.get('/', (_, res) => {
-  res.send('It works, good job!');
+  res.send('It works, good job! You should try <code>/animals</code> or <code>/animals/:id</code>.');
 });
 
 app.get('/animals', asyncMiddleware(async (_, res) => {
