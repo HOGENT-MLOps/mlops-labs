@@ -259,7 +259,7 @@ Next up is a more complex example: a multi-tier web application. The application
 
 > Note: this example does not work on Minikube when using multiple nodes. So make sure to remove the extra nodes you may have added earlier.
 
-Open the Kubernetes documentation site in a web browser and follow the tutorial [Deploying PHP Guestbook application with Redis](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). Keep lab notes!
+Open the Kubernetes documentation site in a web browser and follow the tutorial [Deploying PHP Guestbook application with Redis](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). Keep lab notes! It's a good idea to copy the manifest files to your own repository so you can easily find them later.
 
 If everything went well, you should be able to submit messages which remain visible after reloading the page. The guestbook application looks like this:
 
