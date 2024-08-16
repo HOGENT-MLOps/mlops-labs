@@ -1,6 +1,6 @@
 # Lab 2: Continuous Integration/Delivery with GitHub Actions
 
-In this lab assignment, you will learn the basics on how to set up a build pipeline with GitHub Actions. In this lab assignment, we will re-use the sample application from the previous lab assignment. We'll lint the code, build the Docker image and push it to Docker Hub.
+In this lab assignment, you will learn the basics on how to set up a build pipeline with GitHub Actions. We will re-use the sample application from the previous lab assignment. We'll lint the code, build the Docker image and push it to Docker Hub.
 
 ## :mortar_board: Learning Goals
 
@@ -27,9 +27,9 @@ git config --global user.name "Bobby Tables"
 git config --global user.email "bobby.tables@student.hogent.be"
 ```
 
-Copy the starter code from the directory [dockerlab/webapp](../dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`.
+Copy the starter code from the directory [dockerlab/webapp](../dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`. All code should be in the root of the repository, not in a subdirectory.
 
-If your directory contains the `database` folder. Make sure it does is not tracked by Git. You can check if it's being tracked using `git status`.
+If your directory contains the `database` directory. Make sure it is not tracked by Git. You can check if it's being tracked using `git status`.
 
 Now, commit all code:
 
@@ -37,7 +37,7 @@ Now, commit all code:
 git commit -m "Initial commit of sample application"
 ```
 
-On GitHub, create a new public repository and record the URL, probably something like `https://github.com/USER/cicd-webapp/` (with USER your GitHub username).
+On GitHub, create a new public repository and record the URL, probably something like `git@github.com:USER/cicd-webapp.git` (with USER your GitHub username).
 
 Link your local repository with the one you created on GitHub (the GitHub page of your repository will show you the exact command needed for this):
 
@@ -55,7 +55,7 @@ Now you should see all sample code on GitHub.
 
 ## 1.2 Create a new GitHub Actions workflow
 
-Create a file named `demo.yml` in a folder `.github/workflows/` in your repository. Add the following content:
+Create a file named `demo.yml` in a directory `.github/workflows/` in your repository. Add the following content:
 
 ```yaml
 ---
@@ -89,11 +89,11 @@ Click on the `Explore-GitHub-Actions` job to see the details of the job. You sho
 
 ![GitHub Actions job details](img/02-cicd/demo-action-job.png)
 
-Open every step to see the details of the step. Explore the output of each steps. You should see the repository content in the output of the third step.
+Open every step to see the details of the step. Explore the output of each step. You should see the repository content in the output of the third step.
 
 ## 1.3 Lint the code
 
-Remove the `demo.yml` file and create a new file named `build.yml` in the same folder. Add the following content:
+Remove the `demo.yml` file and create a new file named `build.yml` in the same directory. Add the following content:
 
 ```yaml
 ---
@@ -105,16 +105,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
 ```
 
 This is not a complete workflow yet. Add a first step to check out the repository code. You can use the same step as in the previous workflow.
 
-It might be useful to commit and push the changes to GitHub and check the result in the Actions tab.
+Commit and push the changes to GitHub, then check the result in the Actions tab.
 
-Add a second step to install NodeJS on the build server. You can use the [setup-node](https://github.com/marketplace/actions/setup-node-js-environment) action to accomplish this. Use NodeJS version 18. It's okay to specify a hard coded NodeJS version, you don't need the `strategy` option.
+Add a second step to install NodeJS on the build server. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Use NodeJS version 20. It's okay to specify a hard coded NodeJS version, you don't need the `strategy` option.
 
 Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `yarn install`.
 
@@ -128,7 +125,7 @@ Now your workflow should succeed.
 
 ## 1.4 Build the Docker image for the sample application
 
-Add a new step to the workflow to build the Docker image. Use the [build-push-action](https://github.com/marketplace/actions/build-push-docker-images) to only build the image. Make sure to configure the following things:
+Add a new step to the workflow to build the Docker image. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Make sure to configure the following things:
 
 - Do not push the image to Docker Hub yet
 - Use the `Dockerfile` in the root of the repository
@@ -140,9 +137,9 @@ The workflow should succeed. Check the result in the Actions tab.
 
 The next step is to push the Docker image to Docker Hub. Add your username and password to the repository secrets using the documentation on <https://docs.github.com/en/actions/security-guides/encrypted-secrets>. Pick a suitable name for the secret, e.g. `DOCKERHUB_USERNAME` and `DOCKERHUB_PASSWORD`.
 
-Add a new action before the build action to log in to Docker Hub. Use the [Docker Login Action](https://github.com/marketplace/actions/docker-login)
+Add a new action before the build action to log in to Docker Hub. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers.
 
-Extend the [Build & Push Docker Images action](https://github.com/marketplace/actions/build-push-docker-images) action to also push the image to Docker Hub. Normally you should only alter one configuration parameter.
+If possible, extend the previous action to also push the image to Docker Hub. Normally you should only alter one configuration parameter. If not, search an action that can build and push the image to Docker Hub.
 
 Commit and push the changes to GitHub and check the result in the Actions tab. You should also see the image appear in your Docker Hub repository.
 
@@ -161,7 +158,7 @@ And we haven't even discussed any necessary changes to a database schema when ne
 
 ## Possible extensions
 
-- Add a test step to the workflow.
+- Add a test step to the workflow. Do not alter any code, use the `yarn test` command and make sure the tests pass.
 - Instead of using your password to sign in to Docker Hub, use a [personal access token](https://docs.docker.com/docker-hub/access-tokens/).
 - Configure [Snyk](https://github.com/snyk/actions) to check for vulnerabilities in your dependencies. You will need to create an account on <https://snyk.io/> and add the API token as a secret to your repository.
-- Try to create a build pipeline for an app of your choice.
+- Try to create a build pipeline for an app of your choice. Maybe a personal project? Or a project from another course?
