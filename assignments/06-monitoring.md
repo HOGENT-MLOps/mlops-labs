@@ -103,7 +103,7 @@ Follow the steps below to create a virtual environment and start the Prometheus 
 4. Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
 5. Execute the mock: `python modelmock.py`
 
-Now, surf to <http://localhost:5000/> [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
+Now, surf to <http://localhost:9000/> [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
 
 Note: if you would like to stop the Prometheus metric server, follow the following steps below. Do this at the end of the lab, as you'll need the Prometheus metric server for the remainder of this lab.
 
@@ -124,7 +124,7 @@ scrape_configs:
     - job_name: model_mock
       static_configs:
           - targets:
-                - localhost:5000
+                - localhost:9000
 ```
 
 Now, check if your Prometheus polling server can reach the mocked model's Prometheus metric server. Go to the Prometheus page at <http://localhost:9090> [^1] and then to `Status` > `Service Discovery`. You should see the following:

@@ -3,7 +3,7 @@
 # https://github.com/prometheus/client_python
 
 INTERVAL_SECONDS = 5
-PROMETHEUS_PORT = 5000
+PROMETHEUS_PORT = 9000
 
 import prometheus_client
 import random
