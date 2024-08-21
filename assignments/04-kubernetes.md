@@ -22,7 +22,7 @@ The goal of this assignment is to become familiar with [Kubernetes](https://kube
   - Also show these from the command line (using `kubectl`)
 - Show that all applications from this assignment are running on the cluster.
   - Show the resources for each application using the dashboard or the command line.
-  - Open each application in a web browser and show that it works.
+  - If possible, open the application in a web browser and show it works.
 - Show that you can scale up and down the number of replicas of an application.
 - Show that you can add, remove or change labels and selectors.
 - Show that you can manipulate Kubernetes resources using labels and selectors.
@@ -270,7 +270,9 @@ If everything went well, you should be able to submit messages which remain visi
 
 ## 4.6. Clean up
 
-When you're done with the lab assignment (**and only after you successfully demonstrated your setup!**) you can clean up all Kubernetes resources currently running on the cluster. What is the quickest way to delete all objects?
+**When giving a demo, make sure all manifest files (4.2, 4.3, 4.4 and 4.5) are applied** and that the applications are running.
+
+**Only after successfully demonstrating your setup**, you can clean up all Kubernetes resources currently running on the cluster. What is the quickest way to delete all objects?
 
 Also delete the Minikube cluster with the following command:
 
