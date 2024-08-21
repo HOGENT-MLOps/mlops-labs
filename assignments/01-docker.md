@@ -29,7 +29,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 ## 1.1 Set up the lab environment
 
-Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Make the right choice based on your operating system:
+Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Check if Docker is already installed through a package manager. If so, update Docker to the latest version. If not installed, install preferably using a package manager or alternatively using the documentation below:
 
 - Windows: use [Docker Desktop](https://docs.docker.com/desktop/) in combination with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
 - macOS: use [Docker Desktop](https://docs.docker.com/desktop/)
@@ -108,7 +108,7 @@ Make sure that the application can connect to the database by setting the `MYSQL
 >
 > :bulb: There is also an HTTP header `X-Database-Used` in every response that indicates which database is used.
 
-In a real-world scenario, you could bind the MySQL port (3306) to a port on your VM, but it's a bad idea to expose your database to the outside world. You should only allow traffic on the port of your web service, the database doesn't need public access. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course. However if you bind the database port to a port on your VM, you can use SSH port forwarding to access the database from your own pc (over an SSH connection).
+In a real-world scenario, it's a bad idea to expose your database to the outside world. First think if public access is really necessary. If so, you should only allow traffic from specific domains or IP addresses. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course.
 
 ## 1.7 Backup the database
 
