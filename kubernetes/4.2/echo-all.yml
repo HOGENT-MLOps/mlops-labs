@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: echoserver
-          image: registry.k8s.io/echoserver:1.4
+          image: kicbase/echo-server:1.0
           ports:
             - containerPort: 8080
 ---
