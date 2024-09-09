@@ -328,6 +328,8 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 
     ![](./img/06-monitoring/grafana-vm-stress.png)
 
+    :bulb: Some students report they get the following `SIGILL` error whilst running `stress-ng`: `stressor terminated with unexpected signal signal 4 'SIGILL'`. The students solved this by using [different stressors](https://wiki.ubuntu.com/Kernel/Reference/stress-ng). As usual, the `man` page contains all the information about any stressors.
+
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
 ### 6.5.2 Set up alerting
