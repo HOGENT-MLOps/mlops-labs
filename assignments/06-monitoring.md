@@ -320,11 +320,18 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
     stress-ng: info:  [3423] dispatching hogs: 1 cpu
     ```
 
+    You've learned about `top` in the Linux courses to see the resources used on the VM. `top` is good in a pinch, but not very "pretty". Let's install [`htop`](https://htop.dev/), a more visual and commonly used alternative, with `dnf`.
+
+    ![](./img/06-monitoring/htop.png)
+
+    If you want more visuals on the terminal, you can also use [`btop`](https://github.com/aristocratos/btop).
+
+    ![](./img/06-monitoring/btop.png)
+
     Change the value of the `--cpu` option to the amount of CPU cores you have assigned to the VM. When `stress-ng` starts you should see the following:
 
-    1. CPU is a 100%
-    2. The CPU load on the graph goes to 100%
-    3. You can even see when you download something (such as `stress-ng` from the repositories during install).
+    - On the VM, you can see the CPU is at 100% using `htop` / `btop`.
+    - The CPU load on the graph in the Grafana dashboard goes to 100%.
 
     ![](./img/06-monitoring/grafana-vm-stress.png)
 
