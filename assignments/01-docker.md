@@ -29,7 +29,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 ## 1.1 Set up the lab environment
 
-Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Check if Docker is already installed through a package manager. If so, update Docker to the latest version. If not installed, install preferably using a package manager or alternatively using the documentation below:
+Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Check if Docker is already installed through a package manager (e.g. `choco`, `brew`, `apt`, `dnf`, `pacman`... depending on your operating system). If so, update Docker to the latest version. If not installed, install preferably using a package manager or alternatively using the documentation below:
 
 - Windows: use [Docker Desktop](https://docs.docker.com/desktop/) in combination with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
 - macOS: use [Docker Desktop](https://docs.docker.com/desktop/)
