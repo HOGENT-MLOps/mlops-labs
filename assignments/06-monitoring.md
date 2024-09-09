@@ -77,7 +77,7 @@ flowchart
   - The graph shows a red threshold line at $y = 0.75$
 - Show that you receive alerts about the mocked model metric through Discord
 - Show that Node Exporter is running on the VM and that you can access its metric's by HTTP
-- Show that you can see the CPU going to 100% by using `stress-ng`
+- Show that you can see the CPU going to 100% by using `stress-ng` with `htop`/`btop` on the CLI of the VM.
 - Show that you don't receive an alert if the CPU is high for 2 min, but do receive an alert if the CPU is high for 4 min
   - Also show that you can check these CPU values in Grafana
   - Also show that you receive a resolve alert when the CPU load drops after the 4 min of high load
