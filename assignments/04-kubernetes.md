@@ -48,14 +48,13 @@ If you think you will use Kubernetes professionally, or if you want to gain a mu
 
 For this lab assignment, you will need a Kubernetes cluster. You can either use a cloud-based solution (e.g. [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)) or you can set up a local cluster on your own machine. The latter is the preferred option for this lab assignment. You need to install the following tools:
 
-- VirtualBox with the extension pack, *if you don't have it yet from other courses* (see <https://www.virtualbox.org/wiki/Downloads>)
 - `minikube`, a tool to set up a local Kubernetes environment (see the first step of <https://minikube.sigs.k8s.io/docs/start/> for installation instructions)
 - `kubectl`, a command-line tool to run commands against Kubernetes clusters (see <https://kubernetes.io/docs/tasks/tools/#kubectl>)
 
-It's probably best to [use VirtualBox as the driver](https://minikube.sigs.k8s.io/docs/drivers/) for minikube. You can set this as the default driver with the command:
+It's probably best to [use Docker as the driver](https://minikube.sigs.k8s.io/docs/drivers/) for minikube. You can set this as the default driver with the command:
 
 ```console
-minikube config set driver virtualbox
+minikube config set driver docker
 ```
 
 Start Minikube with `minikube start` and follow [the instructions in the Minikube documentation](https://minikube.sigs.k8s.io/docs/start/) to get started. This tutorial will show you some basic commands to get started with Kubernetes and minikube, and will also show you how to deploy a basic hello-world application. Try to follow the tutorial and take notes of the commands you use.
@@ -73,7 +72,7 @@ Then start the Kubernetes dashboard in **a separate terminal** with:
 minikube dashboard
 ```
 
-**Optionally,** issue the command `minikube node add` twice to spin up two extra nodes so you have an actual cluster with a control plane node and two workers. Ignore the warning about better performance with another driver.
+**Optionally,** issue the command `minikube node add` twice to spin up two extra nodes so you have an actual cluster with a control plane node and two workers.
 
 By default, Minikube runs a single Kubernetes (control plane) node. For the purpose of this lab assignment, that's sufficient, but you will get a better feel of how a multi-node cluster works in a multi-node environment (control plane + worker nodes).
 
@@ -105,9 +104,9 @@ The `watch` command will repeat the `kubectl` command every second (`-n1`) and s
 
 ### 4.2.1. Hello world!
 
-Create your first deployment and service following the instructions in the [Hello Minikube tutorial](https://kubernetes.io/docs/tutorials/hello-minikube/).
+Create your first deployment and service following the instructions in the [Hello Minikube tutorial](https://kubernetes.io/docs/tutorials/hello-minikube/). Check that you can view the app in a web browser.
 
-Check that you can view the app in a web browser.
+:warning: Do not delete the resources unless you demonstrated your setup to your teacher or you are sure you can recreate them easily.
 
 ### 4.2.2. Working with manifest files
 
@@ -262,7 +261,7 @@ Next up is a more complex example: a multi-tier web application. The application
 
 > Note: this example does not work on Minikube when using multiple nodes. So make sure to remove the extra nodes you may have added earlier.
 
-Open the Kubernetes documentation site in a web browser and follow the tutorial [Deploying PHP Guestbook application with Redis](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). Keep lab notes!
+Open the Kubernetes documentation site in a web browser and follow the tutorial [Deploying PHP Guestbook application with Redis](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). Keep lab notes! It's a good idea to copy the manifest files to your own repository so you can easily find them later.
 
 If everything went well, you should be able to submit messages which remain visible after reloading the page. The guestbook application looks like this:
 
