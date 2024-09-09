@@ -2,8 +2,8 @@
 
 ## Student information
 
--   Student name: John Doe
--   Student code: 123456
+- Student name: John Doe
+- Student code: 123456
 
 ## Assignment description
 
@@ -30,7 +30,7 @@ The execution time for finding primes between 0 and 10_000 was **0.16 seconds**.
 
 ### 1.3 Reducing Redundant Calculations
 
--   Why use `int(math.sqrt(n)) + 1`?
+- Why use `int(math.sqrt(n)) + 1`?
 
     By looping up to the square root of `n`, we can eliminate unnecessary checks. If `n` has a factor larger than `sqrt(n)`, then it must also have a smaller factor, so we don't need to check numbers beyond the square root. The `+1` ensures we include the integer value of the square root in the loop.
 
@@ -86,7 +86,6 @@ To visualize the performance of the different algorithms, I plotted the executio
 
     Although it looks like the optimized and the sieve approach have similar times when the limit is very large, there is still a difference. In the next figure we zoom in at the end of the curves:
 
-
     ![](./img/00-dummy/brute-vs-optimized-vs-sieve-zoomed-in.png)
 
     The execution times of the optimized version ($O(\sqrt{n})$) does not go up as fast as the brute force ($O(n)$), but still go up faster than the execution times of the sieve method ($O(n \log \log n)$).
@@ -128,9 +127,9 @@ sieve: 0.055715873997542076
 
 The graph clearly shows the dramatic performance improvements as we move from the brute-force to the optimized and finally to the Sieve of Eratosthenes. The sieve method is orders of magnitude faster, particularly when dealing with larger ranges like 100_000 and beyond.
 
--   **Brute-force** struggles to handle large inputs due to its inefficient nature.
--   **Optimized** is better, but still falls behind for very large numbers.
--   **Sieve of Eratosthenes** is highly efficient, able to handle up to 1_000_000 with ease.
+- **Brute-force** struggles to handle large inputs due to its inefficient nature.
+- **Optimized** is better, but still falls behind for very large numbers.
+- **Sieve of Eratosthenes** is highly efficient, able to handle up to 1_000_000 with ease.
 
 ### Conclusion:
 
@@ -140,23 +139,23 @@ The brute-force method is highly inefficient for large ranges, but applying math
 
 ### What was difficult?
 
--   The brute-force method quickly becomes inefficient and was difficult to test for larger ranges, leading to extremely long execution times.
--   Understanding and implementing the Sieve of Eratosthenes was conceptually more complex but rewarding due to its efficiency.
+- The brute-force method quickly becomes inefficient and was difficult to test for larger ranges, leading to extremely long execution times.
+- Understanding and implementing the Sieve of Eratosthenes was conceptually more complex but rewarding due to its efficiency.
 
 ### What was easy?
 
--   Implementing the brute-force method was straightforward, but its limitations became apparent quickly as the range increased.
+- Implementing the brute-force method was straightforward, but its limitations became apparent quickly as the range increased.
 
 ### What did I learn?
 
--   I learned that even small optimizations, such as limiting checks to the square root of `n`, can have a large impact on performance. Additionally, more advanced algorithms like the Sieve of Eratosthenes are essential for handling large datasets efficiently.
+- I learned that even small optimizations, such as limiting checks to the square root of `n`, can have a large impact on performance. Additionally, more advanced algorithms like the Sieve of Eratosthenes are essential for handling large datasets efficiently.
 
 ### What would I do differently?
 
--   I would avoid brute-force methods for large problems in the future and directly move towards more optimized or heuristic-based solutions like the Sieve of Eratosthenes. Furthermore, I would explore parallelization to make the sieve method even faster for extremely large ranges.
+- I would avoid brute-force methods for large problems in the future and directly move towards more optimized or heuristic-based solutions like the Sieve of Eratosthenes. Furthermore, I would explore parallelization to make the sieve method even faster for extremely large ranges.
 
 ## Resources
 
--   [Sieve of Eratosthenes - Wikipedia](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
--   [Python `time` module documentation](https://docs.python.org/3/library/time.html)
--   [Prime number theory and algorithms](https://www.geeksforgeeks.org/prime-numbers/)
+- [Sieve of Eratosthenes - Wikipedia](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
+- [Python `time` module documentation](https://docs.python.org/3/library/time.html)
+- [Prime number theory and algorithms](https://www.geeksforgeeks.org/prime-numbers/)
