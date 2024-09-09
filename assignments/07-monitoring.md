@@ -77,7 +77,7 @@ flowchart
   - The graph shows a red threshold line at $y = 0.75$
 - Show that you receive alerts about the mocked model metric through Discord
 - Show that Node Exporter is running on the VM and that you can access its metric's by HTTP
-- Show that you can see the CPU going to 100% by using `stress-ng`
+- Show that you can see the CPU going to 100% by using `stress-ng` with `htop`/`btop` on the CLI of the VM.
 - Show that you don't receive an alert if the CPU is high for 2 min, but do receive an alert if the CPU is high for 4 min
   - Also show that you can check these CPU values in Grafana
   - Also show that you receive a resolve alert when the CPU load drops after the 4 min of high load
@@ -320,13 +320,22 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
     stress-ng: info:  [3423] dispatching hogs: 1 cpu
     ```
 
+    You've learned about `top` in the Linux courses to see the resources used on the VM. `top` is good in a pinch, but not very "pretty". Let's install [`htop`](https://htop.dev/), a more visual and commonly used alternative, with `dnf`.
+
+    ![](./img/06-monitoring/htop.png)
+
+    If you want more visuals on the terminal, you can also use [`btop`](https://github.com/aristocratos/btop).
+
+    ![](./img/06-monitoring/btop.png)
+
     Change the value of the `--cpu` option to the amount of CPU cores you have assigned to the VM. When `stress-ng` starts you should see the following:
 
-    1. CPU is a 100%
-    2. The CPU load on the graph goes to 100%
-    3. You can even see when you download something (such as `stress-ng` from the repositories during install).
+    - On the VM, you can see the CPU is at 100% using `htop` / `btop`.
+    - The CPU load on the graph in the Grafana dashboard goes to 100%.
 
     ![](./img/07-monitoring/grafana-vm-stress.png)
+
+    :bulb: Some students report they get the following `SIGILL` error whilst running `stress-ng`: `stressor terminated with unexpected signal signal 4 'SIGILL'`. The students solved this by using [different stressors](https://wiki.ubuntu.com/Kernel/Reference/stress-ng). As usual, the `man` page contains all the information about any stressors.
 
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
