@@ -99,7 +99,7 @@ Follow the steps below to create a virtual environment and start the Prometheus 
 1. Go to the `monitoring` folder in the root of your repository.
 2. Create an environment: `python -m venv venv`. What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 3. Activate the environment: `source venv/bin/activate`. Your terminal prompt will be changed to indicate that you are in a virtual environment.
-    - Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
+   - Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
 4. Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
 5. Execute the mock: `python modelmock.py`
 
@@ -118,13 +118,13 @@ To set up the Prometheus polling server and other services, we'll use `docker co
 
 ```yml
 global:
-    scrape_interval: 5s
+  scrape_interval: 5s
 
 scrape_configs:
-    - job_name: model_mock
-      static_configs:
-          - targets:
-                - localhost:9000
+  - job_name: model_mock
+    static_configs:
+      - targets:
+          - localhost:9000
 ```
 
 Now, check if your Prometheus polling server can reach the mocked model's Prometheus metric server. Go to the Prometheus page at <http://localhost:9090> [^1] and then to `Status` > `Service Discovery`. You should see the following:
@@ -152,24 +152,25 @@ If you select the `Graph` tab instead of the `Table` tab, you'll see the metric 
 You have probably noticed that the interface of Prometheus to query and see metrics is limited. Thankfully, we can use [Grafana](https://grafana.com/) to create beautiful dashboards on top of a Prometheus polling server. Add a [Grafana service](https://hub.docker.com/r/grafana/grafana-oss) to your `docker-compose.yml` and start the Docker Compose file. You should be able to access the Grafana website at <http://localhost:3000> [^1]. Now let's configure the Grafana service:
 
 1. Find out what the default username and password are. First thing to do once you are logged in, is to change the password to something better and private.
+
    - Make sure to save the password in e.g. a password manager!
 
 2. [Add](https://grafana.com/docs/grafana/latest/administration/data-source-management/?utm_source=grafana_gettingstarted) the Prometheus polling server as a data source.
 
 3. Go to the `Home` > `Explore` section and query the `model_result` metric. You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dashboard will do this automatically for you.
 
-    ![](./img/07-monitoring/grafana-query.png)
+   ![](./img/07-monitoring/grafana-query.png)
 
 4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
-    - Also make sure the Grafana data is not tracked by git. Alter your `.gitignore` file if necessary.
+   - Also make sure the Grafana data is not tracked by git. Alter your `.gitignore` file if necessary.
 
 5. Now create a dashboard which does the following:
 
-    - We see the same graph as the query.
-    - It refreshes every 5 seconds.
-    - It shows the history of the past 15 minutes.
-    - It shows a red threshold line at $y=0.75$.
+   - We see the same graph as the query.
+   - It refreshes every 5 seconds.
+   - It shows the history of the past 15 minutes.
+   - It shows a red threshold line at $y=0.75$.
 
 ![](./img/07-monitoring/grafana-threshold.png)
 
@@ -181,13 +182,13 @@ We would like to receive notifications when the mocked model's metric goes above
 
 ```yml
 groups:
-    - name: example
-      rules:
-          - alert: ModelMockHighAccuracy
-            expr: model_result > 0.75
-            annotations:
-                summary: "Model mock accuracy is very high"
-                description: "Model mock accuracy is very high at {{ $value }}"
+  - name: example
+    rules:
+      - alert: ModelMockHighAccuracy
+        expr: model_result > 0.75
+        annotations:
+          summary: "Model mock accuracy is very high"
+          description: "Model mock accuracy is very high at {{ $value }}"
 ```
 
 Now make sure it is mapped by a volume to your Prometheus service. You also have to update the Prometheus [configuration file](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) so Prometheus knows where to find the rules, and set the `evaluation_interval` to 5s, so every scrape can trigger an alert.
@@ -216,10 +217,10 @@ Add an [AlertManager service](https://hub.docker.com/r/prom/alertmanager) to you
 
 ```yml
 alerting:
-    alertmanagers:
-        - static_configs:
-              - targets:
-                    - localhost:9093
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
 ```
 
 If all goes well, you'll be able to to the AlertManager page at <http://localhost:9093> and see the following page:
@@ -240,29 +241,29 @@ There are various channels possible on which you can receive notifications. As s
 2. [Create an new server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-). Make sure it has a [text channel](https://support.discord.com/hc/en-us/articles/4412085582359-Text-Channels-Text-Chat-In-Voice-Channels). Normally a new default server has a `# general` text channel, so you can use that or create another.
 3. Read [Discord's "Intro to Webhooks" article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) . You can find more information about webhooks on the links below. Make sure you understand how a webhook works and how it differs from a traditional API!
 
-    - <https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API>
-    - <https://www.make.com/en/blog/what-are-webhooks>
-    - <https://sendgrid.com/en-us/blog/whats-webhook>
+   - <https://www.techtarget.com/searchapparchitecture/tip/Webhooks-explained-simply-and-how-they-differ-from-an-API>
+   - <https://www.make.com/en/blog/what-are-webhooks>
+   - <https://sendgrid.com/en-us/blog/whats-webhook>
 
-    ![](./img/07-monitoring/webhook.png)
+   ![](./img/07-monitoring/webhook.png)
 
 4. Create the Discord webhook.
 5. Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlertManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
 
-    ```yml
-    route:
-        group_by: ["..."]
-        group_wait: 0s
-        group_interval: 1s
-        repeat_interval: 1h
-        receiver: discord
+   ```yml
+   route:
+     group_by: ["..."]
+     group_wait: 0s
+     group_interval: 1s
+     repeat_interval: 1h
+     receiver: discord
 
-    receivers:
-        - name: discord
-          discord_configs:
-              - # <TODO> ...
-                send_resolved: false
-    ```
+   receivers:
+     - name: discord
+       discord_configs:
+         - # <TODO> ...
+           send_resolved: false
+   ```
 
 If all goes well, you should start seeing Discord notifications whenever the mocked model's metric goes above 0.75:
 
@@ -279,63 +280,63 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 3. Don't forget to make sure Node Exporter is running. _Tip: if you have installed the already existing package, you just need to do `sudo systemctl enable --now prometheus-node-exporter`._
 4. Check if Node Exporter is accessible inside the VM:
 
-    ```console
-    $ curl localhost:9100/metrics
-    # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
-    # TYPE go_gc_duration_seconds summary
-    go_gc_duration_seconds{quantile="0"} 0
-    go_gc_duration_seconds{quantile="0.25"} 0
-    go_gc_duration_seconds{quantile="0.5"} 0
-    go_gc_duration_seconds{quantile="0.75"} 0
-    go_gc_duration_seconds{quantile="1"} 0
-    go_gc_duration_seconds_sum 0
-    go_gc_duration_seconds_count 0
-    # HELP go_goroutines Number of goroutines that currently exist.
-    # TYPE go_goroutines gauge
-    go_goroutines 7
-    # HELP go_info Information about the Go environment.
-    # TYPE go_info gauge
-    go_info{version="go1.17.5"} 1
-    # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
-    # TYPE go_memstats_alloc_bytes gauge
-    go_memstats_alloc_bytes 1.43752e+06
-    # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
-    # TYPE go_memstats_alloc_bytes_total counter
-    ```
+   ```console
+   $ curl localhost:9100/metrics
+   # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+   # TYPE go_gc_duration_seconds summary
+   go_gc_duration_seconds{quantile="0"} 0
+   go_gc_duration_seconds{quantile="0.25"} 0
+   go_gc_duration_seconds{quantile="0.5"} 0
+   go_gc_duration_seconds{quantile="0.75"} 0
+   go_gc_duration_seconds{quantile="1"} 0
+   go_gc_duration_seconds_sum 0
+   go_gc_duration_seconds_count 0
+   # HELP go_goroutines Number of goroutines that currently exist.
+   # TYPE go_goroutines gauge
+   go_goroutines 7
+   # HELP go_info Information about the Go environment.
+   # TYPE go_info gauge
+   go_info{version="go1.17.5"} 1
+   # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+   # TYPE go_memstats_alloc_bytes gauge
+   go_memstats_alloc_bytes 1.43752e+06
+   # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+   # TYPE go_memstats_alloc_bytes_total counter
+   ```
 
 5. Check if Node Exporter is accessible by your host machine. If not, use your Linux and networking skills to troubleshoot.
-7. Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
+6. Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
 
-    ![](./img/07-monitoring/prometheus-vm-target.png)
+   ![](./img/07-monitoring/prometheus-vm-target.png)
 
 7. We could start building our own dashboard for all these metrics, but thankfully other people have build these already. Grafana allows us to share and use dashboard to and from other people. Import the [Node Exporter Full dashboard](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). If all goes well you should start to see the visualizations for the VM:
 
-    ![](./img/07-monitoring/grafana-vm.png)
+   ![](./img/07-monitoring/grafana-vm.png)
 
 8. Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stress test. Install `stress-ng` through `dnf`:
 
-    ```console
-    $ stress-ng --cpu 1 --timeout 5m
-    stress-ng: info:  [3423] setting to a 60 second run per stressor
-    stress-ng: info:  [3423] dispatching hogs: 1 cpu
-    ```
+   ```console
+   $ stress-ng --cpu 1 --timeout 5m
+   stress-ng: info:  [3423] setting to a 60 second run per stressor
+   stress-ng: info:  [3423] dispatching hogs: 1 cpu
+   ```
 
-    You've learned about `top` in the Linux courses to see the resources used on the VM. `top` is good in a pinch, but not very "pretty". Let's install [`htop`](https://htop.dev/), a more visual and commonly used alternative, with `dnf`.
+   You've learned about `top` in the Linux courses to see the resources used on the VM. `top` is good in a pinch, but not very "pretty". Let's install [`htop`](https://htop.dev/), a more visual and commonly used alternative, with `dnf`.
 
-    ![](./img/06-monitoring/htop.png)
+   ![](./img/06-monitoring/htop.png)
 
-    If you want more visuals on the terminal, you can also use [`btop`](https://github.com/aristocratos/btop).
+   If you want more visuals on the terminal, you can also use [`btop`](https://github.com/aristocratos/btop).
 
-    ![](./img/06-monitoring/btop.png)
+   ![](./img/06-monitoring/btop.png)
 
-    Change the value of the `--cpu` option to the amount of CPU cores you have assigned to the VM. When `stress-ng` starts you should see the following:
+   Change the value of the `--cpu` option to the amount of CPU cores you have assigned to the VM. When `stress-ng` starts you should see the following:
 
-    - On the VM, you can see the CPU is at 100% using `htop` / `btop`.
-    - The CPU load on the graph in the Grafana dashboard goes to 100%.
+   - On the VM, you can see the CPU is at 100% using `htop` / `btop`.
+   - The CPU load on the graph in the Grafana dashboard goes to 100%.
 
-    ![](./img/07-monitoring/grafana-vm-stress.png)
+   ![](./img/07-monitoring/grafana-vm-stress.png)
 
-    :bulb: Some students report they get the following `SIGILL` error whilst running `stress-ng`: `stressor terminated with unexpected signal signal 4 'SIGILL'`. The students solved this by using [different stressors](https://wiki.ubuntu.com/Kernel/Reference/stress-ng). As usual, the `man` page contains all the information about any stressors.
+   :bulb: Some students report they get the following `SIGILL` error whilst running `stress-ng`: `stressor terminated with unexpected signal signal 4 'SIGILL'`. The students solved this by using [different stressors](https://wiki.ubuntu.com/Kernel/Reference/stress-ng). As usual, the `man` page contains all the information about any stressors.
 
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 

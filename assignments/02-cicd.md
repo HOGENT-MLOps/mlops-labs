@@ -4,18 +4,18 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 
 ## :mortar_board: Learning Goals
 
--   Creating simple actions and workflows
--   Running a pipeline to lint the code, and build and push a Docker image
+- Creating simple actions and workflows
+- Running a pipeline to lint the code, and build and push a Docker image
 
 ## :memo: Acceptance criteria
 
--   Show that you created a GitHub repository for the sample application
--   Show the overview of workflow runs in the GitHub Actions tab
--   Show that the application image is available on Docker Hub
--   Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
--   Enable dependabot and show that it creates a PR if a dependency is outdated.
--   Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
--   Show that you updated the cheat sheet with the commands you need to remember
+- Show that you created a GitHub repository for the sample application
+- Show the overview of workflow runs in the GitHub Actions tab
+- Show that the application image is available on Docker Hub
+- Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
+- Enable dependabot and show that it creates a PR if a dependency is outdated.
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Show that you updated the cheat sheet with the commands you need to remember
 
 ## 1.1 Create a GitHub repository for the sample application
 
@@ -63,19 +63,19 @@ Create a file named `demo.yml` in a directory `.github/workflows/` in your repos
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 jobs:
-    Explore-GitHub-Actions:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Check out repository code
-              uses: actions/checkout@v3
-            - name: List files in the repository
-              run: |
-                  ls ${{ github.workspace }}
-            - run: echo "This job's status is ${{ job.status }}."
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "This job's status is ${{ job.status }}."
 ```
 
 Commit and push this file to GitHub. You should see a new workflow appear in the Actions tab of your repository.
@@ -100,12 +100,12 @@ Remove the `demo.yml` file and create a new file named `build.yml` in the same d
 ---
 name: Build and test
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 ```
 
 This is not a complete workflow yet. Add a first step to check out the repository code. You can use the same step as in the previous workflow.
@@ -128,9 +128,9 @@ Now your workflow should succeed.
 
 Add a new step to the workflow to build the Docker image. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Make sure to configure the following things:
 
--   Do not push the image to Docker Hub yet
--   Use the `Dockerfile` in the root of the repository
--   Tag the image with the exact same tag as the previous lab, e.g. `<your-docker-hub-username>/webapp:latest`
+- Do not push the image to Docker Hub yet
+- Use the `Dockerfile` in the root of the repository
+- Tag the image with the exact same tag as the previous lab, e.g. `<your-docker-hub-username>/webapp:latest`
 
 The workflow should succeed. Check the result in the Actions tab.
 
@@ -158,16 +158,16 @@ This lab assignment was much less complex than a real-life build pipeline would 
 
 What would change in a real-life case:
 
--   The repository is likely to be private. This applies to both GitHub and Docker Hub. In that case you might need to configure some access tokens.
--   You would also limit the access to the repository to only the people who need it, and configure the access rights for each person.
--   The build pipeline would probably be much more elaborate, with linting, static code analysis, unit tests, functional, integration, acceptance and performance tests, packaging the application, publishing the package...
--   Depending on the situation, it may be decided that the deployment phase is never done automatically, but manually after a successful build. This is the difference between _Continuous Integration_ (no automatic deployment) and _Continuous Delivery_.
+- The repository is likely to be private. This applies to both GitHub and Docker Hub. In that case you might need to configure some access tokens.
+- You would also limit the access to the repository to only the people who need it, and configure the access rights for each person.
+- The build pipeline would probably be much more elaborate, with linting, static code analysis, unit tests, functional, integration, acceptance and performance tests, packaging the application, publishing the package...
+- Depending on the situation, it may be decided that the deployment phase is never done automatically, but manually after a successful build. This is the difference between _Continuous Integration_ (no automatic deployment) and _Continuous Delivery_.
 
 And we haven't even discussed any necessary changes to a database schema when new code is deployed!
 
 ## Possible extensions
 
--   Add a test step to the workflow. Do not alter any code, use the `yarn test` command and make sure the tests pass.
--   Instead of using your password to sign in to Docker Hub, use a [personal access token](https://docs.docker.com/docker-hub/access-tokens/).
--   Configure [Snyk](https://github.com/snyk/actions) to check for vulnerabilities in your dependencies. You will need to create an account on <https://snyk.io/> and add the API token as a secret to your repository.
--   Try to create a build pipeline for an app of your choice. Maybe a personal project? Or a project from another course?
+- Add a test step to the workflow. Do not alter any code, use the `yarn test` command and make sure the tests pass.
+- Instead of using your password to sign in to Docker Hub, use a [personal access token](https://docs.docker.com/docker-hub/access-tokens/).
+- Configure [Snyk](https://github.com/snyk/actions) to check for vulnerabilities in your dependencies. You will need to create an account on <https://snyk.io/> and add the API token as a secret to your repository.
+- Try to create a build pipeline for an app of your choice. Maybe a personal project? Or a project from another course?
