@@ -40,7 +40,7 @@ Before diving into the ML pipeline, try to execute the notebook first. This will
 
 ## 2.1. Run the notebook
 
-Open the notebook `assignments/notebooks/ml_workflow.ipynb` in [Google Colab](https://colab.research.google.com/). Choose to upload a notebook and upload the `ml_workflow.ipynb` notebook from the `assignments/notebooks` folder.
+Open the notebook `resources/03-ml-workflow/ml_workflow.ipynb` in [Google Colab](https://colab.research.google.com/). Choose to upload a notebook and upload the `ml_workflow.ipynb` notebook from the `resources/03-ml-workflow` folder.
 
 ![Upload notebook](./img/03-ml-workflow/upload-notebook.png)
 
@@ -48,7 +48,7 @@ You can also run the notebook locally if you have the required dependencies inst
 
 ## 2.2. Download the notebook
 
-When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `ml_workflow.ipynb` notebook in the `assignments/notebooks` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
+When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `ml_workflow.ipynb` notebook in the `resources/03-ml-workflow` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
 
 ## 3. The ML pipeline
 
