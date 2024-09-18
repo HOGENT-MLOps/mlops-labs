@@ -28,7 +28,11 @@ Hyperparameter tuning is the process of finding the best hyperparameters for a m
 
 ### 6.2 Tutorials
 
-For this assignment, you will get familiar with the KerasTuner library by following the official tutorials. You need to complete the following tutorials:
+For this assignment, you will get familiar with the Keras Tuner library by following the official tutorials.
+
+Upload your finished notebooks to the repository in the folder `resources/06-hyperparameter-tuning`. Make sure you have executed all the code and that the results are visible in the notebook.
+
+You need to complete the following tutorials:
 
 - [Introduction to the Keras Tuner](https://www.tensorflow.org/tutorials/keras/keras_tuner)
 
@@ -39,7 +43,7 @@ For this assignment, you will get familiar with the KerasTuner library by follow
     - `units`: 512
     - `learning_rate`: 0.005
 
-        Do you see a difference? Which model (with/without hyperparameter tuning) does the best job? How can you prove this?
+      Do you see a difference? Which model (with/without hyperparameter tuning) does the best job? How can you prove this?
 
 - [Getting started with Keras Tuner](https://keras.io/guides/keras_tuner/getting_started/)
 
