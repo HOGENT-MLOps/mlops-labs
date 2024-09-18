@@ -56,14 +56,21 @@ Now that you have a basic understanding of the ML model, it's time to create an 
 
 ## 3.1. Setup the environment
 
-First, we need to install some dependencies. We're not installing the dependencies for the whole system, but only for this project. We can do this by creating a virtual environment. Run the following commands in your terminal:
+First, we need to install some dependencies. We're not installing the dependencies for the whole system, but only for this project. We can do this by creating a [virtual environment](https://docs.python.org/3/library/venv.html).
+
+This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
+
+> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
+> ~ Carl Meyer
+
+Run the following commands in your terminal:
 
 ```bash
 cd resources/03-ml-workflow
 python3 -m venv venv
 ```
 
-:question: What does the `python3 -m venv venv` command do?
+:question: What does the `python3 -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 
 :question: Make sure your virtual environment is not tracked by Git. How do you do this?
 
