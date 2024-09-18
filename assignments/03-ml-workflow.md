@@ -169,8 +169,4 @@ Add some screenshots of the graphs, metrics, and artifacts to your lab report.
   - Data augmentation
   - ...
 - Can you modify the components/pipeline so that you can choose the amount of epochs the model trains for?
-- Can you modify the pipeline so that the train component is ran on specialized hardware?
-- Can you add a component that:
-  - compares with a certain threshold and deploys if the score is higher than the threshold
-  - optimizes the model for edge cases
 - ...
