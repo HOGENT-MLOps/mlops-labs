@@ -132,9 +132,34 @@ Write your pipeline file named `ml_workflow.py` in the folder `resources/03-ml-w
 
 Create the pipeline in little steps. Do **not** create the entire pipeline at once without running it. This will make debugging much harder. Instead, create the first task, run it, then create the second task, run it, etc.
 
+Make sure to set constants at the top of your script! This way, you can easily change the values of these constants without having to search through your entire script.
+
 ## 4. MLFlow
 
-TODO: add MLFlow
+Now we're going to integrate [MLFlow](https://mlflow.org/) in our pipeline. MLFlow is an open-source platform for managing the end-to-end machine learning lifecycle. It's a great tool for tracking experiments, packaging code into reproducible runs, and sharing and deploying models.
+
+MLFlow was already installed when you installed the dependencies. You can start the MLFlow server by running the following command in a separate terminal:
+
+```bash
+mlflow server
+```
+
+Open the MLFlow server in your browser by navigating to `http://localhost:5000`. You should see the MLFlow dashboard.
+
+Go to your Prefect flow and set the MLFlow tracking URI and the experiment name. Use global variables on top of your script to set these values.
+
+MLFlow is also able to log [system metrics](https://mlflow.org/docs/latest/system-metrics/index.html). `psutil` was already installed when you installed the dependencies. Configure MLFlow to log system metrics by setting the [`MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING`](https://mlflow.org/docs/latest/system-metrics/index.html#using-the-environment-variable-to-control-system-metrics-logging) environment variable to `true`.
+
+Now enable the following logs:
+
+1. Autologging in your train task.
+2. Autologging in your evaluate task.
+3. Log the number of epochs and the batch size in your train task.
+4. Log your model weights as an artifact in your train task.
+
+Run your pipeline and check if the logs and metrics are visible in the MLFlow dashboard.
+
+Add some screenshots of the graphs, metrics, and artifacts to your lab report.
 
 ## Possible extensions
 
