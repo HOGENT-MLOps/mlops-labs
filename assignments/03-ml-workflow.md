@@ -125,10 +125,12 @@ The pipeline should contain the following steps:
 
 Each of these steps should be a separate `task` in the pipeline. The tasks should be connected in the correct order using a `flow`.
 
-Use the following documentation to help you create the pipeline:
+Write your pipeline file named `ml_workflow.py` in the folder `resources/03-ml-workflow`. Use the following documentation to help you create the pipeline:
 
 - [Write and run tasks](https://docs.prefect.io/3.0/develop/write-tasks)
 - [Write and run flows](https://docs.prefect.io/3.0/develop/write-flows)
+
+Create the pipeline in little steps. Do **not** create the entire pipeline at once without running it. This will make debugging much harder. Instead, create the first task, run it, then create the second task, run it, etc.
 
 ## 4. MLFlow
 
