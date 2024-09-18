@@ -11,20 +11,18 @@
 
 - Show that you've executed the notebook and pushed it to the repository
   - Show that your Jupyter notebook contains all cells' output
+- Show that you created a virtual environment for the project
+- Show the Prefect and MLFlow dashboards
+- Show that your ML pipeline is working
+- Show the logs and metrics in the MLFlow dashboard
+- Show that you pushed a model to MLFlow
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Show that it contains the answers to the questions in the lab assignment
+  - Show that it contains the screenshots of the MLFlow dashboard
 
 <!-- TODO: update criteria -->
 
-- Show that you created an Azure ML workspace
-- Show that your ML workflow is working
-- Show that you deployed a model to an Azure managed endpoint
 - Show that you are able to make a prediction with the deployed model
-- Explain how data flows through the pipeline and how this is configured in the code
-- Show that you understand how the pipeline works (in your own words):
-  - Explain how Azure ML knows the inputs and outputs of each step
-  - Explain how Azure ML knows the order of the steps
-  - Explain how Azure ML knows how the inputs and outputs are connected to each other
 
 ## 1. The scenario
 
