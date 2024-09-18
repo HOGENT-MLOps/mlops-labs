@@ -13,6 +13,7 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 - Show the overview of workflow runs in the GitHub Actions tab
 - Show that the application image is available on Docker Hub
 - Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
+- Enable dependabot and show that it creates a PR if a dependency is outdated.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
@@ -143,16 +144,24 @@ If possible, extend the previous action to also push the image to Docker Hub. No
 
 Commit and push the changes to GitHub and check the result in the Actions tab. You should also see the image appear in your Docker Hub repository.
 
+## 1.6 Dependabot
+
+After building a workflow, you might notice that it's recommended to specify the version numbers of GitHub Actions in the `.yml` files. To keep these versions up to date, you need to periodically check for new releases and update your workflow accordingly. This process can be error-prone and is often overlooked. Fortunately, this process can also be automated!
+
+[Dependabot](https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide) is a tool that automatically and periodically checks the dependencies of [various types of software](https://docs.github.com/en/code-security/dependabot/ecosystems-supported-by-dependabot/supported-ecosystems-and-repositories) (such as `npm`, `pip`, etc.) in a GitHub repository. When it finds an outdated dependency, it creates a pull request to update it. This ensures that your software and CI/CD pipelines remain up to date.
+
+Follow the instructions in the [Dependabot documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot) to configure Dependabot to monitor your GitHub Actions and perform weekly checks. After setting it up, intentionally downgrade a GitHub Action and commit the changes. Verify if Dependabot generates a pull request to update the downgraded action.
+
 ## Reflection
 
-This lab assignment was much less complex than a real-life build pipeline would be, but you were able to see how GitHub Actions can be used to build, test *and* deploy an application automatically.
+This lab assignment was much less complex than a real-life build pipeline would be, but you were able to see how GitHub Actions can be used to build, test _and_ deploy an application automatically.
 
 What would change in a real-life case:
 
 - The repository is likely to be private. This applies to both GitHub and Docker Hub. In that case you might need to configure some access tokens.
 - You would also limit the access to the repository to only the people who need it, and configure the access rights for each person.
 - The build pipeline would probably be much more elaborate, with linting, static code analysis, unit tests, functional, integration, acceptance and performance tests, packaging the application, publishing the package...
-- Depending on the situation, it may be decided that the deployment phase is never done automatically, but manually after a successful build. This is the difference between *Continuous Integration* (no automatic deployment) and *Continuous Delivery*.
+- Depending on the situation, it may be decided that the deployment phase is never done automatically, but manually after a successful build. This is the difference between _Continuous Integration_ (no automatic deployment) and _Continuous Delivery_.
 
 And we haven't even discussed any necessary changes to a database schema when new code is deployed!
 
