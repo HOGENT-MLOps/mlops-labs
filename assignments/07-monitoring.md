@@ -89,19 +89,13 @@ flowchart
 
 First, you have to set up the mocked model in [modelmock.py](../monitoring/modelmock.py) that starts a Prometheus metrics server. This metrics server will later on be be accessed by Prometheus to poll the metric.
 
-To set up the mocked model, we'll use a [virtual environment](https://docs.python.org/3/library/venv.html). This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
-
-> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
-> ~ Carl Meyer
-
-Follow the steps below to create a virtual environment and start the Prometheus metric server for the mocked model.
+To set up the mocked model, we'll use a [virtual environment](https://docs.python.org/3/library/venv.html). Follow the steps below to create a virtual environment and start the Prometheus metric server for the mocked model.
 
 1. Go to the `monitoring` folder in the root of your repository.
-2. Create an environment: `python -m venv venv`. What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
-3. Activate the environment: `source venv/bin/activate`. Your terminal prompt will be changed to indicate that you are in a virtual environment.
-   - Make sure the virtual environment files are not tracked by git. Alter your `.gitignore` file if necessary.
-4. Install the requirements using [requirements.txt](../monitoring/requirements.txt) : `pip install -r requirements.txt`.
-5. Execute the mock: `python modelmock.py`
+2. Create a virtual environment and activate it.
+   - Make sure the virtual environment files are not tracked by git!
+3. Install the requirements using [requirements.txt](../monitoring/requirements.txt).
+4. Execute the mock: `python modelmock.py`
 
 Now, surf to <http://localhost:9000/> [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
 
