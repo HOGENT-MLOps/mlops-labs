@@ -41,7 +41,7 @@ It's possible to manage Docker containers using the command line, but it's somet
 
 For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers. You'll find a file `docker-compose.portainer.yml` in the folder `dockerlab`. This file contains the configuration to run a Portainer container. Start the Portainer container!
 
-If all went well, you should be able to access the Portainer dashboard via <https://192.168.56.20:9443>. Ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
+If all went well, you should be able to access the Portainer dashboard via <https://localhost:9443>. Ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
 
 > :bulb: If you've waited to long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the Portainer container.
 
