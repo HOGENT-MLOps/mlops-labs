@@ -4,6 +4,16 @@ This is a sample application for the Dockerlab of the Machine Learning Operation
 
 This application requires [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) to run. We assume that you have installed these tools on your system.
 
+## Prerequisites
+
+Make sure Corepack is enabled
+
+```console
+# Must be run in an Administrator shell on Windows
+
+corepack enable
+```
+
 ## Running the application
 
 Install the dependencies:
