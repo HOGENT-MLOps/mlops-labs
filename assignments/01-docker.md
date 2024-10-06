@@ -54,17 +54,16 @@ You'll find a simple web application in the folder `dockerlab/webapp`. The appli
 
 All animals are generated when the server starts for the first time, so it's very likely that you'll get different animals than your fellow students.
 
-This Node.js application requires some dependencies. These dependencies are listed in the `package.json` file and can be installed using the `yarn install --frozen-lockfile` command. Then use the `yarn start` command to start the application.
-
-> :warning: You'll likely not be able to run these commands on your local or virtual machine. You need to run them inside a Docker container, that's what we'll do next.
-
 Add a `Dockerfile` to this folder to create a Docker image for this application. The Docker image should meet the following requirements:
 
-- Start from a Docker image for Node.js version 20.x.x (LTS).
+- Start from a Docker image for Node.js (preferably an LTS version).
 - The application should be reachable on port 3000.
+- Make sure to run `corepack enable`. This will make sure that [Corepack](https://nodejs.org/api/corepack.html) is enabled in the container.
 - Copy the application code in the `/app` folder in the container.
-- Install the application dependencies with the `yarn install --frozen-lockfile` command.
+- Install the application dependencies with the `yarn install` command.
 - The application should be started using the `yarn start` command (when the container is started).
+
+> :warning: You'll likely not be able to run the commands above on your local or virtual machine. You need to run them inside a Docker container, that's what we'll do next.
 
 Test if your Docker image works by running a container based on your image. You may choose the Docker image name but it might be a good idea to pick `webapp`. You should be able to access the application on port 3000 on both endpoints above. You can use the `curl` command to test this.
 
