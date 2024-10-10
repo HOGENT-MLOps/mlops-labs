@@ -58,10 +58,9 @@ Add a `Dockerfile` to this folder to create a Docker image for this application.
 
 - Start from a Docker image for Node.js (preferably an LTS version).
 - The application should be reachable on port 3000.
-- Make sure to run `corepack enable`. This will make sure that [Corepack](https://nodejs.org/api/corepack.html) is enabled in the container.
 - Copy the application code in the `/app` folder in the container.
-- Install the application dependencies with the `yarn install` command.
-- The application should be started using the `yarn start` command (when the container is started).
+- Install the application dependencies with the `npm install` command.
+- The application should be started using the `npm start` command (when the container is started).
 
 > :warning: You'll likely not be able to run the commands above on your local or virtual machine. You need to run them inside a Docker container, that's what we'll do next.
 
@@ -125,11 +124,11 @@ First, change the base image in your `Dockerfile` so that it uses an Alpine vers
 
 If you want to inspect all layers of an image, you can use the `docker history` command. This command shows all layers of an image and the size of each layer. The size of the layers is important because it's the size of the layer that is pulled from the registry and stored on the host system. Check the layers of your image and write the output down in your lab report.
 
-Optimizing the order of the commands in the Dockerfile can reduce the image size or the time it takes to (re)build the image. We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `.yarnrc.yml`, `package.json` and `yarn.lock` files to the container and then run the `yarn install` command. Thereafter, copy the application code to the container.
+Optimizing the order of the commands in the Dockerfile can reduce the image size or the time it takes to (re)build the image. We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `package-lock.json` files to the container and then run the `npm install` command. Thereafter, copy the application code to the container.
 
 Rebuild the image, check the new image's size and inspect the layers. Write the new layers down in your lab report. Do you see a difference? If so, what is the difference? Alter something in the JavaScript code and rebuild the image. Do you see a difference in the time it takes to rebuild the image? If so, why is that?
 
-A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `.yarn` and `node_modules` folder, and all Docker related files to the `.dockerignore` file.
+A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `database` and `node_modules` folder, all Docker related files, and the `README.md` to the `.dockerignore` file.
 
 Rebuild and restart your containers using a Docker compose command. Now run the `ls` command inside your container and check that these files are not present in the container: `docker compose exec webapp ls -la`. If so, you've successfully optimized your Docker image.
 
@@ -137,7 +136,7 @@ This image is not so difficult and cannot be optimized that much, but it's a bes
 
 ## 1.9 Testing the application
 
-At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `dockerlab/webapp/tests/animals.spec.js` file and can be run using the `yarn test` command.
+At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `dockerlab/webapp/tests/animals.spec.js` file and can be run using the `npm test` command.
 
 Add a new service to the Docker Compose file to run the tests. Set the environment variable `API_URL` to the URL of the `webapp` service. Notice that you can use the service name as hostname in Docker Compose. Use the `depends_on` option to make sure that the application is started before the tests are run. Re-use the existing Docker image to run the tests, **only** change the command in the `docker-compose.yml` file and **not** in the `Dockerfile`.
 
