@@ -1,13 +1,9 @@
 # VS Code settings and stuff
 .vscode
 
-# Vagrant environment local state in any folder
-**/.vagrant/
-
 # Node.js app dependencies and related files
-**/node_modules/
-**/.yarn/
+node_modules/
 dockerlab/webapp/database/
 
 # Python virtual environments
-**/venv/
+venv/
