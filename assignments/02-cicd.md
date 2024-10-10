@@ -114,9 +114,9 @@ Commit and push the changes to GitHub, then check the result in the Actions tab.
 
 Add a second step to install NodeJS on the build server. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Use NodeJS version 20. It's okay to specify a hard coded NodeJS version, you don't need the `strategy` option.
 
-Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `yarn install`.
+Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `npm install`.
 
-Finally, add a step to run the command `yarn lint`.
+Finally, add a step to run the command `npm run lint`.
 
 Commit and push the changes to GitHub and check the result in the Actions tab.
 
@@ -167,7 +167,7 @@ And we haven't even discussed any necessary changes to a database schema when ne
 
 ## Possible extensions
 
-- Add a test step to the workflow. Do not alter any code, use the `yarn test` command and make sure the tests pass.
+- Add a test step to the workflow. Do not alter any code, use the `npm test` command and make sure the tests pass.
 - Instead of using your password to sign in to Docker Hub, use a [personal access token](https://docs.docker.com/docker-hub/access-tokens/).
 - Configure [Snyk](https://github.com/snyk/actions) to check for vulnerabilities in your dependencies. You will need to create an account on <https://snyk.io/> and add the API token as a secret to your repository.
 - Try to create a build pipeline for an app of your choice. Maybe a personal project? Or a project from another course?
