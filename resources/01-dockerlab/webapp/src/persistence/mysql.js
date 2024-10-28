@@ -1,3 +1,4 @@
+import { env } from 'node:process'
 import knex from "knex";
 import Boom from "@hapi/boom";
 import generateFakeData from "./generateFakeData.js";
@@ -7,9 +8,8 @@ let knexInstance;
 export async function initialize() {
   knexInstance = knex({
     client: 'mysql2',
-    connection: process.env.MYSQL_URL,
+    connection: env['MYSQL_URL'],
   });
-  await knexInstance.raw('CREATE DATABASE IF NOT EXISTS `animals`;');
   await knexInstance.raw('CREATE TABLE IF NOT EXISTS `animals` (`id` INT NOT NULL, `name` VARCHAR(255) NOT NULL, PRIMARY KEY (`id`));');
 
   const [animalCount] = await knexInstance('animals').count();
