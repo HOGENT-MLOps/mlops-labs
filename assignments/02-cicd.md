@@ -14,7 +14,7 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 - Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
   - The pipeline does not use the `--fix` option for ESLint
 - Show that a new version of the application image is available on Docker Hub after the pipeline has run
-- Enable dependabot and show that it creates a PR if a dependency is outdated.
+- Show that dependabot is enabled and that it creates a PR if a dependency is outdated
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
