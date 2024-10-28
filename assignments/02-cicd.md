@@ -29,7 +29,7 @@ git config --global user.name "Bobby Tables"
 git config --global user.email "bobby.tables@student.hogent.be"
 ```
 
-Copy the starter code from the directory [dockerlab/webapp](../dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`. All code should be in the root of the repository, not in a subdirectory.
+Copy the starter code from the directory [resources/01-dockerlab/webapp](../resources/01-dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`. All code should be **in the root of the repository**, not in a subdirectory.
 
 If your directory contains the `database` directory. Make sure it is not tracked by Git. You can check if it's being tracked using `git status`.
 
