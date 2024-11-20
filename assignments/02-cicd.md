@@ -11,9 +11,10 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 
 - Show that you created a GitHub repository for the sample application
 - Show the overview of workflow runs in the GitHub Actions tab
-- Show that the application image is available on Docker Hub
 - Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
-- Enable dependabot and show that it creates a PR if a dependency is outdated.
+  - The pipeline does not use the `--fix` option for ESLint
+- Show that a new version of the application image is available on Docker Hub after the pipeline has run
+- Show that dependabot is enabled and that it creates a PR if a dependency is outdated
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
@@ -117,6 +118,8 @@ Add a second step to install NodeJS on the build server. Search for a proper act
 Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `npm install`.
 
 Finally, add a step to run the command `npm run lint`.
+
+> :exclamation: Do **not** use the `--fix` option for ESLint in your pipeline. This is not recommended in a CI/CD pipeline. The pipeline should fail if there are linting errors. This option will hide all fixable errors and the pipeline will succeed.
 
 Commit and push the changes to GitHub and check the result in the Actions tab.
 
