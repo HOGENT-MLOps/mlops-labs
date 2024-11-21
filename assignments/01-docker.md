@@ -14,6 +14,9 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 
 ## :memo: Acceptance criteria
 
+- Show that you installed Docker and Docker Compose by running the following commands
+  - `docker --version`
+  - `docker compose --version`
 - Show that you created a Docker image for the API
 - Show that you can start the API using the SQLite database
 - Show that you can start the API using the MySQL database
