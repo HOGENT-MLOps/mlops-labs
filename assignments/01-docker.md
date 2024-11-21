@@ -104,8 +104,8 @@ Extend your existing `docker-compose.yml` file to add a service called `database
 
 Make sure that the application can connect to the database by setting the `MYSQL_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
 
-Do not use the root user for the database. Use the provided environment variables (by the [mysql](https://hub.docker.com/_/mysql) Docker image) to create a new user and database. Give the database a proper name like `animals` and the user a proper name like `webapp_user`.
-
+> :warning: Do not use the root user for the database. Use the provided environment variables (by the [mysql](https://hub.docker.com/_/mysql) Docker image) to create a new user and database. Give the database a proper name like `animals` and the user a proper name like `webapp_user`.
+>
 > :question: Is it necessary to bind the MySQL port to the host system? Why (not)?
 >
 > :bulb: The API prints a message indicating which database is used. If you see the message "MySQL database initialized", you know that the application is connected to the MySQL database.
