@@ -3,7 +3,6 @@
 
 # Node.js app dependencies and related files
 node_modules/
-dockerlab/webapp/database/
 
 # Python virtual environments
 venv/
