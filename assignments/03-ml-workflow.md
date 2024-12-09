@@ -7,8 +7,6 @@
 
 ## :memo: Acceptance criteria
 
-<!-- These criteria are checked: -->
-
 - Show that you've executed the notebook and pushed it to the repository
   - Show that your Jupyter notebook contains all cells' output
 - Show that you created a virtual environment for the project
@@ -16,13 +14,10 @@
 - Show that your ML pipeline is working
 - Show the logs and metrics in the MLFlow dashboard
 - Show that you pushed a model to MLFlow
+- Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Show that it contains the answers to the questions in the lab assignment
   - Show that it contains the screenshots of the MLFlow dashboard
-
-<!-- TODO: update criteria -->
-
-- Show that you are able to make a prediction with the deployed model
 
 ## 1. The scenario
 
