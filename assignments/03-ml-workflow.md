@@ -14,6 +14,7 @@
 - Show the Prefect and MLFlow dashboards
 - Show that your ML pipeline is working
 - Show the logs and metrics in the MLFlow dashboard
+  - Show that you only have one run per pipeline execution
 - Show that you registered a model in MLFlow
 - Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
