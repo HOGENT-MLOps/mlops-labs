@@ -62,10 +62,10 @@ Run the following commands in your terminal:
 
 ```bash
 cd resources/03-ml-workflow
-python3 -m venv venv
+python -m venv venv
 ```
 
-:question: What does the `python3 -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
+:question: What does the `python -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 
 :question: Make sure your virtual environment is not tracked by Git. How do you do this?
 
