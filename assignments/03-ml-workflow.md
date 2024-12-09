@@ -94,7 +94,7 @@ $Env:PREFECT_HOME = "$(Get-Location)/prefect_home"   # <- Windows
 prefect server start
 ```
 
-Open the Prefect server in your browser by navigating to `http://localhost:8080`. You should see the Prefect dashboard.
+Open the Prefect server in your browser by navigating to `http://localhost:4200`. You should see the Prefect dashboard.
 
 :question: Why do we need to set the `PREFECT_HOME` environment variable?
 
