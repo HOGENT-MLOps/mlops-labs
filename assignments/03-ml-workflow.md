@@ -150,16 +150,11 @@ Go to your Prefect flow and set the MLFlow tracking URI and the experiment name.
 
 MLFlow is also able to log [system metrics](https://mlflow.org/docs/latest/system-metrics/index.html). `psutil` was already installed when you installed the dependencies. Configure MLFlow to log system metrics by using the [`enable_system_metrics_logging` function](https://mlflow.org/docs/latest/system-metrics/index.html#using-mlflow-enable-system-metrics-logging).
 
-Now do the following logs:
-
-1. Auto logging in your train task.
-2. Auto logging in your evaluate task.
-3. Log the number of epochs and the batch size in your train task.
-4. Log your model weights as an artifact in your train task.
+Enable auto logging for the entire pipeline by using the [`mlflow.autolog()` function](https://mlflow.org/docs/latest/python_api/mlflow.html#mlflow.autolog) in your `main` function. This will automatically log metrics and artifacts for your pipeline.
 
 Run your pipeline and check if the logs and metrics are visible in the MLFlow dashboard. You should only see one run in the dashboard. If you see multiple runs, alter your pipeline so that only one run is created.
 
-At last [register your model](https://mlflow.org/docs/latest/getting-started/registering-first-model/step1-register-model.html) in MLFlow. It should be visible in the MLFlow dashboard under the menu item `Models`.
+At last register your model in MLFlow by using the [`mlflow.register_model` function](https://mlflow.org/docs/latest/model-registry.html#adding-an-mlflow-model-to-the-model-registry). It should be visible in the MLFlow dashboard under the menu item `Models`. Give it a proper name.
 
 Add some screenshots of the graphs, metrics, artifacts and the registered model to your lab report.
 
