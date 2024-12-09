@@ -2,8 +2,9 @@
 
 ## :mortar_board: Learning goals
 
-- Create a simple ML workflow with Azure ML
-- Deploy a model to an Azure managed endpoint
+- Create a simple ML workflow with Prefect
+- Log metrics and artifacts with MLFlow
+- Make a prediction with the registered model
 
 ## :memo: Acceptance criteria
 
@@ -13,7 +14,7 @@
 - Show the Prefect and MLFlow dashboards
 - Show that your ML pipeline is working
 - Show the logs and metrics in the MLFlow dashboard
-- Show that you pushed a model to MLFlow
+- Show that you registered a model in MLFlow
 - Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Show that it contains the answers to the questions in the lab assignment
