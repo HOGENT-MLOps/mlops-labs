@@ -6,14 +6,14 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
 
 - Get familiar with the TensorFlow Lite framework
 - Convert a TensorFlow model to a TensorFlow Lite model with quantization
-- Train a quantize aware model
+- Train a quantization aware model
 - Perform weight pruning on a model
 
 ## :memo: Acceptance criteria
 
 - Show that you've executed the notebook and pushed it to the repository
 - Show that you can convert a TensorFlow model to a TensorFlow Lite model with quantization
-- Show that you can train a quantize aware model
+- Show that you can train a quantization aware model
 - Show that you can perform weight pruning on a model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Provide an answer for all the questions asked
