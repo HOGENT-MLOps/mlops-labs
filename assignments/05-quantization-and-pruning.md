@@ -44,4 +44,6 @@ While working on the notebook, answer the following questions **in your own word
 
 ## Possible extensions
 
-The notebook contains some possible extensions at the very end. You can try to implement them to get a more profound understanding of TensorFlow Lite.
+- Improve the model (e.g. using <https://colab.research.google.com/drive/1W8fCTLZAO9YKcNRQzYfFf__9CROQLOcZ>) and compare the model sizes after improvement.
+- Use 16 bit floating point numbers for quantization instead of the default 8 bit integers.
+- Create a quantized and/or pruned model for a model of your choice or a personal project.
