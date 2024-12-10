@@ -37,9 +37,9 @@ While working on the notebook, answer the following questions **in your own word
 - What is the purpose of the TensorFlow Lite format? How does it differ from the TensorFlow format?
 - What changes in the model's layers after making it quantization aware?
 - What is quantization and pruning?
-- What is the difference between post-training quantization and quantization aware training?
-- When do you see a difference in the model's size when using quantization: after training of after model compression? Why is that?
-- And when in the case of pruning: after training or after model compression? Why is that?
+- Why should you use quantization aware training instead of simply quantizing a model after training?
+- When do you see a difference in the model's size when using quantization: after conversion to TFLite of after model compression using gzip? Why is that?
+- And when in the case of pruning: after conversion or after compression? Why is that?
 - What is the role of the `sparsity` and `step` parameters in the `PolynomialDecay` function?
 - Why do we need to remove the pruning layer before saving the model?
 
