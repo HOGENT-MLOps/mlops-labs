@@ -2,12 +2,11 @@
 
 ## :mortar_board: Learning goals
 
-- Create a simple ML workflow with Azure ML
-- Deploy a model to an Azure managed endpoint
+- Create a simple ML workflow with Prefect
+- Log metrics and artifacts with MLFlow
+- Make a prediction with the registered model
 
 ## :memo: Acceptance criteria
-
-<!-- These criteria are checked: -->
 
 - Show that you've executed the notebook and pushed it to the repository
   - Show that your Jupyter notebook contains all cells' output
@@ -15,14 +14,12 @@
 - Show the Prefect and MLFlow dashboards
 - Show that your ML pipeline is working
 - Show the logs and metrics in the MLFlow dashboard
-- Show that you pushed a model to MLFlow
+  - Show that you only have one run per pipeline execution
+- Show that you registered a model in MLFlow
+- Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Show that it contains the answers to the questions in the lab assignment
   - Show that it contains the screenshots of the MLFlow dashboard
-
-<!-- TODO: update criteria -->
-
-- Show that you are able to make a prediction with the deployed model
 
 ## 1. The scenario
 
@@ -65,10 +62,10 @@ Run the following commands in your terminal:
 
 ```bash
 cd resources/03-ml-workflow
-python3 -m venv venv
+python -m venv venv
 ```
 
-:question: What does the `python3 -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
+:question: What does the `python -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 
 :question: Make sure your virtual environment is not tracked by Git. How do you do this?
 
@@ -87,18 +84,22 @@ pip install -r requirements.txt
 
 :question: Where are the dependencies installed?
 
+:warning: Make sure to activate the virtual environment in **every** terminal you use for this project. You can deactivate the virtual environment by running the `deactivate` command.
+
 ## 3.2. Start the Prefect server
 
 Before we can develop the pipeline, we need to start the Prefect server. The Prefect server is a web application that provides a dashboard for monitoring and managing your workflows. Run the following command:
 
 ```bash
+# Make sure to activate the virtual environment first!
+
 export PREFECT_HOME=$(pwd)/prefect_home              # <- Linux/macOS
 $Env:PREFECT_HOME = "$(Get-Location)/prefect_home"   # <- Windows
 
 prefect server start
 ```
 
-Open the Prefect server in your browser by navigating to `http://localhost:8080`. You should see the Prefect dashboard.
+Open the Prefect server in your browser by navigating to `http://localhost:4200`. You should see the Prefect dashboard.
 
 :question: Why do we need to set the `PREFECT_HOME` environment variable?
 
@@ -139,25 +140,31 @@ Now we're going to integrate [MLFlow](https://mlflow.org/) in our pipeline. MLFl
 MLFlow was already installed when you installed the dependencies. You can start the MLFlow server by running the following command in a separate terminal:
 
 ```bash
+# Make sure to activate the virtual environment first!
 mlflow server
 ```
 
 Open the MLFlow server in your browser by navigating to `http://localhost:5000`. You should see the MLFlow dashboard.
 
-Go to your Prefect flow and set the MLFlow tracking URI and the experiment name. Use global variables on top of your script to set these values.
+Go to your Prefect flow and set the MLFlow tracking URI and the experiment name. Use global variables on top of your script to store these values. Configure these setting in your `main` function.
 
-MLFlow is also able to log [system metrics](https://mlflow.org/docs/latest/system-metrics/index.html). `psutil` was already installed when you installed the dependencies. Configure MLFlow to log system metrics by setting the [`MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING`](https://mlflow.org/docs/latest/system-metrics/index.html#using-the-environment-variable-to-control-system-metrics-logging) environment variable to `true`.
+MLFlow is also able to log [system metrics](https://mlflow.org/docs/latest/system-metrics/index.html). `psutil` was already installed when you installed the dependencies. Configure MLFlow to log system metrics by using the [`enable_system_metrics_logging` function](https://mlflow.org/docs/latest/system-metrics/index.html#using-mlflow-enable-system-metrics-logging).
 
-Now enable the following logs:
+Enable auto logging for the entire pipeline by using the [`mlflow.autolog()` function](https://mlflow.org/docs/latest/python_api/mlflow.html#mlflow.autolog) in your `main` function. This will automatically log metrics and artifacts for your pipeline.
 
-1. Autologging in your train task.
-2. Autologging in your evaluate task.
-3. Log the number of epochs and the batch size in your train task.
-4. Log your model weights as an artifact in your train task.
+Run your pipeline and check if the logs and metrics are visible in the MLFlow dashboard. You should only see one run in the dashboard. If you see multiple runs, alter your pipeline so that only one run is created.
 
-Run your pipeline and check if the logs and metrics are visible in the MLFlow dashboard.
+At last register your model in MLFlow by using the [`mlflow.register_model` function](https://mlflow.org/docs/latest/model-registry.html#adding-an-mlflow-model-to-the-model-registry). It should be visible in the MLFlow dashboard under the menu item `Models`. Give it a proper name.
 
-Add some screenshots of the graphs, metrics, and artifacts to your lab report.
+Add some screenshots of the graphs, metrics, artifacts and the registered model to your lab report.
+
+## 5. Performing a prediction
+
+Now that you have a registered model in MLFlow, you can make a prediction with it. Create a new Python script `predict.py` in the `resources/03-ml-workflow` folder. In this script, you should load the registered model from MLFlow and make a prediction with it. Pick two random image (one apple and one orange) from the internet and use it as input for your prediction.
+
+:question: Why do you need to use the registered model from MLFlow and not the model file directly?
+
+:question: What's the purpose of the MLFlow Model Registry?
 
 ## Possible extensions
 
