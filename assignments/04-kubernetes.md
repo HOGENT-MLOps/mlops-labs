@@ -21,8 +21,11 @@ The goal of this assignment is to become familiar with [Kubernetes](https://kube
   - Open the dashboard to show what's running on the cluster: nodes, pods, services, deployments, etc.
   - Also show these from the command line (using `kubectl`)
 - Show that all applications from this assignment are running on the cluster.
-  - Show the resources for each application using the dashboard or the command line.
-  - If possible, open the application in a web browser and show it works.
+  - Show that you can access the following applications in a web browser:
+    - The hello-world application from the Minikube tutorial
+    - The echo application
+    - The multi-tier guestbook application
+  - Show that you can access the logs of both jobs
 - Show that you can scale up and down the number of replicas of an application.
 - Show that you can add, remove or change labels and selectors.
 - Show that you can manipulate Kubernetes resources using labels and selectors.
