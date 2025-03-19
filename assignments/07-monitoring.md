@@ -271,10 +271,10 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 
 1. Create an [AlmaLinux](https://almalinux.org/) virtual machine however you want (manual, [osboxes.org](https://www.osboxes.org/), [Vagrant](https://www.vagrantup.com/)...). Just make sure it has the latest AlmaLinux version, and it is accessible from your host machine.
 
-    :warning: Do not use "Bridged Adapter" for the network: this will not work on Eduroam on the HOGENT campus! Even though your VM worked at home, it will not be accessible when connected to Eduroam. Use "NAT" or "Host-only Adapter" instead.. More info can be found at:
+   :warning: Do not use "Bridged Adapter" for the network: this will not work on Eduroam on the HOGENT campus! Even though your VM worked at home, it will not be accessible when connected to Eduroam. Use "NAT" and/or "Host-only Adapter" instead. More info can be found at:
 
-    - https://www.virtualbox.org/manual/ch06.html (official documentation)
-    - https://www.nakivo.com/blog/virtualbox-network-setting-guide/ (more visual blog post)
+   - <https://www.virtualbox.org/manual/ch06.html> (official documentation)
+   - <https://www.nakivo.com/blog/virtualbox-network-setting-guide/> (more visual blog post)
 
 2. Install Node Exporter on the VM. _Tip: there is already a node exporter package in the repositories from AlmaLinux, but you'll have to do an extra step to be able to install it. Don't install Docker in the VM, getting the already existing package is a lot easier! Also, have you ever heard of `dnf search`? It is a very handy command!_
 
