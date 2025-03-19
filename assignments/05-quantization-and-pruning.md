@@ -17,7 +17,7 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
 - Show that you can train a quantization aware model
 - Show that you can perform weight pruning on a model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-- Provide an answer for all the questions asked
+  - Provide an answer to all questions marked with :question:
 
 ## 1. Open the notebook
 
@@ -31,7 +31,7 @@ From now on, you can follow the instructions in the notebook. You can run the co
 
 **Important!** Make sure you understand all the code that is written for you in the notebook. So don't just run the code, but read it and try to understand it. If you don't understand it, search for information on the Internet.
 
-While working on the notebook, answer the following questions **in your own words**:
+:question: While working on the notebook, answer the following questions **in your own words**:
 
 - What is the role of `model_builder()`: how does it differ from building a model manually?
 - What is the purpose of the TensorFlow Lite format? How does it differ from the TensorFlow format?
