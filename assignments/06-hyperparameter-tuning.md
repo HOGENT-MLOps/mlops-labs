@@ -50,7 +50,8 @@ You need to complete the following tutorials:
   - Whats the difference between `max_trials` and `executions_per_trial`?
   - What are the (dis)advantages of using `HyperModel` instead of `build_model()`?
   - Why would you use `hp.get()`?
-  - The tutorial uses `MeanAbsoluteError` as objective in chapter "_Specify the tuning Objective_". How can you use `RootMeanSquaredError` instead? Duplicate and edit the code where necessary to try it out. How does it compare (make you sure you have both results stored in the notebook)?
+  - The tutorial uses `MeanAbsoluteError` as the objective in the chapter "_Specify the tuning Objective_". How can you use `RootMeanSquaredError` instead? Duplicate and modify the code as needed to test it. Compare the results and ensure both outcomes are stored in the notebook.
+    - Note that the datasets are randomly generated, so results may vary with each run. To ensure consistency, train the models with different objectives using the same random dataset. You can store the dataset in a variable and use it for both models.
   - You can skip the following chapters:
     - "_Custom metric as the objective_"
     - "_Tune end-to-end workflows_"
