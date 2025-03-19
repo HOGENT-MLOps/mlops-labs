@@ -18,7 +18,7 @@ The goal of this assignment is to get familiar with the process of hyperparamete
   - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning.
   - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
-- Provide an answer for all the questions asked
+  - Provide an answer for all the questions asked
 
 ## 6.1 Hyperparameter tuning
 
@@ -32,7 +32,7 @@ For this assignment, you will get familiar with the Keras Tuner library by follo
 
 Upload your completed notebooks to the `resources/06-hyperparameter-tuning` folder in the repository. Ensure all code cells have been executed and the results are visible in the notebook.
 
-You need to complete the following tutorials:
+You need to complete the following tutorials and answer the questions below:
 
 - [Introduction to the Keras Tuner](https://www.tensorflow.org/tutorials/keras/keras_tuner)
 
