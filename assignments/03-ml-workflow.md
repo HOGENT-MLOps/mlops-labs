@@ -18,7 +18,7 @@
 - Show that you registered a model in MLFlow
 - Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-  - Show that it contains the answers to the questions in the lab assignment
+  - Provide an answer to all questions marked with :question:
   - Show that it contains the screenshots of the MLFlow dashboard
 
 ## 1. The scenario
