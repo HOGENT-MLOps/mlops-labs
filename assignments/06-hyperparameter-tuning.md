@@ -18,6 +18,7 @@ The goal of this assignment is to get familiar with the process of hyperparamete
   - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning.
   - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
+- Provide an answer for all the questions asked
 
 ## 6.1 Hyperparameter tuning
 
