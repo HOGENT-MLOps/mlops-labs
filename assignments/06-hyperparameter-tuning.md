@@ -12,13 +12,12 @@ The goal of this assignment is to get familiar with the process of hyperparamete
 
 ## :memo: Acceptance criteria
 
-- Show that you have completed the tuning tutorials.
+- Show that you have completed the tuning tutorials and pushed the notebooks to the repository.
 - Provide an answer for all the questions asked.
 - Show that you have also edited/added/executed code when asked.
   - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning.
   - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
-- Show that you've executed the notebook and pushed it to the repository.
 
 ## 6.1 Hyperparameter tuning
 
@@ -30,7 +29,7 @@ Hyperparameter tuning is the process of finding the best hyperparameters for a m
 
 For this assignment, you will get familiar with the Keras Tuner library by following the official tutorials.
 
-Upload your finished notebooks to the repository in the folder `resources/06-hyperparameter-tuning`. Make sure you have executed all the code and that the results are visible in the notebook.
+Upload your completed notebooks to the `resources/06-hyperparameter-tuning` folder in the repository. Ensure all code cells have been executed and the results are visible in the notebook.
 
 You need to complete the following tutorials:
 
