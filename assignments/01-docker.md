@@ -28,6 +28,7 @@ In this lab assignment, you will refresh your knowledge of Docker. You will crea
 - Show that all tests are passing
 - Show that you pushed the Docker image to Docker Hub and that you can pull it from Docker Hub
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+  - Provide an answer to all questions marked with :question:
 - Show that you updated the cheat sheet with the commands you need to remember
 
 ## 1.1 Set up the lab environment
@@ -135,7 +136,11 @@ If you want to inspect all layers of an image, you can use the `docker history` 
 
 Optimizing the order of the commands in the Dockerfile can reduce the image size or the time it takes to (re)build the image. We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `package-lock.json` files to the container and then run the `npm install` command. Thereafter, copy the application code to the container.
 
-Rebuild the image, check the new image's size and inspect the layers. Write the new layers down in your lab report. Do you see a difference? If so, what is the difference? Alter something in the JavaScript code and rebuild the image. Do you see a difference in the time it takes to rebuild the image? If so, why is that?
+Rebuild the image, check the new image's size and inspect the layers. Write the new layers down in your lab report.
+
+:question: Do you see a difference? If so, what is the difference?
+
+:question: Alter something in the JavaScript code and rebuild the image. Do you see a difference in the time it takes to rebuild the image? If so, why is that?
 
 A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `database` and `node_modules` folder, all Docker related files, and the `README.md` to the `.dockerignore` file.
 
@@ -199,4 +204,6 @@ However, the setup hands you some best practices for app deployment:
 
 ## Clean-up
 
-**After demonstrating the results**, you can remove all containers and volumes using the `docker compose down` command with the right options (like `-v` or `-f`). Also make sure all images are removed from your local machine. Which command do you need to use to remove everything?
+**After demonstrating the results**, you can remove all containers and volumes using the `docker compose down` command with the right options (like `-v` or `-f`). Also make sure all images are removed from your local machine.
+
+:question: Which command do you need to use to remove everything?

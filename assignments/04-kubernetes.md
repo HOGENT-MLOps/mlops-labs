@@ -30,6 +30,7 @@ The goal of this assignment is to become familiar with [Kubernetes](https://kube
 - Show that you can add, remove or change labels and selectors.
 - Show that you can manipulate Kubernetes resources using labels and selectors.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
+  - Provide an answer to all questions marked with :question:
 - Show that you updated the cheat sheet with the commands you need to remember.
 
 ## Additional resources
@@ -42,9 +43,9 @@ Kubernetes is a current topic that attracts a lot of interest. That also means t
 
 If you think you will use Kubernetes professionally, or if you want to gain a much deeper understanding of how it works, the following resources may be of use:
 
-- Martin, P. (2021) *Kubernetes: Preparing for the CKA and CKAD Certifications.* Apress
+- Martin, P. (2021) _Kubernetes: Preparing for the CKA and CKAD Certifications._ Apress
   - HOGENT staff and students have free access to the ebook from the campus or via VPN [through this link](https://doi.org/10.1007/978-1-4842-6494-2)
-- Hightower, K. (2021) *Kubernetes The Hard Way.* Retrieved 2022-09-10 from <https://github.com/kelseyhightower/kubernetes-the-hard-way>
+- Hightower, K. (2021) _Kubernetes The Hard Way._ Retrieved 2022-09-10 from <https://github.com/kelseyhightower/kubernetes-the-hard-way>
   - Instructions to set up Kubernetes manually. Anyone running Kubernetes in production should know the platform inside out. This guide helps you to install and configure all the necessary components, which is probably the best way to really understand how it works under the hood.
 
 ## 4.1. Set up the lab environment
@@ -149,9 +150,11 @@ If you want to make a change to an existing Kubernetes object, edit the manifest
 kubectl apply -f <manifest-file.yml>
 ```
 
-For example, increase the number of replicas of the echoserver app (currently two) in the manifest file `echo-all.yml`, and apply the change. Check whether this operation was successful and find out on which node each pod is running (which command can you use for this?). Try to send multiple requests to the service (e.g. `curl` in a for loop) and check whether all pods process requests by looking at the logs of each pod (with which command?).
+For example, increase the number of replicas of the echoserver app (currently two) in the manifest file `echo-all.yml`, and apply the change. Check whether this operation was successful and find out on which node each pod is running. Try to send multiple requests to the service (e.g. `curl` in a for loop) and check whether all pods process requests by looking at the logs of each pod.
 
-**Optional:** If one of the nodes in the cluster becomes unavailable (e.g. `minikube node stop minikube-m03`). What happens? Is the application still available? Are the pods still running? Is a pod automatically rescheduled to another node? What if you restart the node? Will the cluster "heal" itself completely or not?
+:question: Which commands did you use to find out on which node each pod is running and to view the logs of each pod?
+
+:question: If one of the nodes in the cluster becomes unavailable (e.g. `minikube node stop minikube-m03`). What happens? Is the application still available? Are the pods still running? Is a pod automatically rescheduled to another node? What if you restart the node? Will the cluster "heal" itself completely or not?
 
 ## 4.3. Labels and selectors
 
@@ -187,7 +190,9 @@ Add the label `application_type=demo` to the two pods that are part of the Deplo
 
 Try to change the `application_type` of one of the two pods to another value without the `--overwrite` option and note the error message. Add the option so the change is actually made.
 
-Try to delete all pods with `application_type` equals to `demo`. Since this Deployment has a ReplicaSet that ensures 2 pods are launched, the deleted pods will be replaced immediately. What do you notice when you look at the labels of the two pods currently running?
+Try to delete all pods with `application_type` equals to `demo`. Since this Deployment has a ReplicaSet that ensures 2 pods are launched, the deleted pods will be replaced immediately.
+
+:question: What do you notice when you look at the labels of the two pods currently running?
 
 Remove the `application_type` label from the pod that still has it.
 
@@ -211,12 +216,13 @@ This subdivision results in the following labels:
 Launch the pods by applying the manifest file.
 
 - Select pods in the production environment
-- Select pods *not* in the production environment
+- Select pods _not_ in the production environment
 - Select pods in the development and acceptance environment (remark that logically, this is the same as the previous question, but you need to formulate your selector query differently)
 - Select pods with release version 2.0
 - Select pods owned by the API-team with release version 2.0
 - Delete all pods in the development environment
-- What is the quickest way to launch the pods you just deleted?
+
+:question: What is the quickest way to launch the pods you just deleted?
 
 ## 4.4. Jobs
 
@@ -274,7 +280,9 @@ If everything went well, you should be able to submit messages which remain visi
 
 **When giving a demo, make sure all manifest files (4.2, 4.3, 4.4 and 4.5) are applied** and that the applications are running.
 
-**Only after successfully demonstrating your setup**, you can clean up all Kubernetes resources currently running on the cluster. What is the quickest way to delete all objects?
+**Only after successfully demonstrating your setup**, you can clean up all Kubernetes resources currently running on the cluster.
+
+:question: What is the quickest way to delete all objects?
 
 Also delete the Minikube cluster with the following command:
 
