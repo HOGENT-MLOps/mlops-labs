@@ -82,7 +82,7 @@ flowchart
   - Also show that you can check these CPU values in Grafana
   - Also show that you receive a resolve alert when the CPU load drops after the 4 min of high load
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-  - Also show that the report contains all answers to the questions in the lab
+  - Provide an answer to all questions marked with :question:
 - Show that you updated the cheat sheet with the commands you need to remember
 
 ## 7.1 Mocking the model
@@ -97,7 +97,7 @@ To set up the mocked model, we'll use a [virtual environment](https://docs.pytho
 3. Install the requirements using [requirements.txt](../monitoring/requirements.txt).
 4. Execute the mock: `python modelmock.py`
 
-Now, surf to <http://localhost:9000/> [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
+:question: Now, surf to <http://localhost:9000/> [^1] and refresh a few times. Where do you see the metric of the mocked model? What is the exact name of the metric?
 
 Note: if you would like to stop the Prometheus metric server, follow the following steps below. Do this at the end of the lab, as you'll need the Prometheus metric server for the remainder of this lab.
 
@@ -129,13 +129,13 @@ This means that the Prometheus polling server will indeed try to poll the mocked
 
 ![](./img/07-monitoring/targets-down.png)
 
-That's not good! If you use the `ports` key in your `docker-compose.yml` then that port is forwarder so services on your host device (e.g. your laptop) can reach the Docker Compose services. However, **this does not work the other way around!** Docker Services cannot reach services on your host device: Docker Compose services are "stuck" in their own virtualized network where all services in a `docker-compose.yml` can reach each other, but not the outside world. This is very rarely needed and is often a **bad practice**: our case is somewhat special as this is an academic exercise, so we'll allow it here. Nevertheless, Docker Compose provides a setting that gives a service raw access to the host's network interface. This will make it look as if the service runs on your host instead of a Docker Compose virtual network. Can you find this [option](https://docs.docker.com/compose/compose-file/05-services/)?
+That's not good! If you use the `ports` key in your `docker-compose.yml` then that port is forwarder so services on your host device (e.g. your laptop) can reach the Docker Compose services. However, **this does not work the other way around!** Docker Services cannot reach services on your host device: Docker Compose services are "stuck" in their own virtualized network where all services in a `docker-compose.yml` can reach each other, but not the outside world. This is very rarely needed and is often a **bad practice**: our case is somewhat special as this is an academic exercise, so we'll allow it here. Nevertheless, Docker Compose provides a setting that gives a service raw access to the host's network interface. This will make it look as if the service runs on your host instead of a Docker Compose virtual network. :question: Can you find this [option](https://docs.docker.com/compose/compose-file/05-services/)?
 
 If everything is configured correctly, you should see the following:
 
 ![](./img/07-monitoring/targets.png)
 
-Now go to `Graph` and execute the following query: `model_result`. Can you see the metric of the mocked model? Refresh various times, when does it update?
+:question: Now go to `Graph` and execute the following query: `model_result`. Can you see the metric of the mocked model? Refresh various times, when does it update?
 
 If you select the `Graph` tab instead of the `Table` tab, you'll see the metric visually on a graph. Note that this graph doesn't update automatically, so you'll have to refresh periodically.
 
@@ -205,7 +205,9 @@ _Tip: change 0.75 to something that occurs more often for testing so you don't h
 Although Prometheus is responsible for triggering alerts based on metrics, it only has basic functionality. Just like we can use Grafana for better visualizations, we can use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) for better alert handling. It's benefits are:
 
 - You can hook up various type of receivers: mail, Matrix, Slack, Teams, Discord...
-- It supports grouping, inhibition, and silencing. What do these terms mean? How do they differ from each other? Make sure you understand all of this!
+- It supports grouping, inhibition, and silencing.
+  - :question: What do these terms mean? How do they differ from each other?
+  - Make sure you understand all of this!
 
 Add an [AlertManager service](https://hub.docker.com/r/prom/alertmanager) to your `docker-compose.yml`. Now you'll also have to update your Prometheus polling server's config so Prometheus knows to where it must send the alerts:
 
@@ -345,7 +347,9 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 
 ### 7.5.2 Set up alerting
 
-Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here. What does this do? You can find some inspiration on this [blogpost](https://www.robustperception.io/understanding-machine-cpu-usage/) and on [Awesome Prometheus alerts](https://samber.github.io/awesome-prometheus-alerts/) for creating the rule. Make sure you can explain the rule syntax!
+Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here.
+
+:question: What does `for` do? You can find some inspiration on this [blogpost](https://www.robustperception.io/understanding-machine-cpu-usage/) and on [Awesome Prometheus alerts](https://samber.github.io/awesome-prometheus-alerts/) for creating the rule. Make sure you can explain the rule syntax!
 
 Additionally, often we want also to be alerted if a situation has been restored to a good situation. This is called resolving. When we used the mocked model's metric, we explicitly disabled this with `send_resolved: false` in `alertmanager.yml` as it was unnecessary then. Remove this so resolve alerts will be send to Discord (resolving is actually the default behaviour).
 
