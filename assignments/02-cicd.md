@@ -18,7 +18,7 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
-## 1.1 Create a GitHub repository for the sample application
+## 2.1 Create a GitHub repository for the sample application
 
 You will need a GitHub repository with a sample application in order to experiment with GitHub actions.
 
@@ -55,7 +55,7 @@ git push -u origin main
 
 Now you should see all sample code on GitHub.
 
-## 1.2 Create a new GitHub Actions workflow
+## 2.2 Create a new GitHub Actions workflow
 
 Create a file named `demo.yml` in a directory `.github/workflows/` in your repository. Add the following content:
 
@@ -93,7 +93,7 @@ Click on the `Explore-GitHub-Actions` job to see the details of the job. You sho
 
 Open every step to see the details of the step. Explore the output of each step. You should see the repository content in the output of the third step.
 
-## 1.3 Lint the code
+## 2.3 Lint the code
 
 Remove the `demo.yml` file and create a new file named `build.yml` in the same directory. Add the following content:
 
@@ -127,7 +127,7 @@ Your workflow should fail because of linting errors, not any other error. Open t
 
 Now your workflow should succeed.
 
-## 1.4 Build the Docker image for the sample application
+## 2.4 Build the Docker image for the sample application
 
 Add a new step to the workflow to build the Docker image. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Make sure to configure the following things:
 
@@ -137,7 +137,7 @@ Add a new step to the workflow to build the Docker image. Search for a proper ac
 
 The workflow should succeed. Check the result in the Actions tab.
 
-## 1.5 Push the Docker image to Docker Hub
+## 2.5 Push the Docker image to Docker Hub
 
 The next step is to push the Docker image to Docker Hub. Add your username and password to the repository secrets using the documentation on <https://docs.github.com/en/actions/security-guides/encrypted-secrets>. Pick a suitable name for the secret, e.g. `DOCKERHUB_USERNAME` and `DOCKERHUB_PASSWORD`.
 
@@ -147,7 +147,7 @@ If possible, extend the previous action to also push the image to Docker Hub. No
 
 Commit and push the changes to GitHub and check the result in the Actions tab. You should also see the image appear in your Docker Hub repository.
 
-## 1.6 Dependabot
+## 2.6 Dependabot
 
 After building a workflow, you might notice that it's recommended to specify the version numbers of GitHub Actions in the `.yml` files. To keep these versions up to date, you need to periodically check for new releases and update your workflow accordingly. This process can be error-prone and is often overlooked. Fortunately, this process can also be automated!
 

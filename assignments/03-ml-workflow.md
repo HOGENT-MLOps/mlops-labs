@@ -21,7 +21,7 @@
   - Provide an answer to all questions marked with :question:
   - Show that it contains the screenshots of the MLFlow dashboard
 
-## 1. The scenario
+## 3.1. The scenario
 
 The typical machine learning (ML) workflow begins within a Jupyter notebook where data scientists and analysts prototype and experiment with ML models. In the notebook, they perform essential tasks such as data preprocessing, exploratory data analysis (EDA), feature engineering, model selection, training, and evaluation. Once a promising model is developed and tested locally, the transition to MLOps (Machine Learning Operations) is crucial.
 
@@ -29,11 +29,11 @@ For this lab assignment, you get a Jupyter notebook which contains a very simple
 
 There are many providers of tools for creating ML pipelines. This lab assignment deliberately uses Prefect, a Python-based workflow automation tool. Prefect is a modern workflow orchestration tool that is easy to use and has a lot of features. It is a good choice for creating ML pipelines and you should be able to translate the concepts you learn here to other tools like Kubeflow, Azure ML Pipelines, etc. Prefect is also a nice tool for testing ML pipelines locally, without the need for a cloud provider.
 
-## 2. The notebook
+## 3.2. The notebook
 
 Before diving into the ML pipeline, try to execute the notebook first. This will give you an idea of what the notebook does and how the ML model is trained.
 
-## 2.1. Run the notebook
+### 3.2.1. Run the notebook
 
 Open the notebook `resources/03-ml-workflow/ml_workflow.ipynb` in [Google Colab](https://colab.research.google.com/). Choose to upload a notebook and upload the `ml_workflow.ipynb` notebook from the `resources/03-ml-workflow` folder.
 
@@ -41,15 +41,15 @@ Open the notebook `resources/03-ml-workflow/ml_workflow.ipynb` in [Google Colab]
 
 You can also run the notebook locally if you have the required dependencies installed.
 
-## 2.2. Download the notebook
+### 3.2.2. Download the notebook
 
 When you're finished with the lab, you can download the notebook by clicking on `File > Download > Download .ipynb` in the menu bar. Overwrite the original `ml_workflow.ipynb` notebook in the `resources/03-ml-workflow` folder with your downloaded notebook. The notebook should contain all cells' output. Commit and push the changes to your GitHub repository.
 
-## 3. The ML pipeline
+## 3.3. The ML pipeline
 
 Now that you have a basic understanding of the ML model, it's time to create an ML pipeline.
 
-## 3.1. Setup the environment
+### 3.3.1. Setup the environment
 
 First, we need to install some dependencies. We're not installing the dependencies for the whole system, but only for this project. We can do this by creating a [virtual environment](https://docs.python.org/3/library/venv.html).
 
@@ -86,7 +86,7 @@ pip install -r requirements.txt
 
 :warning: Make sure to activate the virtual environment in **every** terminal you use for this project. You can deactivate the virtual environment by running the `deactivate` command.
 
-## 3.2. Start the Prefect server
+### 3.3.2. Start the Prefect server
 
 Before we can develop the pipeline, we need to start the Prefect server. The Prefect server is a web application that provides a dashboard for monitoring and managing your workflows. Run the following command:
 
@@ -103,7 +103,7 @@ Open the Prefect server in your browser by navigating to `http://localhost:4200`
 
 :question: Why do we need to set the `PREFECT_HOME` environment variable?
 
-## 3.3. Create the pipeline
+### 3.3.3. Create the pipeline
 
 Now it's time to create the pipeline. Create a new file `ml_workflow.py` in the `resources/03-ml-workflow` folder. Open the file in your favorite code editor. We'll define the pipeline using Prefect's Python API.
 
@@ -133,7 +133,7 @@ Create the pipeline in little steps. Do **not** create the entire pipeline at on
 
 Make sure to set constants at the top of your script! This way, you can easily change the values of these constants without having to search through your entire script.
 
-## 4. MLFlow
+## 3.4. MLFlow
 
 Now we're going to integrate [MLFlow](https://mlflow.org/) in our pipeline. MLFlow is an open-source platform for managing the end-to-end machine learning lifecycle. It's a great tool for tracking experiments, packaging code into reproducible runs, and sharing and deploying models.
 
@@ -158,7 +158,7 @@ At last register your model in MLFlow by using the [`mlflow.register_model` func
 
 Add some screenshots of the graphs, metrics, artifacts and the registered model to your lab report.
 
-## 5. Performing a prediction
+## 3.5. Performing a prediction
 
 Now that you have a registered model in MLFlow, you can make a prediction with it. Create a new Python script `predict.py` in the `resources/03-ml-workflow` folder. In this script, you should load the registered model from MLFlow and make a prediction with it. Pick two random image (one apple and one orange) from the internet and use it as input for your prediction.
 
