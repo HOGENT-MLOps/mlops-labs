@@ -11,9 +11,10 @@ In this lab assignment, you will learn the basics on how to set up a build pipel
 
 - Show that you created a GitHub repository for the sample application
 - Show the overview of workflow runs in the GitHub Actions tab
-- Show that the application image is available on Docker Hub
 - Make a change to the sample application, commit and push, and show that the build pipeline is triggered automatically
-- Enable dependabot and show that it creates a PR if a dependency is outdated.
+  - The pipeline does not use the `--fix` option for ESLint
+- Show that a new version of the application image is available on Docker Hub after the pipeline has run
+- Show that dependabot is enabled and that it creates a PR if a dependency is outdated
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
 - Show that you updated the cheat sheet with the commands you need to remember
 
@@ -28,7 +29,7 @@ git config --global user.name "Bobby Tables"
 git config --global user.email "bobby.tables@student.hogent.be"
 ```
 
-Copy the starter code from the directory [dockerlab/webapp](../dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`. All code should be in the root of the repository, not in a subdirectory.
+Copy the starter code from the directory [resources/01-dockerlab/webapp](../resources/01-dockerlab/webapp/) to some new directory outside this Git repository. Enter the copied directory and initialize it as a Git repository with `git init`. Add all code using `git add .`. All code should be **in the root of the repository**, not in a subdirectory.
 
 If your directory contains the `database` directory. Make sure it is not tracked by Git. You can check if it's being tracked using `git status`.
 
@@ -114,9 +115,11 @@ Commit and push the changes to GitHub, then check the result in the Actions tab.
 
 Add a second step to install NodeJS on the build server. Search for a proper action in the [GitHub Marketplace](https://github.com/marketplace). Prefer actions from verified publishers. Use NodeJS version 20. It's okay to specify a hard coded NodeJS version, you don't need the `strategy` option.
 
-Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `yarn install`.
+Before we can lint the project, we need to install the dependencies. Use the the [run](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) action to execute `npm install`.
 
-Finally, add a step to run the command `yarn lint`.
+Finally, add a step to run the command `npm run lint`.
+
+> :exclamation: Do **not** use the `--fix` option for ESLint in your pipeline. This is not recommended in a CI/CD pipeline. The pipeline should fail if there are linting errors. This option will hide all fixable errors and the pipeline will succeed.
 
 Commit and push the changes to GitHub and check the result in the Actions tab.
 
@@ -167,7 +170,7 @@ And we haven't even discussed any necessary changes to a database schema when ne
 
 ## Possible extensions
 
-- Add a test step to the workflow. Do not alter any code, use the `yarn test` command and make sure the tests pass.
+- Add a test step to the workflow. Do not alter any code, use the `npm test` command and make sure the tests pass.
 - Instead of using your password to sign in to Docker Hub, use a [personal access token](https://docs.docker.com/docker-hub/access-tokens/).
 - Configure [Snyk](https://github.com/snyk/actions) to check for vulnerabilities in your dependencies. You will need to create an account on <https://snyk.io/> and add the API token as a secret to your repository.
 - Try to create a build pipeline for an app of your choice. Maybe a personal project? Or a project from another course?

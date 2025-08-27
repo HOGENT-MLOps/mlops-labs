@@ -12,13 +12,13 @@ The goal of this assignment is to get familiar with the process of hyperparamete
 
 ## :memo: Acceptance criteria
 
-- Show that you have completed the tuning tutorials.
+- Show that you have completed the tuning tutorials and pushed the notebooks to the repository.
 - Provide an answer for all the questions asked.
 - Show that you have also edited/added/executed code when asked.
   - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning.
   - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective.
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
-- Show that you've executed the notebook and pushed it to the repository.
+  - Provide an answer for all the questions asked
 
 ## 6.1 Hyperparameter tuning
 
@@ -30,9 +30,9 @@ Hyperparameter tuning is the process of finding the best hyperparameters for a m
 
 For this assignment, you will get familiar with the Keras Tuner library by following the official tutorials.
 
-Upload your finished notebooks to the repository in the folder `resources/06-hyperparameter-tuning`. Make sure you have executed all the code and that the results are visible in the notebook.
+Upload your completed notebooks to the `resources/06-hyperparameter-tuning` folder in the repository. Ensure all code cells have been executed and the results are visible in the notebook.
 
-You need to complete the following tutorials:
+You need to complete the following tutorials and answer the questions below:
 
 - [Introduction to the Keras Tuner](https://www.tensorflow.org/tutorials/keras/keras_tuner)
 
@@ -50,7 +50,8 @@ You need to complete the following tutorials:
   - Whats the difference between `max_trials` and `executions_per_trial`?
   - What are the (dis)advantages of using `HyperModel` instead of `build_model()`?
   - Why would you use `hp.get()`?
-  - The tutorial uses `MeanAbsoluteError` as objective in chapter "_Specify the tuning Objective_". How can you use `RootMeanSquaredError` instead? Duplicate and edit the code where necessary to try it out. How does it compare (make you sure you have both results stored in the notebook)?
+  - The tutorial uses `MeanAbsoluteError` as the objective in the chapter "_Specify the tuning Objective_". How can you use `RootMeanSquaredError` instead? Duplicate and modify the code as needed to test it. Compare the results and ensure both outcomes are stored in the notebook.
+    - Note that the datasets are randomly generated, so results may vary with each run. To ensure consistency, train the models with different objectives using the same random dataset. You can store the dataset in a variable and use it for both models.
   - You can skip the following chapters:
     - "_Custom metric as the objective_"
     - "_Tune end-to-end workflows_"

@@ -1,3 +1,4 @@
+import { env } from 'node:process';
 import express from 'express';
 import Boom from '@hapi/boom';
 import morgan from 'morgan'
@@ -18,7 +19,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use((_, res, next) => {
-  res.set('X-Database-Used', process.env.MYSQL_URL ? 'MySQL' : 'SQLite');
+  res.set('X-Database-Used', env['MYSQL_URL'] ? 'MySQL' : 'SQLite');
   next();
 });
 
