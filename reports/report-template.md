@@ -35,4 +35,4 @@ What was difficult? What was easy? What did you learn from the assignment? What 
 
 ## Resources
 
-List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
+List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc. Note: AI is not considered a valid literary source. Do not cite, for example, https://chatgpt.com. If you use AI, let it guide you to real, reliable sources instead
