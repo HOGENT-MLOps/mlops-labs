@@ -129,7 +129,11 @@ This means that the Prometheus polling server will indeed try to poll the mocked
 
 ![](./img/07-monitoring/targets-down.png)
 
-That's not good! If you use the `ports` key in your `docker-compose.yml` then that port is forwarder so services on your host device (e.g. your laptop) can reach the Docker Compose services. However, **this does not work the other way around!** Docker Services cannot reach services on your host device: Docker Compose services are "stuck" in their own virtualized network where all services in a `docker-compose.yml` can reach each other, but not the outside world. This is very rarely needed and is often a **bad practice**: our case is somewhat special as this is an academic exercise, so we'll allow it here. Nevertheless, Docker Compose provides a setting that gives a service raw access to the host's network interface. This will make it look as if the service runs on your host instead of a Docker Compose virtual network. :question: Can you find this [option](https://docs.docker.com/compose/compose-file/05-services/)?
+That's not good! If you use the `ports` key in your `docker-compose.yml` then that port is forwarded so services on your host device (e.g. your laptop) can reach the Docker Compose services. However, **this does not work the other way around!** Docker Services cannot reach services on your host device: Docker Compose services are "stuck" in their own virtualized network where all services in a `docker-compose.yml` can reach each other, but not the outside world. This is very rarely needed and is often a **bad practice**: our case is somewhat special as this is an academic exercise, so we'll allow it here. There are in this case multiple possible solutions you can explore:
+
+- Put the mocked model in a Docker container and include it in `docker-compose.yml` so it is also inside the virtualized network.
+- Docker Compose provides a [setting](https://docs.docker.com/reference/compose-file/services/#network_mode) that gives a service raw access to the host's network interface. This will make it look as if the service runs on your host instead of a Docker Compose virtual network.
+- Docker allows the use of a [specific URL](https://docs.docker.com/desktop/features/networking/#i-want-to-connect-from-a-container-to-a-service-on-the-host) to reach services on your host, which you can use in the config files of your Dockerized services.
 
 If everything is configured correctly, you should see the following:
 
