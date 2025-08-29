@@ -1,4 +1,4 @@
-# Lab 6: Hyperparameter tuning
+# Lab 5: Hyperparameter tuning
 
 The goal of this assignment is to get familiar with the process of hyperparameter tuning. You will learn how to use the Keras Tuner library to search for the best hyperparameters for a machine learning model.
 
@@ -20,13 +20,13 @@ The goal of this assignment is to get familiar with the process of hyperparamete
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
   - Provide an answer for all the questions asked
 
-## 6.1 Hyperparameter tuning
+## 5.1 Hyperparameter tuning
 
 Hyperparameter tuning is the process of finding the best hyperparameters for a model. Hyperparameters are the parameters that are not learned by the model, but are set by the data scientist. Examples of hyperparameters are the learning rate, the number of hidden layers in a neural network, the number of trees in a random forest, etc. The goal of hyperparameter tuning is to find the hyperparameters that give the best performance on a validation set.
 
 [Several techniques](https://keras.io/api/keras_tuner/tuners/) exist for hyperparameter tuning, such as grid search, random search, and Bayesian optimization. In this assignment, you will use the KerasTuner library to perform hyperparameter tuning on a neural network. Specifically, you'll use both the [RandomSearch](https://keras.io/api/keras_tuner/tuners/random/), and the [Hyperband](https://arxiv.org/pdf/1603.06560) tuner which is an optimized version of random search.
 
-### 6.2 Tutorials
+## 5.2 Tutorials
 
 For this assignment, you will get familiar with the Keras Tuner library by following the official tutorials.
 
@@ -74,7 +74,7 @@ You need to complete the following tutorials and answer the questions below:
 
 :bulb: Tip: some parts of the notebooks can take a while to execute, be patient and wait until each part has completed successfully.
 
-#### Possible extensions
+## Possible extensions
 
 You can execute the following extra's on the notebook of the first tutorial:
 
