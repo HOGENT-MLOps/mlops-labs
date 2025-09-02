@@ -1,4 +1,4 @@
-# Lab 7: Monitoring and alerting
+# Lab 6: Monitoring and alerting
 
 In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
@@ -85,7 +85,7 @@ flowchart
   - Provide an answer to all questions marked with :question:
 - Show that you updated the cheat sheet with the commands you need to remember
 
-## 7.1 Mocking the model
+## 6.1 Mocking the model
 
 First, you have to set up the mocked model in [modelmock.py](../monitoring/modelmock.py) that starts a Prometheus metrics server. This metrics server will later on be be accessed by Prometheus to poll the metric.
 
@@ -106,7 +106,7 @@ Note: if you would like to stop the Prometheus metric server, follow the followi
 
 You'll see that your terminal prompt has changed back to normal.
 
-## 7.2 Setting up Prometheus
+## 6.2 Setting up Prometheus
 
 To set up the Prometheus polling server and other services, we'll use `docker compose`. Create a `docker-compose.yml` file with a [Prometheus service](https://hub.docker.com/r/prom/prometheus). You can use the `prometheus.yml` config file below and map it to `/etc/prometheus/prometheus.yml` (remember the Docker lab). Make sure this is persistent (i.e. survives even if the container is removed and replaced). Chances are that this will give an error at first, but don't despair as the solution is probably easier than you think. Make sure that you [understand](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) everything in the Prometheus config file.
 
@@ -123,11 +123,11 @@ scrape_configs:
 
 Now, check if your Prometheus polling server can reach the mocked model's Prometheus metric server. Go to the Prometheus page at <http://localhost:9090> [^1] and then to `Status` > `Service Discovery`. You should see the following:
 
-![](./img/07-monitoring/service-discovery.png)
+![](./img/06-monitoring/service-discovery.png)
 
 This means that the Prometheus polling server will indeed try to poll the mocked model's Prometheus metric server. Now go to `Status` > `Targets` where you should see the following error:
 
-![](./img/07-monitoring/targets-down.png)
+![](./img/06-monitoring/targets-down.png)
 
 That's not good! If you use the `ports` key in your `docker-compose.yml` then that port is forwarded so services on your host device (e.g. your laptop) can reach the Docker Compose services. However, **this does not work the other way around!** Docker Services cannot reach services on your host device: Docker Compose services are "stuck" in their own virtualized network where all services in a `docker-compose.yml` can reach each other, but not the outside world. This is very rarely needed and is often a bad practice: our case is somewhat special as this is an academic exercise, so we'll allow it here. There are in this case multiple possible approaches you can explore:
 
@@ -141,15 +141,15 @@ The latter two approaches are suitable if you don’t require strict isolation b
 
 If everything is configured correctly, you should see the following:
 
-![](./img/07-monitoring/targets.png)
+![](./img/06-monitoring/targets.png)
 
 :question: Now go to `Graph` and execute the following query: `model_result`. Can you see the metric of the mocked model? Refresh various times, when does it update?
 
 If you select the `Graph` tab instead of the `Table` tab, you'll see the metric visually on a graph. Note that this graph doesn't update automatically, so you'll have to refresh periodically.
 
-![](./img/07-monitoring/prometheus-graph.png)
+![](./img/06-monitoring/prometheus-graph.png)
 
-## 7.3 Grafana
+## 6.3 Grafana
 
 You have probably noticed that the interface of Prometheus to query and see metrics is limited. Thankfully, we can use [Grafana](https://grafana.com/) to create beautiful dashboards on top of a Prometheus polling server. Add a [Grafana service](https://hub.docker.com/r/grafana/grafana-oss) to your `docker-compose.yml` and start the Docker Compose file. You should be able to access the Grafana website at <http://localhost:3000> [^1]. Now let's configure the Grafana service:
 
@@ -161,7 +161,7 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 3. Go to the `Home` > `Explore` section and query the `model_result` metric. You'll see that you have a lot more options, but you'll still have to manually refresh to update the graph. Adding this metric to a dashboard will do this automatically for you.
 
-   ![](./img/07-monitoring/grafana-query.png)
+   ![](./img/06-monitoring/grafana-query.png)
 
 4. Before you start to create a dashboard, you better make sure the Grafana configuration is set up in a persistent way. Which folders or volumes do you have to map in `docker-compose.yml` to make sure Grafana won't forget your configuration. Test it thoroughly!
 
@@ -174,11 +174,11 @@ You have probably noticed that the interface of Prometheus to query and see metr
    - It shows the history of the past 15 minutes.
    - It shows a red threshold line at $y=0.75$.
 
-![](./img/07-monitoring/grafana-threshold.png)
+![](./img/06-monitoring/grafana-threshold.png)
 
-## 7.4 Alertmanager
+## 6.4 Alertmanager
 
-### 7.4.1 Generating alerts
+### 6.4.1 Generating alerts
 
 We would like to receive notifications when the mocked model's metric goes above 0.75. Luckily, Prometheus allows use to define [alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) which can do that (and much more). Create the following file `rules.yml`:
 
@@ -197,15 +197,15 @@ Now make sure it is mapped by a volume to your Prometheus service. You also have
 
 If all went well, you should see the following under `Alerts` in the Prometheus polling service:
 
-![](./img/07-monitoring/prometheus-alert.png)
+![](./img/06-monitoring/prometheus-alert.png)
 
 As long as the metric stays equal or lower than 0.75, it will remain active. As soon as the metric gets a value higher than 0.75, the alert will be triggered or "fired":
 
-![](./img/07-monitoring/prometheus-alert-firing.png)
+![](./img/06-monitoring/prometheus-alert-firing.png)
 
 You can also see the annotations as they were defined in the rules configuration file:
 
-![](./img/07-monitoring/prometheus-alert-firing-annotations.png)
+![](./img/06-monitoring/prometheus-alert-firing-annotations.png)
 
 The alert only stays triggered as long as the metric stays above 0.75. This means that after 5s it will probably be reset to inactive as the chance is high the next value is equal or lower than 0.75. You can see this for yourself: open the Grafana dashboard and the Prometheus alerts page side by side. Track the metric in real time on the Grafana Dashboard. As soon as the metric gets a value above 0.75, reload the Prometheus alert page to see if it triggered.
 _Tip: change 0.75 to something that occurs more often for testing so you don't have to wait so long till the alert is triggered._
@@ -229,15 +229,15 @@ alerting:
 
 If all goes well, you'll be able to to the AlertManager page at <http://localhost:9093> and see the following page:
 
-![](./img/07-monitoring/alertmanager-no-alerts.png)
+![](./img/06-monitoring/alertmanager-no-alerts.png)
 
 As long as there haven't been any results, the page will be empty. Keep a watch on your Grafana dashboard so you can see when an alert should be triggered. At that moment, refresh the page and you'll see the alert:
 
-![](./img/07-monitoring/alertmanager-alert-fired.png)
+![](./img/06-monitoring/alertmanager-alert-fired.png)
 
 You can press on `Info` to see the annotations.
 
-### 7.4.5 Adding a receiver
+### 6.4.2 Adding a receiver
 
 There are various channels possible on which you can receive notifications. As students don't have permissions to create a Microsoft Team and you probably use Discord to talk to other students, we'll set up a [Discord](https://discord.com/) receiver, so you get notified if the mocked model's metric reaches a value above 0.75. Discord isn't the most professional tool for this, but it is free and is supported by default in AlertManager. Note that except for the receivers listed in the [documentation](https://prometheus.io/docs/alerting/latest/configuration/), there are also a lot of third party receivers available not listed in the documentation.
 
@@ -249,7 +249,7 @@ There are various channels possible on which you can receive notifications. As s
    - <https://www.make.com/en/blog/what-are-webhooks>
    - <https://sendgrid.com/en-us/blog/whats-webhook>
 
-   ![](./img/07-monitoring/webhook.png)
+   ![](./img/06-monitoring/webhook.png)
 
 4. Create the Discord webhook.
 5. Create a configuration file for AlertManager called `alertmanager.yml`. Now make sure it is mapped by a volume to your AlertManager service (tip: look at the [contents](https://hub.docker.com/layers/prom/alertmanager/latest/images/sha256-b97390a5b2b52cf4dd66098a091ac0575d18fbf35acf2501fb0f180e3488ad15) of their Dockerfile on DockerHub to learn the correct path to where you should map). [Configure](https://prometheus.io/docs/alerting/latest/configuration/) it so that it takes your Discord webhook as a receiver. Start from the following template:
@@ -271,13 +271,13 @@ There are various channels possible on which you can receive notifications. As s
 
 If all goes well, you should start seeing Discord notifications whenever the mocked model's metric goes above 0.75:
 
-![](./img/07-monitoring/discord-alert.png)
+![](./img/06-monitoring/discord-alert.png)
 
-## 7.5 A more realistic use case
+## 6.5 A more realistic use case
 
 Monitoring is often used to not just monitor the accuracy of models, but for various metrics, such as server CPU/RAM load, storage shortages... . We'll use a virtual machine here to see how this can be done with Prometheus, Grafana and AlertManager. If we want to monitor the hardware metrics from a Linux machine, we can use [Node Exporter](https://prometheus.io/docs/guides/node-exporter/). This sets up a Prometheus metrics server for all available hardware metrics on the machine. You don't need the `modelmock.py` script anymore, so you can shut it off from here.
 
-## 7.5.1 Set up monitoring and visualization
+### 6.5.1 Set up monitoring and visualization
 
 1. Create an [AlmaLinux](https://almalinux.org/) virtual machine however you want (manual, [osboxes.org](https://www.osboxes.org/), [Vagrant](https://www.vagrantup.com/)...). Just make sure it has the latest AlmaLinux version, and it is accessible from your host machine.
 
@@ -320,11 +320,11 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 
 6. Edit `prometheus.yml` so that the Prometheus polling server knows where to find these metrics. Test that this works!
 
-   ![](./img/07-monitoring/prometheus-vm-target.png)
+   ![](./img/06-monitoring/prometheus-vm-target.png)
 
 7. We could start building our own dashboard for all these metrics, but thankfully other people have build these already. Grafana allows us to share and use dashboard to and from other people. Import the [Node Exporter Full dashboard](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). If all goes well you should start to see the visualizations for the VM:
 
-   ![](./img/07-monitoring/grafana-vm.png)
+   ![](./img/06-monitoring/grafana-vm.png)
 
 8. Let's see if this actually works. We are going to use `stress-ng` on the VM to initialize a stress test. Install `stress-ng` through `dnf`:
 
@@ -347,13 +347,13 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
    - On the VM, you can see the CPU is at 100% using `htop` / `btop`.
    - The CPU load on the graph in the Grafana dashboard goes to 100%.
 
-   ![](./img/07-monitoring/grafana-vm-stress.png)
+   ![](./img/06-monitoring/grafana-vm-stress.png)
 
    :bulb: Some students report they get the following `SIGILL` error whilst running `stress-ng`: `stressor terminated with unexpected signal signal 4 'SIGILL'`. The students solved this by using [different stressors](https://wiki.ubuntu.com/Kernel/Reference/stress-ng). As usual, the `man` page contains all the information about any stressors.
 
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
-### 7.5.2 Set up alerting
+### 6.5.2 Set up alerting
 
 Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here.
 
@@ -385,11 +385,11 @@ Done...
 
 Grafana:
 
-![](./img/07-monitoring/grafana-cpu.png)
+![](./img/06-monitoring/grafana-cpu.png)
 
 Discord:
 
-![](./img/07-monitoring/discord-cpu-alert-resolve.png)
+![](./img/06-monitoring/discord-cpu-alert-resolve.png)
 
 Timeline of events:
 
@@ -400,15 +400,15 @@ Timeline of events:
 - 13u47m40: end first stress test.
 - 13u47m46: Resolve alert on Discord.
 
-### 7.5.3 Alerting fatigue
+### 6.5.3 Alerting fatigue
 
 In a real life situation, most time will probably be spend tuning the parameters of the monitoring configuration and alert rules. It is hard, but essential to make sure you do not have too much false positives, but als not too much false negatives. False positives give a lot of alerts: this will lead to "alert fatigue" where you think most of the alerts will not be imported or true, as most of them are false positives anyway. False negatives means that you don't know about most things going wrong as you don't get alerts for those problems. You should already know these terms (_false/true positive/negative_) from other machine learning courses. The balance between these terms is specific to each use case and situation, and it takes a lot of tuning to get it to an acceptable level.
 
-![](./img/07-monitoring/false-true-pos-neg.webp)
+![](./img/06-monitoring/false-true-pos-neg.webp)
 
 > Image from <https://plat.ai/blog/confusion-matrix-in-machine-learning/>
 
-![](./img/07-monitoring/false-postives-schema.png)
+![](./img/06-monitoring/false-postives-schema.png)
 
 > Image from <https://blog.gitguardian.com/should-we-target-zero-false-positives/>
 
