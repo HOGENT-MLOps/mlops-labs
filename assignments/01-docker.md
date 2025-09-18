@@ -335,16 +335,31 @@ curl -X POST http://localhost:8000/v2/models/example_model/infer \
 :question: Tirton also supports gRPC **What is the difference between HTTP and gRPC for model inference?** When would you choose one over the other?
 
 
-### Hosting public models
+## Hosting public models
 
 Triton allows you to serve multiple models simultaneously. Add a publicly available model to demonstrate this capability.
 
-**Step 1: Choose a Public Model**
+**Choose a Public Model**
 
 You can find many models at:
 - https://catalog.ngc.nvidia.com/models
 - https://tfhub.dev/
 - https://huggingface.co/models
+
+**What to Look For:**
+- Choose a model that's compatible with Triton (ONNX, TensorRT, or TensorFlow SavedModel format)
+- Look for models with clear documentation and download instructions
+- Consider model size - smaller models will download and load faster for this exercise
+- Popular categories include image classification, object detection, or text processing models
+
+**Getting Started:**
+1. Browse the model repositories above to find something interesting
+2. Check the model's documentation for download links and format requirements
+3. Download the model files to your local machine
+4. Create a new model directory in your Triton model repository
+5. Copy the model files and create a `config.pbtxt` file for the new model
+6. Restart your Triton container to load the new model
+
 
 ---
 
