@@ -18,20 +18,28 @@ In this lab assignment, you will learn how to use Docker effectively in MLOps co
 
 ### Part 1: Docker Basics
 - Show Docker installation: `docker --version` and `docker compose --version`
-- Create a Dockerfile for a Flask ML model hosting application
-- Successfully build and run the ML model container
+- Show the Dockerfile for a Flask ML model hosting application
+- Demonstrate how to build and run a custom docker container
 - Demonstrate model inference via HTTP endpoints
 - Push the Docker image to a container registry
+- Show the image exists in your registry
 
 ### Part 2: Triton Serving
 - Deploy a TensorFlow model via Triton container
 - Demonstrate model inference via Triton HTTP endpoints
-- Show integration with public model repositories
+- Demonstrate how you ran a publicly available model of your choice
+- Explain the model repository structure and config.pbtxt
+
+### Part 3: Docker Compose & Portainer
+- Create a docker-compose.yml file to orchestrate your services
+- Use Portainer to manage your Docker containers through a web interface
+- Show how to start, stop, and monitor containers using Portainer
 
 ### General
 - Show that you wrote an elaborate lab report in Markdown
 - Provide answers to all questions marked with :question:
 - Update the cheat sheet with essential Docker commands
+- Include screenshots of key steps and results
 
 ---
 
@@ -374,6 +382,80 @@ You can find many models at:
 - https://tfhub.dev/
 - https://huggingface.co/models
 
+---
+
+# Part 3: Docker Compose & Portainer
+
+## 3.1 Create a Docker Compose file
+
+A docker run command can become quite long when you need to specify all the options. Luckily, there's a tool called Docker Compose that allows you to define a multi-container application in a single file. Docker Compose is already installed for those who use Docker Desktop. If you're using Docker Engine, you need to install Docker Compose separately using the instructions on the Docker website.
+
+Docker Compose is a tool for defining and running multi-container Docker applications. It uses YAML files to configure your application's services, networks, and volumes, making it much easier to manage complex applications with multiple containers.
+
+⚠️ **Docker Compose is now a plugin and should be used as `docker compose` and not `docker-compose`.**
+
+Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to define a service called `ml-flask-app` and a service called 'triton-server'.
+
+💡 **It's a good idea to use the build option when you're still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.**
+
+Make sure to start the services in the background.
+
+
+
+## 3.2 Creating a Docker Compose Setup
+
+### Step 1: Create docker-compose.yml
+
+Create a `docker-compose.yml` file that includes:
+- Your Flask ML application
+- Triton Inference Server
+
+
+### Step 2: Run with Docker Compose
+
+```bash
+# Start all services
+docker compose up -d
+
+# View running services
+docker compose ps
+
+# View logs
+docker compose logs
+
+# Stop all services
+docker compose down
+```
+
+:question: **What does the `-d` flag do in `docker compose up -d`?** When would you use it vs. not using it?
+
+## 3.3 Portainer for Container Management
+
+It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface.
+
+For this lab assignment, we'll be using Portainer, a web-based GUI for managing Docker containers. You'll find a file `docker-compose.portainer.yml` in the folder `resources/01-dockerlab`. This file contains the configuration to run a Portainer container.
+
+### Step 1: Start Portainer
+
+```bash
+# Navigate to the resources/01-dockerlab directory
+cd resources/01-dockerlab
+
+# Start Portainer using the provided compose file
+docker compose -f docker-compose.portainer.yml up -d
+```
+
+### Step 2: Access Portainer
+
+1. Open your browser and navigate to `https://localhost:9443`
+2. Ignore the warning about HTTPS and create an admin user
+3. You can use the default settings for the other options
+4. Select "Docker" as the environment
+
+💡 **If you've waited too long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the container:**
+```bash
+docker compose -f docker-compose.portainer.yml restart
+```
 
 ## Reflection
 
@@ -383,6 +465,8 @@ This lab has taught you:
 - **Triton Inference Server** for production-ready model serving
 - **Container registry** best practices
 - **Public model repositories** integration
+- **Docker Compose** for multi-container orchestration
+- **Portainer** for container management
 
 
 ## Clean-up
