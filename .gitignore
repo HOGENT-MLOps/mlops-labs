@@ -7,5 +7,5 @@ node_modules/
 # Python virtual environments
 venv/
 
-.venv/
-
+# Model files
+model_repository/

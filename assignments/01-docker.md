@@ -1,4 +1,4 @@
-# Lab 1: Docker revisited
+# Lab 1: Docker
 
 In this lab, you will learn how to use Docker effectively in MLOps contexts. You'll start with Docker basics for ML model hosting using Flask, then progress to containerization with [NVIDIA Triton Inference Server](https://github.com/triton-inference-server/server) for production-ready model deployment.
 
@@ -27,7 +27,7 @@ In this lab, you will learn how to use Docker effectively in MLOps contexts. You
   - Show that you can build the Docker image using your Dockerfile
   - Show that you can run the Docker container from your image
 - Show that you can get an inference from your model using the provided HTTP endpoint
-- Show how you push the Docker image to your container registry
+- Show how you push and pull the Docker image to your container registry
 - Show that the image exists in your registry
 
 ### Part 2: Triton Serving
@@ -107,7 +107,7 @@ Now activate the virtual environment:
 
 ```bash
 source venv/bin/activate    # Linux/macOS
-venv\Scripts\activate.bat   # Windows
+venv\Scripts\activate       # Windows (PowerShell)
 ```
 
 Finally install the required dependencies:
@@ -125,14 +125,16 @@ pip install -r requirements.txt
 Navigate to the `resources/01-dockerlab` folder and run the model creation script:
 
 ```bash
-cd resources/01-dockerlab
-
 python create_tf_model.py
 ```
 
-Verify the model was created by running:
+Verify the model was created by checking the content of the `model_repository/example_model/1/` folder:
 
 ```bash
+# Windows (PowerShell):
+dir model_repository\example_model\1\
+
+# macOS/Linux:
 ls -la model_repository/example_model/1/
 ```
 
@@ -147,11 +149,11 @@ In the `resources/01-dockerlab` folder, you will find a simple Flask application
 
 Now you need to create your own Dockerfile. Your Dockerfile should:
 
-- [ ] Use a Python 3.9 base image (consider using a slim version for smaller size)
+- [ ] Use a Python 3.12 base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
 - [ ] Copy the model
 - [ ] Copy the requirements.txt file first (for better layer caching)
-- [ ] Install Python dependencies using `pip`
+- [ ] Install Python dependencies using `pip` (consider using `--no-cache-dir` to reduce image size)
 - [ ] Copy your application code (app.py)
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
@@ -160,7 +162,7 @@ Create your `Dockerfile` in the `resources/01-dockerlab` folder and test it by b
 
 :question: **Why do we copy `requirements.txt` before copying the application code?** How does this improve Docker layer caching?
 
-:question: **What is the difference between `python:3.9` and `python:3.9-slim`?** What are the trade-offs?
+:question: **What is the difference between `python:3.12` and `python:3.12-slim`?** What are the trade-offs?
 
 #### 1.3.4 Build and run the container
 
@@ -186,7 +188,21 @@ docker run -p 5000:5000 ml-flask-app
 
 :question: **Use `docker ps` to see running containers.** What additional information would `docker ps -a` show you?
 
-Test the endpoints using `curl` or Postman:
+Test the endpoints using the following commands:
+
+**Windows (PowerShell):**
+
+```bash
+Invoke-WebRequest -Uri http://localhost:5000/health
+
+# Windows (PowerShell):
+Invoke-WebRequest -Uri "http://localhost:5000/predict" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{"features": [1.2, 3.4, 5.6, 7.8]}'
+```
+
+**macOS/Linux:**
 
 ```bash
 curl http://localhost:5000/health
@@ -253,8 +269,7 @@ Make sure you have the following folder structure in the `resources/01-dockerlab
 
 ```text
 model_repository/
-└── model/
-    ├── config.pbtxt
+└── example_model/
     └── 1/
         └── model.savedmodel/
 ```
@@ -263,7 +278,7 @@ model_repository/
 
 :question: **Why is the model stored in a folder named `1`?** What does this number represent?
 
-Create a `config.pbtxt` file in the `model_repository/model` folder with the following content:
+Create a `config.pbtxt` file in the `model_repository/example_model` folder with the following content:
 
 ```protobuf
 name: "example_model"
@@ -289,7 +304,18 @@ output [
 
 ### 2.2 Run the Triton server
 
-Run the Triton server using the official image with volume mounting:
+Run the Triton server using the official image with volume mounting. Make sure you execute the command from the `resources/01-dockerlab` folder.
+
+**Windows:**
+
+```powershell
+docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 `
+  -v ${PWD}/model_repository:/models `
+  nvcr.io/nvidia/tritonserver:23.10-py3 `
+  tritonserver --model-repository=/models
+```
+
+**macOS/Linux:**
 
 ```bash
 docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
@@ -298,11 +324,19 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
   tritonserver --model-repository=/models
 ```
 
-:question: **What is the purpose of the volume mapping `-v $(pwd)/model_repository:/models`?**
+:question: **What is the purpose of the volume mapping (`-v` option)?**
 
-### 2.3 Test Triton Endpoints
+### 2.3 Test Triton endpoints
 
 Check the model status endpoint to verify the model is loaded:
+
+**Windows (PowerShell):**
+
+```powershell
+Invoke-WebRequest http://localhost:8000/v2/models/example_model
+```
+
+**macOS/Linux:**
 
 ```bash
 curl http://localhost:8000/v2/models/example_model
@@ -311,6 +345,26 @@ curl http://localhost:8000/v2/models/example_model
 :question: **What information does the model status endpoint provide?** How can you use this to debug model loading issues?
 
 Try the inference endpoint:
+
+**Windows (PowerShell):**
+
+```powershell
+Invoke-WebRequest http://localhost:8000/v2/models/example_model/infer `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{
+    "inputs": [
+      {
+        "name": "keras_tensor",
+        "shape": [1, 4],
+        "datatype": "FP32",
+        "data": [[1.2, 3.4, 5.6, 7.8]]
+      }
+    ]
+  }'
+```
+
+**macOS/Linux:**
 
 ```bash
 curl -X POST http://localhost:8000/v2/models/example_model/infer \
