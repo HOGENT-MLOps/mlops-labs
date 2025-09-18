@@ -143,6 +143,7 @@ if __name__ == '__main__':
 Now you need to create your own Dockerfile. Your Dockerfile should:
 - [ ] Use a Python base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
+- [ ] Copy the model 
 - [ ] Copy the requirements.txt file first (for better layer caching)
 - [ ] Install Python dependencies using pip
 - [ ] Copy your application code (app.py)

@@ -69,21 +69,47 @@ flowchart
 
 ## :memo: Acceptance criteria
 
-- Show that your mocked model is running in a Python virtual environment and that you can access it's metrics by HTTP
+### Mock Model Setup
+- Show that your mocked model is running in a Python virtual environment
+- Show that you can access its metrics by HTTP at localhost:9000
+- Demonstrate the metric values changing over time
+
+### Prometheus Configuration
 - Show that Prometheus receives the mocked model's metric
+- Show the Prometheus targets page with the model mock as "UP"
+- Demonstrate querying the metric in Prometheus Graph interface
+
+### Grafana Dashboard
 - Show that Grafana receives the mocked model's metric
-  - The dashboard should refresh every 5 s
-  - The dashboard shows the history of the past 15 min
-  - The graph shows a red threshold line at $y = 0.75$
+- Show the dashboard with proper configuration:
+  - Refreshes every 5 seconds
+  - Shows history of the past 15 minutes
+  - Displays a red threshold line at y = 0.75
+- Demonstrate the dashboard updating in real-time
+
+### Alerting System
 - Show that you receive alerts about the mocked model metric through Discord
-- Show that Node Exporter is running on the VM and that you can access its metric's by HTTP
-- Show that you can see the CPU going to 100% by using `stress-ng` with `htop`/`btop` on the CLI of the VM.
-- Show that you don't receive an alert if the CPU is high for 2 min, but do receive an alert if the CPU is high for 4 min
-  - Also show that you can check these CPU values in Grafana
-  - Also show that you receive a resolve alert when the CPU load drops after the 4 min of high load
+- Show the Discord webhook configuration
+- Demonstrate alert firing and resolution
+
+### VM Monitoring Setup
+- Show that Node Exporter is running on the VM
+- Show that you can access its metrics by HTTP
+- Show the VM metrics in Prometheus targets
+
+### CPU Stress Testing
+- Show that you can see the CPU going to 100% using `stress-ng` with `htop`/`btop`
+- Demonstrate the alert timing:
+  - No alert if CPU is high for 2 minutes
+  - Alert if CPU is high for 4+ minutes
+  - Resolve alert when CPU load drops
+- Show these CPU values in Grafana dashboard
+
+### Documentation
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-  - Provide an answer to all questions marked with :question:
-- Show that you updated the cheat sheet with the commands you need to remember
+- Provide answers to all questions marked with :question:
+- Show that you updated the cheat sheet with monitoring commands
+- Include screenshots of all dashboards, alerts, and key results
 
 ## 6.1 Mocking the model
 
