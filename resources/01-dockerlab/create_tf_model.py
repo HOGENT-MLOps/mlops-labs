@@ -22,7 +22,7 @@ model.fit(X, y, epochs=10, batch_size=32, validation_split=0.2, verbose=1)
 model.export('model_repository/example_model/1/model.savedmodel', format='tf_saved_model')
 
 print("TensorFlow model created and saved successfully!")
-print(f"Model summary:")
+print("Model summary:")
 model.summary()
 
 # Test the model
