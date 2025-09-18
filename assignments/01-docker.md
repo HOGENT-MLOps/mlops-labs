@@ -73,53 +73,30 @@ docker --version
 
 ## 1.3 Hands-on: Flask ML Model Hosting
 
-### Step 1: Create a simple ML model
+### Step 1: Generate the TensorFlow Model
 
-Create a new folder `ml-flask-app` and create the following files:
+Before creating the Dockerfile, you need to generate the TensorFlow model that will be used by both the Flask app and Triton server.
 
-**requirements.txt:**
+**Run the model creation script:**
+
+
+```bash
+# Navigate to the resources/01-dockerlab directory
+cd resources/01-dockerlab
+
+# Run the model creation script
+python create_tf_model.py
 ```
-flask==3.0.0
-scikit-learn==1.3.2
-numpy==1.24.3
-pandas==2.1.4
-tensorflow==2.13.0
+
+**Verify the model was created:**
+```bash
+# Check that the model directory structure exists
+ls -la model_repository/example_model/1/
 ```
 
-**create_tf_model.py:**
-```python
-import tensorflow as tf
-import numpy as np
-from sklearn.datasets import make_classification
+You should see a `model.savedmodel` directory containing the trained model files.
 
-# Generate some sample data
-X, y = make_classification(n_samples=1000, n_features=4, n_classes=2, random_state=42)
 
-# Create a simple TensorFlow model
-model = tf.keras.Sequential([
-    tf.keras.layers.Dense(8, activation='relu', input_shape=(4,)),
-    tf.keras.layers.Dense(4, activation='relu'),
-    tf.keras.layers.Dense(1, activation='sigmoid')
-])
-
-# Compile the model
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-# Train the model
-model.fit(X, y, epochs=10, batch_size=32, validation_split=0.2, verbose=1)
-
-# Save the model in SavedModel format for Triton
-model.export('model_repository/example_model/1/model.savedmodel', format='tf_saved_model')
-
-print("TensorFlow model created and saved successfully!")
-print(f"Model summary:")
-model.summary()
-
-# Test the model
-test_input = np.array([[1.0, 2.0, 3.0, 4.0]])
-prediction = model.predict(test_input)
-print(f"Test prediction for [1.0, 2.0, 3.0, 4.0]: {prediction[0][0]:.4f}")
-```
 
 **app.py:**
 ```python
@@ -172,8 +149,6 @@ Now you need to create your own Dockerfile. Your Dockerfile should:
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
 
-# Set working directory
-WORKDIR /app
 
 Create your `Dockerfile` in the `resources/01-dockerlab` folder and test it by building the image.
 
