@@ -1,6 +1,6 @@
 # Lab 1: Docker revisited
 
-In this lab assignment, you will learn how to use Docker effectively in MLOps contexts. You'll start with Docker basics for ML model hosting using Flask, then progress to containerization with [NVIDIA Triton Inference Server](https://github.com/triton-inference-server/server) for production-ready model deployment.
+In this lab, you will learn how to use Docker effectively in MLOps contexts. You'll start with Docker basics for ML model hosting using Flask, then progress to containerization with [NVIDIA Triton Inference Server](https://github.com/triton-inference-server/server) for production-ready model deployment.
 
 ## :mortar_board: Learning Goals
 
@@ -14,44 +14,46 @@ In this lab assignment, you will learn how to use Docker effectively in MLOps co
 
 - Understanding NVIDIA Triton Inference Server and its importance in production ML
 - Deploying models through Triton containers
-- Working with public model repositories (NGC, Hugging Face)
+- Working with public model repositories (NGC, Hugging Face...)
 
 ## :memo: Acceptance criteria
 
 ### Part 1: Docker Basics
 
-- Show Docker installation: `docker --version` and `docker compose --version`
-- Show the Dockerfile for a Flask ML model hosting application
-- Demonstrate how to build and run a custom docker container
-- Demonstrate model inference via HTTP endpoints
-- Push the Docker image to a container registry
-- Show the image exists in your registry
+- Show that you installed Docker and Docker Compose by running the following commands:
+  - `docker --version`
+  - `docker compose --version`
+- Show that you created a Dockerfile to host an ML model using Flask
+  - Show that you can build the Docker image using your Dockerfile
+  - Show that you can run the Docker container from your image
+- Show that you can get an inference from your model using the provided HTTP endpoint
+- Show how you push the Docker image to your container registry
+- Show that the image exists in your registry
 
 ### Part 2: Triton Serving
 
-- Deploy a TensorFlow model via Triton container
-- Demonstrate model inference via Triton HTTP endpoints
-- Demonstrate how you ran a publicly available model of your choice
-- Explain the model repository structure and config.pbtxt
+- Show that you have deployed a TensorFlow model via a Triton container
+- Show that you can get an inference from your model using the Triton HTTP endpoint
+- Show how you can run a publicly available model of your choice
+- Explain the model repository structure and the `config.pbtxt` file
 
-### Part 3: Docker Compose & Portainer
+### Part 3: Docker Compose
 
-- Create a docker-compose.yml file to orchestrate your services
-- Use Portainer to manage your Docker containers through a web interface
-- Show how to start, stop, and monitor containers using Portainer
+- Show that you created a `docker-compose.yml` file to orchestrate your services
+- Show that you can start, stop, and view logs of your services using Docker Compose
 
 ### General
 
-- Show that you wrote an elaborate lab report in Markdown
-- Provide answers to all questions marked with :question:
-- Update the cheat sheet with essential Docker commands
-- Include screenshots of key steps and results
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+  - Provide an answer to all questions marked with :question:
+  - Include screenshots of key steps and results
+- Show that you updated the cheat sheet with the commands you need to remember
 
 ---
 
-# Part 1: Docker Basics in ML Context
+## Part 1. Docker Basics in ML Context
 
-## 1.1 Why Docker in MLOps?
+### 1.1. Why Docker in MLOps?
 
 Docker is essential in MLOps because of:
 
@@ -63,7 +65,7 @@ Docker is essential in MLOps because of:
 
 :question: **Why is reproducibility crucial in MLOps?** Think about a scenario where your model works perfectly on your laptop but fails in production. What could be the causes?
 
-## 1.2 Lab Environment Setup
+### 1.2 Lab environment setup
 
 Make sure Docker is installed on your local machine:
 
@@ -77,83 +79,79 @@ Verify the installation:
 docker --version
 ```
 
-## 1.3 Hands-on: Flask ML Model Hosting
-
-### Step 1: Generate the TensorFlow Model
+### 1.3 Flask ML model hosting
 
 Before creating the Dockerfile, you need to generate the TensorFlow model that will be used by both the Flask app and Triton server.
 
-**Run the model creation script:**
+#### 1.3.1 Setup the environment
 
-Make sure you have installed the required dependencies in a virtual environment and activated it.
+First, we need to install some dependencies. We're not installing the dependencies for the whole system, but only for this project. We can do this by creating a [virtual environment](https://docs.python.org/3/library/venv.html).
+
+This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
+
+> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
+> ~ Carl Meyer
+
+Run the following commands in your terminal:
 
 ```bash
-# Navigate to the resources/01-dockerlab directory
+cd resources/01-dockerlab
+python -m venv venv
+```
+
+:question: What does the `python -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
+
+:question: Make sure your virtual environment is not tracked by Git. How do you do this?
+
+Now activate the virtual environment:
+
+```bash
+source venv/bin/activate    # Linux/macOS
+venv\Scripts\activate.bat   # Windows
+```
+
+Finally install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+:question: Where are the dependencies installed?
+
+:warning: Make sure to activate the virtual environment in **every** terminal you use for this project. You can deactivate the virtual environment by running the `deactivate` command.
+
+#### 1.3.2 Run the model creation script
+
+Navigate to the `resources/01-dockerlab` folder and run the model creation script:
+
+```bash
 cd resources/01-dockerlab
 
-# Run the model creation script
 python create_tf_model.py
 ```
 
-**Verify the model was created:**
+Verify the model was created by running:
 
 ```bash
-# Check that the model directory structure exists
 ls -la model_repository/example_model/1/
 ```
 
 You should see a `model.savedmodel` directory containing the trained model files.
 
-**app.py:**
+#### 1.3.3 Create a Dockerfile
 
-```python
-from flask import Flask, request, jsonify
-import numpy as np
-import tensorflow as tf
+In the `resources/01-dockerlab` folder, you will find a simple Flask application (`app.py`) that loads the TensorFlow model and exposes two endpoints:
 
-app = Flask(__name__)
-
-# Load the TensorFlow model using TFSMLayer (Keras 3 approach for SavedModel)
-model_path = 'model_repository/example_model/1/model.savedmodel'
-tf_model = tf.keras.layers.TFSMLayer(model_path, call_endpoint='serve')
-
-@app.route('/health', methods=['GET'])
-def health():
-    return jsonify({"status": "healthy", "model_loaded": True})
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        data = request.get_json()
-        features = np.array(data['features'], dtype=np.float32).reshape(1, -1)
-
-        prediction = tf_model(features)
-        prediction_value = prediction.numpy()[0][0]
-
-        predicted_class = 1 if prediction_value > 0.5 else 0
-        confidence = max(prediction_value, 1 - prediction_value)
-
-        return jsonify({
-            "prediction": int(predicted_class),
-            "confidence": float(confidence),
-            "raw_output": float(prediction_value)
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-```
-
-### Step 2: Create a Dockerfile
+- `GET /health`: Returns a simple health check response
+- `POST /predict`: Accepts JSON input and returns model predictions
 
 Now you need to create your own Dockerfile. Your Dockerfile should:
 
-- [ ] Use a Python base image (consider using a slim version for smaller size)
+- [ ] Use a Python 3.9 base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
 - [ ] Copy the model
 - [ ] Copy the requirements.txt file first (for better layer caching)
-- [ ] Install Python dependencies using pip
+- [ ] Install Python dependencies using `pip`
 - [ ] Copy your application code (app.py)
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
@@ -164,20 +162,20 @@ Create your `Dockerfile` in the `resources/01-dockerlab` folder and test it by b
 
 :question: **What is the difference between `python:3.9` and `python:3.9-slim`?** What are the trade-offs?
 
-### Step 3: Build and run the container
+#### 1.3.4 Build and run the container
+
+Finally, build you Docker image:
 
 ```bash
-# Build the image
 docker build -t ml-flask-app .
+```
 
-# Run the container
+:question: **What does the `-t` flag do in the `docker build` command?** Why is it useful to tag your images?
+
+Then run the container:
+
+```bash
 docker run -p 5000:5000 ml-flask-app
-
-# Test the API
-curl http://localhost:5000/health
-curl -X POST http://localhost:5000/predict \
-  -H "Content-Type: application/json" \
-  -d '{"features": [1.2, 3.4, 5.6, 7.8]}'
 ```
 
 :question: **What does the `-p 5000:5000` flag do?** What would happen if you used `-p 8080:5000` instead?
@@ -188,21 +186,47 @@ curl -X POST http://localhost:5000/predict \
 
 :question: **Use `docker ps` to see running containers.** What additional information would `docker ps -a` show you?
 
-## 1.4 Container Registry Basics
-
-### Docker Hub Push/Pull
+Test the endpoints using `curl` or Postman:
 
 ```bash
-# Tag your image
+curl http://localhost:5000/health
+
+curl -X POST http://localhost:5000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"features": [1.2, 3.4, 5.6, 7.8]}'
+```
+
+### 1.4 Container registry basics
+
+In a real-world scenario, you would push the Docker image to a Docker registry instead of using your local machine as a repository.
+
+A Docker registry is a repository for Docker images. You can use a public registry like [Docker Hub](https://hub.docker.com/) or a private registry like [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/), [AWS Elastic Container Registry](https://aws.amazon.com/ecr/) or [Google Artifact Registry](https://cloud.google.com/artifact-registry).
+
+We're going to push our `ml-flask-app` image to [Docker Hub](https://hub.docker.com/). Sign up or sign in to [Docker Hub](https://hub.docker.com/). Then create a new repository called `ml-flask-app`. Make sure it's a **public** repository. It should get a name in the form of `<your-username>/ml-flask-app`.
+
+Now that we have a repository, we can push our image to Docker Hub. But first we need to tag our image. You can tag an image using the `docker tag` command. The command should look like this:
+
+```bash
 docker tag ml-flask-app <your-username>/ml-flask-app:0.0.1
+```
 
-# Login to Docker Hub
-docker login
+Sign in to Docker Hub using the `docker login` command, your username and password. Now push the image to Docker Hub using the `docker push` command:
 
-# Push to registry
+```bash
 docker push <your-username>/ml-flask-app:0.0.1
+```
 
-# Pull from registry (on another machine)
+Verify the image was pushed by visiting your repository on Docker Hub.
+
+Remove the local image using the `docker image rm` command:
+
+```bash
+docker image rm <your-username>/ml-flask-app:0.0.1
+```
+
+Now try to pull the image from Docker Hub using the `docker pull` command:
+
+```bash
 docker pull <your-username>/ml-flask-app:0.0.1
 ```
 
@@ -212,9 +236,7 @@ docker pull <your-username>/ml-flask-app:0.0.1
 
 ---
 
-# Part 2: Triton Serving
-
-## Introduction to Triton Inference Server
+## Part 2. Triton Serving
 
 NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc..
 
@@ -225,9 +247,9 @@ It has following benefits:
 - **Flexibility**: Supports different model formats
 - **Monitoring**: Extensive metrics and health checks
 
-### Step 1: Model repository
+### 2.1 Model repository
 
-Make sure you have the following folder structure:
+Make sure you have the following folder structure in the `resources/01-dockerlab` folder:
 
 ```text
 model_repository/
@@ -241,7 +263,7 @@ model_repository/
 
 :question: **Why is the model stored in a folder named `1`?** What does this number represent?
 
-**config.pbtxt:**
+Create a `config.pbtxt` file in the `model_repository/model` folder with the following content:
 
 ```protobuf
 name: "example_model"
@@ -265,12 +287,11 @@ output [
 
 :question: **Analyze the config.pbtxt file.** What does each field represent?
 
-## Run the Triton server
+### 2.2 Run the Triton server
 
 Run the Triton server using the official image with volume mounting:
 
 ```bash
-# Run Triton server with volume mapping
 docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
   -v $(pwd)/model_repository:/models \
   nvcr.io/nvidia/tritonserver:23.10-py3 \
@@ -279,9 +300,9 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
 
 :question: **What is the purpose of the volume mapping `-v $(pwd)/model_repository:/models`?**
 
-### Step 2: Test Triton Endpoints
+### 2.3 Test Triton Endpoints
 
-**Model Status:**
+Check the model status endpoint to verify the model is loaded:
 
 ```bash
 curl http://localhost:8000/v2/models/example_model
@@ -289,7 +310,7 @@ curl http://localhost:8000/v2/models/example_model
 
 :question: **What information does the model status endpoint provide?** How can you use this to debug model loading issues?
 
-**Inference (HTTP):**
+Try the inference endpoint:
 
 ```bash
 curl -X POST http://localhost:8000/v2/models/example_model/infer \
@@ -308,28 +329,26 @@ curl -X POST http://localhost:8000/v2/models/example_model/infer \
 
 :question: **Test the inference endpoint and analyze the response.** What format does the output take? How does it differ from the Flask API response?
 
-:question: Tirton also supports gRPC **What is the difference between HTTP and gRPC for model inference?** When would you choose one over the other?
+:question: Triton also supports gRPC **What is the difference between HTTP and gRPC for model inference?** When would you choose one over the other?
 
-## Hosting public models
+### 2.4 Hosting public models
 
 Triton allows you to serve multiple models simultaneously. Add a publicly available model to demonstrate this capability.
 
-**Choose a Public Model:**
-
-You can find many models at:
+Choose a model from public repository, you can find many models at:
 
 - <https://catalog.ngc.nvidia.com/models>
 - <https://tfhub.dev/>
 - <https://huggingface.co/models>
 
-**What to Look For:**
+**What to look for:**
 
 - Choose a model that's compatible with Triton (ONNX, TensorRT, or TensorFlow SavedModel format)
 - Look for models with clear documentation and download instructions
 - Consider model size - smaller models will download and load faster for this exercise
 - Popular categories include image classification, object detection, or text processing models
 
-**Getting Started:**
+**Getting started:**
 
 1. Browse the model repositories above to find something interesting
 2. Check the model's documentation for download links and format requirements
@@ -340,86 +359,49 @@ You can find many models at:
 
 ---
 
-# Part 3: Docker Compose & Portainer
-
-## 3.1 Create a Docker Compose file
+## Part 3. Docker Compose
 
 A docker run command can become quite long when you need to specify all the options. Luckily, there's a tool called Docker Compose that allows you to define a multi-container application in a single file. Docker Compose is already installed for those who use Docker Desktop. If you're using Docker Engine, you need to install Docker Compose separately using the instructions on the Docker website.
 
-Docker Compose is a tool for defining and running multi-container Docker applications. It uses YAML files to configure your application's services, networks, and volumes, making it much easier to manage complex applications with multiple containers.
+Docker Compose uses YAML files to configure your application's services, networks, and volumes, making it much easier to manage complex applications with multiple containers.
 
-⚠️ **Docker Compose is now a plugin and should be used as `docker compose` and not `docker-compose`.**
+⚠️ Docker Compose is now a plugin and should be used as `docker compose` and not `docker-compose`.
 
-Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to define a service called `ml-flask-app` and a service called 'triton-server'.
+### 3.1 Creating a docker-compose.yml
 
-💡 **It's a good idea to use the build option when you're still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.**
+Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to define a service called `ml-flask-app` and a service called `triton-server`.
 
-Make sure to start the services in the background.
+💡 It's a good idea to use the `build` option when you're still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.
 
-## 3.2 Creating a Docker Compose Setup
-
-### Step 1: Create docker-compose.yml
-
-Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder. Your compose file should include the following requirements:
-
-**For the ml-flask-app service:**
+**For the `ml-flask-app` service:**
 
 - [ ] Use `build: .` to build from your Dockerfile
 - [ ] Map port 5000 from container to host
 
-**For the triton-server service:**
+**For the `triton-server` service:**
 
 - [ ] Use the Triton image: `nvcr.io/nvidia/tritonserver:23.10-py3`
 - [ ] Map ports 8000, 8001, and 8002
 - [ ] Mount the model_repository volume to `/models`
 - [ ] Set the command to start Triton with the model repository
 
-### Step 2: Run with Docker Compose
+Start both services in the background:
 
 ```bash
-# Start all services
 docker compose up -d
-
-# View running services
-docker compose ps
-
-# View logs
-docker compose logs
-
-# Stop all services
-docker compose down
 ```
+
+View the running services:
+
+```bash
+docker compose ps
+```
+
+:question: **How can you view the logs of the services?**
 
 :question: **What does the `-d` flag do in `docker compose up -d`?** When would you use it vs. not using it?
 
-## 3.3 Portainer for Container Management
-
-It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface.
-
-For this lab assignment, we'll be using Portainer, a web-based GUI for managing Docker containers. You'll find a file `docker-compose.portainer.yml` in the folder `resources/01-dockerlab`. This file contains the configuration to run a Portainer container.
-
-### Step 1: Start Portainer
-
-```bash
-# Navigate to the resources/01-dockerlab directory
-cd resources/01-dockerlab
-
-# Start Portainer using the provided compose file
-docker compose -f docker-compose.portainer.yml up -d
-```
-
-### Step 2: Access Portainer
-
-1. Open your browser and navigate to `https://localhost:9443`
-2. Ignore the warning about HTTPS and create an admin user
-3. You can use the default settings for the other options
-4. Select "Docker" as the environment
-
-💡 **If you've waited too long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the container:**
-
-```bash
-docker compose -f docker-compose.portainer.yml restart
-```
+:question: **How would you stop the services?** What command would you use to stop and remove all containers, networks, and volumes defined in the `docker-compose.yml` file?
 
 ## Reflection
 
@@ -430,9 +412,12 @@ This lab has taught you:
 - **Container registry** best practices
 - **Public model repositories** integration
 - **Docker Compose** for multi-container orchestration
-- **Portainer** for container management
 
 ## Clean-up
+
+After you've demonstrated your solution, you can stop and remove all containers.
+
+To clean up your Docker environment by removing all unused images and volumes, run:
 
 ```bash
 # Remove all images
