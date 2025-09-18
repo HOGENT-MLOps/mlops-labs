@@ -1,4 +1,4 @@
-# Lab 4: Quantization and pruning
+# Lab 3: Quantization and pruning
 
 The goal of this assignment is to get familiar with the TensorFlow Lite framework, a framework for running machine learning models on edge devices. You will learn how to convert a TensorFlow model to a TensorFlow Lite model and how to use the TensorFlow Lite interpreter to run inference on the model. You will also learn how to use the TensorFlow Lite converter to quantize and prune a model.
 
@@ -19,13 +19,13 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Provide an answer to all questions marked with :question:
 
-## 4.1. Open the notebook
+## 3.1. Open the notebook
 
-This lab is written in a Jupyter notebook named `quantization_and_pruning.ipynb`, which you can find in the `resources/04-quantization-and-pruning` folder. Go to <https://colab.research.google.com/> and sign in with your Google account if needed. Choose to upload a notebook and upload the `quantization_and_pruning.ipynb` notebook from the `ml-workflow` folder.
+This lab is written in a Jupyter notebook named `quantization_and_pruning.ipynb`, which you can find in the `resources/ssw` folder. Go to <https://colab.research.google.com/> and sign in with your Google account if needed. Choose to upload a notebook and upload the `quantization_and_pruning.ipynb` notebook from the `ml-workflow` folder.
 
-![Upload notebook](./img/04-quantization-and-pruning/upload-notebook.png)
+![Upload notebook](./img/03-quantization-and-pruning/upload-notebook.png)
 
-## 4.2. Follow the instructions in the notebook
+## 3.2. Follow the instructions in the notebook
 
 From now on, you can follow the instructions in the notebook. You can run the code in the notebook by clicking on the play button next to the code block. Some cells contain a `# TODO:` comment. You should fill in the missing information before running the code cell.
 
