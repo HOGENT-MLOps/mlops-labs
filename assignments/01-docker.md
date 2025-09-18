@@ -163,30 +163,19 @@ if __name__ == '__main__':
 
 ### Step 2: Create a Dockerfile
 
-
-**Dockerfile:**
-```dockerfile
-# Use Python 3.9 slim image
-FROM python:3.9-slim
+Now you need to create your own Dockerfile. Your Dockerfile should:
+- [ ] Use a Python base image (consider using a slim version for smaller size)
+- [ ] Set a working directory inside the container
+- [ ] Copy the requirements.txt file first (for better layer caching)
+- [ ] Install Python dependencies using pip
+- [ ] Copy your application code (app.py)
+- [ ] Expose port 5000
+- [ ] Set the command to run your Flask application
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY app.py .
-
-# Expose port
-EXPOSE 5000
-
-# Run the application
-CMD ["python", "app.py"]
-```
+Create your `Dockerfile` in the `resources/01-dockerlab` folder and test it by building the image.
 
 :question: **Why do we copy `requirements.txt` before copying the application code?** How does this improve Docker layer caching?
 
@@ -406,9 +395,19 @@ Make sure to start the services in the background.
 
 ### Step 1: Create docker-compose.yml
 
-Create a `docker-compose.yml` file that includes:
-- Your Flask ML application
-- Triton Inference Server
+Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder. Your compose file should include the following requirements:
+
+**For the ml-flask-app service:**
+- [ ] Use `build: .` to build from your Dockerfile
+- [ ] Map port 5000 from container to host
+
+**For the triton-server service:**
+- [ ] Use the Triton image: `nvcr.io/nvidia/tritonserver:23.10-py3`
+- [ ] Map ports 8000, 8001, and 8002
+- [ ] Mount the model_repository volume to `/models`
+- [ ] Set the command to start Triton with the model repository
+
+
 
 
 ### Step 2: Run with Docker Compose
