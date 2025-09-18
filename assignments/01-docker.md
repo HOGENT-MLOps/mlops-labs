@@ -79,6 +79,7 @@ Before creating the Dockerfile, you need to generate the TensorFlow model that w
 
 **Run the model creation script:**
 
+Make sure you have installed the required dependencies in a virtual environment and activated it.
 
 ```bash
 # Navigate to the resources/01-dockerlab directory
@@ -101,7 +102,7 @@ You should see a `model.savedmodel` directory containing the trained model files
 **app.py:**
 ```python
 from flask import Flask, request, jsonify
-import numpy as np  
+import numpy as np
 import tensorflow as tf
 
 app = Flask(__name__)
@@ -119,13 +120,13 @@ def predict():
     try:
         data = request.get_json()
         features = np.array(data['features'], dtype=np.float32).reshape(1, -1)
-        
+
         prediction = tf_model(features)
         prediction_value = prediction.numpy()[0][0]
-        
+
         predicted_class = 1 if prediction_value > 0.5 else 0
         confidence = max(prediction_value, 1 - prediction_value)
-        
+
         return jsonify({
             "prediction": int(predicted_class),
             "confidence": float(confidence),
@@ -143,7 +144,7 @@ if __name__ == '__main__':
 Now you need to create your own Dockerfile. Your Dockerfile should:
 - [ ] Use a Python base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
-- [ ] Copy the model 
+- [ ] Copy the model
 - [ ] Copy the requirements.txt file first (for better layer caching)
 - [ ] Install Python dependencies using pip
 - [ ] Copy your application code (app.py)
@@ -223,7 +224,7 @@ It has following benefits:
 
 ### Step 1: Model repository
 
-Create the following folder structure:
+Make sure you have the following folder structure:
 
 ```
 model_repository/
@@ -259,36 +260,7 @@ output [
 ]
 ```
 
-:question: **Analyze the config.pbtxt file.** What does each field represent? How does it differ from the scikit-learn configuration?
-
-
-**Copy the trained TensorFlow model from the Flask lab to the model repository:**
-
-First, run the model creation script to generate the SavedModel:
-```bash
-python create_tf_model.py
-```
-
-This will create the model in the correct format for Triton serving.
-
-### Step 2: Test the model locally
-
-Before deploying to Triton, you can test the model locally using the Flask app:
-
-```bash
-# Run the Flask app
-python app.py
-
-# Test the health endpoint
-curl http://localhost:5000/health
-
-# Test prediction
-curl -X POST http://localhost:5000/predict \
-  -H "Content-Type: application/json" \
-  -d '{"features": [1.2, 3.4, 5.6, 7.8]}'
-```
-
-:question: **What does the Flask API response look like?** How does it differ from the raw TensorFlow model output?
+:question: **Analyze the config.pbtxt file.** What does each field represent?
 
 ## Run the Triton server
 
