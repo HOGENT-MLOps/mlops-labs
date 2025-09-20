@@ -17,7 +17,8 @@ The goal of this assignment is to get familiar with the TensorFlow Lite framewor
 - Show that you can train a quantization aware model
 - Show that you can perform weight pruning on a model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-  - Provide an answer to all questions marked with :question:
+  - Provide an answer to all questions marked with :question:, use code to support your answers where applicable
+  - Discuss the answers during the demo session
 
 ## 3.1. Open the notebook
 

@@ -19,6 +19,7 @@
 - Show that you are able to make a prediction with the registered model
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Provide an answer to all questions marked with :question:
+  - Discuss the answers during the demo session
   - Show that it contains the screenshots of the MLFlow dashboard
 
 ## 2.1. The scenario
@@ -70,8 +71,6 @@ Finally install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-
-:question: Where are the dependencies installed?
 
 :warning: Make sure to activate the virtual environment in **every** terminal you use for this project. You can deactivate the virtual environment by running the `deactivate` command.
 
