@@ -62,7 +62,7 @@ Now activate the virtual environment:
 
 ```bash
 source venv/bin/activate    # Linux/macOS
-venv\Scripts\activate       # Windows
+venv\Scripts\Activate.ps1   # Windows (PowerShell)
 ```
 
 Finally install the required dependencies:
@@ -83,7 +83,7 @@ Before we can develop the pipeline, we need to start the Prefect server. The Pre
 # Make sure to activate the virtual environment first!
 
 export PREFECT_HOME=$(pwd)/prefect_home              # <- Linux/macOS
-$Env:PREFECT_HOME = "$(Get-Location)/prefect_home"   # <- Windows
+$Env:PREFECT_HOME = "$(Get-Location)/prefect_home"   # <- Windows (PowerShell)
 
 prefect server start
 ```
