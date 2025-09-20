@@ -89,7 +89,7 @@ First, we need to install some dependencies. We're not installing the dependenci
 
 This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
 
-> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.  
+> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.
 > ~ Carl Meyer
 
 Run the following commands in your terminal:
@@ -158,7 +158,7 @@ Now you need to create your own Dockerfile. Your Dockerfile should:
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
 
-Create your `Dockerfile` in the `resources/01-dockerlab` folder and test it by building the image.
+Create your `Dockerfile` in the `resources/01-dockerlab` folder.
 
 :question: **Why do we copy `requirements.txt` before copying the application code?** How does this improve Docker layer caching?
 
@@ -182,9 +182,10 @@ docker run -p 5000:5000 ml-flask-app
 
 :question: **What does the `-p 5000:5000` flag do?** What would happen if you used `-p 8080:5000` instead?
 
+:question: **What happens if you try to run the container without the `-p` flag?** Can you still access the API?
+
 :question: **Run `docker images` after building.** What information does this show you about your image?
 
-:question: **What happens if you try to run the container without the `-p` flag?** Can you still access the API?
 
 :question: **Use `docker ps` to see running containers.** What additional information would `docker ps -a` show you?
 
@@ -256,6 +257,8 @@ docker pull <your-username>/ml-flask-app:0.0.1
 
 NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc..
 
+**Note**: The GPU acceleration features work optimally with NVIDIA GPUs. While Triton can run on CPU-only systems, students with AMD GPUs may not have access to the full GPU acceleration capabilities that NVIDIA provides.
+
 It has following benefits:
 
 - **Scalability**: Can serve multiple models simultaneously
@@ -274,7 +277,6 @@ model_repository/
         └── model.savedmodel/
 ```
 
-:question: **What is the purpose of the `config.pbtxt` file?** Why is it essential for Triton to understand how to serve your model?
 
 :question: **Why is the model stored in a folder named `1`?** What does this number represent?
 
@@ -300,6 +302,7 @@ output [
 ]
 ```
 
+:question: **What is the purpose of the `config.pbtxt` file?** Why is it essential for Triton to understand how to serve your model?
 :question: **Analyze the config.pbtxt file.** What does each field represent?
 
 ### 2.2 Run the Triton server
