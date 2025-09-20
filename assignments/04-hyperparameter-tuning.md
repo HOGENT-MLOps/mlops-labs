@@ -13,12 +13,12 @@ The goal of this assignment is to get familiar with the process of hyperparamete
 ## :memo: Acceptance criteria
 
 - Show that you have completed the tuning tutorials and pushed the notebooks to the repository
-- Provide an answer for all the questions asked
 - Show that you have also edited/added/executed code when asked
   - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning
   - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
-  - Provide an answer for all the questions asked
+  - Provide an answer for all the questions asked, use code to support your answers where applicable
+  - Discuss the answers during the demo session
 
 ## 5.1 Hyperparameter tuning
 

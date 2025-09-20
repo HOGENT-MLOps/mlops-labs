@@ -186,7 +186,6 @@ docker run -p 5000:5000 ml-flask-app
 
 :question: **Run `docker images` after building.** What information does this show you about your image?
 
-
 :question: **Use `docker ps` to see running containers.** What additional information would `docker ps -a` show you?
 
 Test the endpoints using the following commands:
@@ -276,7 +275,6 @@ model_repository/
     └── 1/
         └── model.savedmodel/
 ```
-
 
 :question: **Why is the model stored in a folder named `1`?** What does this number represent?
 
