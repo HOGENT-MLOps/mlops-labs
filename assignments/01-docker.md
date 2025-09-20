@@ -46,6 +46,7 @@ In this lab, you will learn how to use Docker effectively in MLOps contexts. You
 
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Provide an answer to all questions marked with :question:
+  - Discuss the answers during the demo session
   - Include screenshots of key steps and results
 - Show that you updated the cheat sheet with the commands you need to remember
 
