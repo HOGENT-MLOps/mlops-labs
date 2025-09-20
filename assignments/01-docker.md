@@ -107,7 +107,7 @@ Now activate the virtual environment:
 
 ```bash
 source venv/bin/activate    # Linux/macOS
-venv\Scripts\activate       # Windows (PowerShell)
+venv\Scripts\Activate.ps1       # Windows (PowerShell)
 ```
 
 Finally install the required dependencies:
@@ -309,7 +309,7 @@ output [
 
 Run the Triton server using the official image with volume mounting. Make sure you execute the command from the `resources/01-dockerlab` folder.
 
-**Windows:**
+**Windows (PowerShell):**
 
 ```powershell
 docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 `
