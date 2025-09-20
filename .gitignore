@@ -6,3 +6,6 @@ node_modules/
 
 # Python virtual environments
 venv/
+
+# Model files
+model_repository/

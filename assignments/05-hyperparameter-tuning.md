@@ -12,13 +12,28 @@ The goal of this assignment is to get familiar with the process of hyperparamete
 
 ## :memo: Acceptance criteria
 
-- Show that you have completed the tuning tutorials and pushed the notebooks to the repository.
-- Provide an answer for all the questions asked.
-- Show that you have also edited/added/executed code when asked.
-  - Train the model without hyperparameter and show if the results differ with or without hyperparameter tuning.
-  - Use the `RootMeanSquaredError` objective and show if the results differ with the `MeanAbsoluteError` objective.
-- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository.
-  - Provide an answer for all the questions asked
+### Tutorial Completion
+- Show that you have completed all three tuning tutorials and pushed the notebooks to the repository
+- Show that all code cells have been executed with visible outputs
+- Provide answers for all the questions asked in each tutorial
+
+### Code Implementation
+- Show that you have edited/added/executed code when asked
+- Train the model without hyperparameter tuning and show the results
+- Compare results with and without hyperparameter tuning
+- Use the `RootMeanSquaredError` objective and compare with `MeanAbsoluteError` objective
+- Show the differences in performance between different objectives
+
+### Hyperparameter Tuning Results
+- Show the best hyperparameters found by each tuner (RandomSearch and Hyperband)
+- Demonstrate the tuning process and show how performance improved
+- Show TensorBoard visualizations with accuracy and loss graphs
+- Explain the tuning process and what you learned
+
+### Documentation
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+- Provide answers for all the questions asked
+- Include screenshots of TensorBoard graphs and key results
 
 ## 5.1 Hyperparameter tuning
 

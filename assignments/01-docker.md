@@ -1,209 +1,485 @@
-# Lab 1: Docker revisited
+# Lab 1: Docker
 
-In this lab assignment, you will refresh your knowledge of Docker. You will create a Docker image for a simple web application, use port mapping to expose the application to the host system, use volumes to persist data, and use Docker Compose to deploy a multi-container application.
+In this lab, you will learn how to use Docker effectively in MLOps contexts. You'll start with Docker basics for ML model hosting using Flask, then progress to containerization with [NVIDIA Triton Inference Server](https://github.com/triton-inference-server/server) for production-ready model deployment.
 
 ## :mortar_board: Learning Goals
 
-- Understanding the concept of container virtualization
-- Understanding the basic building blocks of Docker
-- Understanding the concept of Docker Compose
-- Being able to build Docker images and run them as Docker containers
-- Being able to use Docker features like port bindings, volumes, environment variables...
-- Being able to manage multiple containers using Docker Compose
-- Being able to push Docker images to a Docker registry
+### Part 1: Docker Basics in ML Context
+
+- Understanding why Docker is crucial for MLOps (reproducible environments, deployment consistency)
+- Building Docker images for ML model hosting with Flask
+- Understanding container registry basics (push/pull operations)
+
+### Part 2: Triton Serving
+
+- Understanding NVIDIA Triton Inference Server and its importance in production ML
+- Deploying models through Triton containers
+- Working with public model repositories (NGC, Hugging Face...)
 
 ## :memo: Acceptance criteria
 
-- Show that you installed Docker and Docker Compose by running the following commands
+### Part 1: Docker Basics
+
+- Show that you installed Docker and Docker Compose by running the following commands:
   - `docker --version`
   - `docker compose --version`
-- Show that you created a Docker image for the API
-- Show that you can start the API using the SQLite database
-- Show that you can start the API using the MySQL database
-- Show that you can access the API on port 3000
-- Show that you optimized the Docker image size
-  - You've used an Alpine version of Node.js
-  - You've copied and installed the dependencies in a separate layer
-- Show all running containers in the Portainer dashboard
-- Show that all tests are passing
-- Show that you pushed the Docker image to Docker Hub and that you can pull it from Docker Hub
+- Show that you created a Dockerfile to host an ML model using Flask
+  - Show that you can build the Docker image using your Dockerfile
+  - Show that you can run the Docker container from your image
+- Show that you can get an inference from your model using the provided HTTP endpoint
+- Show how you push and pull the Docker image to your container registry
+- Show that the image exists in your registry
+
+### Part 2: Triton Serving
+
+- Show that you have deployed a TensorFlow model via a Triton container
+- Show that you can get an inference from your model using the Triton HTTP endpoint
+- Show how you can run a publicly available model of your choice
+- Explain the model repository structure and the `config.pbtxt` file
+
+### Part 3: Docker Compose
+
+- Show that you created a `docker-compose.yml` file to orchestrate your services
+- Show that you can start, stop, and view logs of your services using Docker Compose
+
+### General
+
 - Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
   - Provide an answer to all questions marked with :question:
+  - Include screenshots of key steps and results
 - Show that you updated the cheat sheet with the commands you need to remember
 
-## 1.1 Set up the lab environment
+---
 
-Before you can start this lab assignment, you need to make sure Docker is installed on your local machine. Check if Docker is already installed through a package manager (e.g. `choco`, `brew`, `apt`, `dnf`, `pacman`... depending on your operating system). If so, update Docker to the latest version. If not installed, install preferably using a package manager or alternatively using the documentation below:
+## Part 1. Docker Basics in ML Context
 
-- Windows: use [Docker Desktop](https://docs.docker.com/desktop/) in combination with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
-- macOS: use [Docker Desktop](https://docs.docker.com/desktop/)
-- Linux: use [Docker Engine](https://docs.docker.com/engine/install/) and **not** Docker Desktop
+### 1.1. Why Docker in MLOps?
 
-## 1.2 Configure Portainer
+Docker is essential in MLOps because of:
 
-It's possible to manage Docker containers using the command line, but it's sometimes easier to quickly use a graphical user interface.
+- **Reproducible environments**: Every developer and production environment uses exactly the same dependencies and configuration
+- **Deployment consistency**: Models run identically in development, staging, and production
+- **Isolation**: Different models can use different Python/ML library versions
+- **Scalability**: Containers can be easily scaled based on load
+- **Portability**: Models can be easily moved between cloud providers
 
-For this lab assignment, we'll be using [Portainer](https://www.portainer.io/), a web-based GUI for managing Docker containers. You'll find a file `docker-compose.portainer.yml` in the folder `resources/01-dockerlab`. This file contains the configuration to run a Portainer container. Start the Portainer container!
+:question: **Why is reproducibility crucial in MLOps?** Think about a scenario where your model works perfectly on your laptop but fails in production. What could be the causes?
 
-> :exclamation: Leave the Docker Compose file for Portainer where it is. It does not belong in the `resources/01-dockerlab/webapp` folder as it's not related to the web application.
+### 1.2 Lab environment setup
 
-If all went well, you should be able to access the Portainer dashboard via <https://localhost:9443>. Ignore the warning about HTTPS and create an admin user. You can use the default settings for the other options.
+Make sure Docker is installed on your local machine:
 
-> :bulb: If you've waited to long before creating an admin user, Portainer will show a timeout error. You can fix this by restarting the Portainer container.
+- Windows: [Docker Desktop](https://docs.docker.com/desktop/) + WSL2
+- macOS: [Docker Desktop](https://docs.docker.com/desktop/)
+- Linux: [Docker Engine](https://docs.docker.com/engine/install/)
 
-## 1.3 Create a Docker image for a simple web application
+Verify the installation:
 
-You'll find a simple web application in the folder `resources/01-dockerlab/webapp`. The application is written in [Node.js](https://nodejs.org/) and uses [Express](https://expressjs.com/) to serve a simple API on port 3000 with two endpoints:
+```bash
+docker --version
+```
 
-- `GET /animals`: returns a list of animals
-- `GET /animals/:id`: returns a single animal (with the given `id` if exists)
+### 1.3 Flask ML model hosting
 
-All animals are generated when the server starts for the first time, so it's very likely that you'll get different animals than your fellow students.
+Before creating the Dockerfile, you need to generate the TensorFlow model that will be used by both the Flask app and Triton server.
 
-Add a `Dockerfile` to this folder to create a Docker image for this application. The Docker image should meet the following requirements:
+#### 1.3.1 Setup the environment
 
-- Start from a Docker image for Node.js (preferably an LTS version).
-- The application should be reachable on port 3000.
-- Copy the application code in the `/app` folder in the container.
-- Install the application dependencies with the `npm install` command.
-- The application should be started using the `npm start` command (when the container is started).
+First, we need to install some dependencies. We're not installing the dependencies for the whole system, but only for this project. We can do this by creating a [virtual environment](https://docs.python.org/3/library/venv.html).
 
-> :warning: You'll likely not be able to run the commands above on your local or virtual machine. You need to run them inside a Docker container, that's what we'll do next.
+This is a **best practice** and it is always advised to install and run python projects this way, instead of installing directly on the host! The following [quote](https://peps.python.org/pep-0405/#motivation) lists the advantages of virtual environments in Python:
 
-Test if your Docker image works by running a container based on your image. You may choose the Docker image name but it might be a good idea to pick `webapp`. You should be able to access the application on port 3000 on both endpoints above. You can use the `curl` command to test this.
+> The utility of Python virtual environments has already been well established by the popularity of existing third-party virtual-environment tools, primarily Ian Bicking's virtualenv. Virtual environments are already widely used for dependency management and isolation, ease of installing and using Python packages without system-administrator access, and automated testing of Python software across multiple Python versions, among other uses.
+> ~ Carl Meyer
 
-## 1.4 Create a Docker Compose file
+Run the following commands in your terminal:
 
-A `docker run` command can become quite long when you need to specify all the options. Luckily, there's a tool called [Docker Compose](https://docs.docker.com/compose/) that allows you to define a multi-container application in a single file. Docker Compose is already installed for those who use Docker Desktop. If you're using Docker Engine, you need to install Docker Compose separately using the [instructions on the Docker website](https://docs.docker.com/compose/install/linux/#install-using-the-repository).
+```bash
+cd resources/01-dockerlab
+python -m venv venv
+```
 
-> :warning: Docker Compose is now a plugin and should be used as `docker compose` and **not** `docker-compose`.
+:question: What does the `python -m venv venv` command do? What is the meaning of the first `venv` argument, and what of the second? Which of the two can you change to your liking?
 
-Create a `docker-compose.yml` file in the `resources/01-dockerlab/webapp` folder to define a service called `webapp`. This services starts the web application image you created in the previous step.
+:question: Make sure your virtual environment is not tracked by Git. How do you do this?
 
-> :bulb: It's a good idea to use the `build` option when your still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.
+Now activate the virtual environment:
 
-Start the API using your Docker Compose file. You should be able to access the application on port 3000 on both endpoints above. You can use the `curl` command to test this. Make sure to start the services in the background.
+```bash
+source venv/bin/activate    # Linux/macOS
+venv\Scripts\activate       # Windows (PowerShell)
+```
 
-## 1.5 Backup the database
+Finally install the required dependencies:
 
-At this moment, the server uses a [SQLite database](https://www.sqlite.org/index.html) to store the animals. This is not ideal, because the database is stored inside the container. This means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
+```bash
+pip install -r requirements.txt
+```
 
-Use `docker exec` to get a shell inside the container. If you've used an alpine version of the Node.js image, you'll need to use the `sh` command instead of `bash`.
+:question: Where are the dependencies installed?
 
-List the contents of the `/app` folder. You should notice a `database` folder that is not present on your host system. This folder contains the SQLite database file.
+:warning: Make sure to activate the virtual environment in **every** terminal you use for this project. You can deactivate the virtual environment by running the `deactivate` command.
 
-Configure the `webapp` service so that the database is stored in a volume on the host system. If all went well, you should be able to see a `database.sqlite` file in the folder `resources/01-dockerlab/webapp/database`.
+#### 1.3.2 Run the model creation script
 
-Prevent this file from being added to the repository by adding the `resources/01-dockerlab/webapp/database` folder to the `.gitignore` file.
+Navigate to the `resources/01-dockerlab` folder and run the model creation script:
 
-Re-run you `docker-compose.yml` file, restarting the container is not sufficient. The webapp container should not print the message "Fake data generated" anymore. If this is the case, you know that the database is persisted on the host system.
+```bash
+python create_tf_model.py
+```
 
-## 1.6 Add a database service
+Verify the model was created by checking the content of the `model_repository/example_model/1/` folder:
 
-Now that the database is persisted on the host system, we can add a second service to the Docker Compose file to run a more robust database. We'll use a [MySQL](https://www.mysql.com/) database for this. The application is configured to automatically connect to a MySQL database if the environment variable `MYSQL_URL` is set. The application will create the database and the collection if they don't exist yet.
+```bash
+# Windows (PowerShell):
+dir model_repository\example_model\1\
 
-> :exclamation: Before you make any changes, create a copy of the `docker-compose.yml` file and name it `docker-compose-sqlite.yml`.
+# macOS/Linux:
+ls -la model_repository/example_model/1/
+```
 
-Extend your existing `docker-compose.yml` file to add a service called `database` that runs a [MySQL database](https://hub.docker.com/_/mysql). Read the Docker container docs and set the appropriate environment variables to configure the database and user.
+You should see a `model.savedmodel` directory containing the trained model files.
 
-Make sure that the application can connect to the database by setting the `MYSQL_URL` environment variable. Notice you can use the service name as hostname in Docker Compose. Use `depends_on` to make sure that the database is started if the application is started. Remember to start the services in the background.
+#### 1.3.3 Create a Dockerfile
 
-> :warning: Do not use the root user for the database. Use the provided environment variables (by the [mysql](https://hub.docker.com/_/mysql) Docker image) to create a new user and database. Give the database a proper name like `animals` and the user a proper name like `webapp_user`.
->
-> :question: Is it necessary to bind the MySQL port to the host system? Why (not)?
->
-> :bulb: The API prints a message indicating which database is used. If you see the message "MySQL database initialized", you know that the application is connected to the MySQL database.
->
-> :bulb: There is also an HTTP header `X-Database-Used` in every response that indicates which database is used.
+In the `resources/01-dockerlab` folder, you will find a simple Flask application (`app.py`) that loads the TensorFlow model and exposes two endpoints:
 
-In a real-world scenario, it's a bad idea to expose your database to the outside world. First think if public access is really necessary. If so, you should only allow traffic from specific domains or IP addresses. You should block all other incoming traffic by using a firewall, but this is outside the scope of this course.
+- `GET /health`: Returns a simple health check response
+- `POST /predict`: Accepts JSON input and returns model predictions
 
-## 1.7 Backup the database
+Now you need to create your own Dockerfile. Your Dockerfile should:
 
-The MySQL database is now stored inside a Docker container. This again means that if the container is removed, the database is also removed. We can solve this by using a volume to store the database on the host system.
+- [ ] Use a Python 3.12 base image (consider using a slim version for smaller size)
+- [ ] Set a working directory inside the container
+- [ ] Copy the model
+- [ ] Copy the requirements.txt file first (for better layer caching)
+- [ ] Install Python dependencies using `pip` (consider using `--no-cache-dir` to reduce image size)
+- [ ] Copy your application code (app.py)
+- [ ] Expose port 5000
+- [ ] Set the command to run your Flask application
 
-Search through the documentation of the [MySQL Docker image](https://hub.docker.com/_/mysql) to find out where the data is stored in the container. Create a named volume so that the data is stored in the "docker area", and not in the folder `resources/01-dockerlab/webapp/database`.
+Create your `Dockerfile` in the `resources/01-dockerlab` folder.
 
-## 1.8 Optimizing the Docker image
+:question: **Why do we copy `requirements.txt` before copying the application code?** How does this improve Docker layer caching?
 
-You've probably rebuilt the Docker image a couple of times now. If you look at the output of the `docker images` command, you'll see that the application dependencies are installed every time you rebuild the image. This is not ideal, because the dependencies don't change that often. It would be better to install the dependencies once and then reuse the image.
+:question: **What is the difference between `python:3.12` and `python:3.12-slim`?** What are the trade-offs?
 
-Your image is probably very big (around 1.2GB), because you might not have used an Alpine version of Node.js. You can use the `docker image ls` command to see the size of your image. The size of the image is important because it's the size of the image that is pulled from the registry and stored on the host system. Check your image's size and write it down in your lab report.
+#### 1.3.4 Build and run the container
 
-First, change the base image in your `Dockerfile` so that it uses an Alpine version of Node.js. This will reduce the size of the image. Rebuild the image with this Alpine version and check the new image's size and write it down in your lab report.
+Finally, build you Docker image:
 
-If you want to inspect all layers of an image, you can use the `docker history` command. This command shows all layers of an image and the size of each layer. The size of the layers is important because it's the size of the layer that is pulled from the registry and stored on the host system. Check the layers of your image and write the output down in your lab report.
+```bash
+docker build -t ml-flask-app .
+```
 
-Optimizing the order of the commands in the Dockerfile can reduce the image size or the time it takes to (re)build the image. We're going to change the Dockerfile so that the dependencies are installed in a separate layer. Copy the `package.json` and `package-lock.json` files to the container and then run the `npm install` command. Thereafter, copy the application code to the container.
+:question: **What does the `-t` flag do in the `docker build` command?** Why is it useful to tag your images?
 
-Rebuild the image, check the new image's size and inspect the layers. Write the new layers down in your lab report.
+Then run the container:
 
-:question: Do you see a difference? If so, what is the difference?
+```bash
+docker run -p 5000:5000 ml-flask-app
+```
 
-:question: Alter something in the JavaScript code and rebuild the image. Do you see a difference in the time it takes to rebuild the image? If so, why is that?
+:question: **What does the `-p 5000:5000` flag do?** What would happen if you used `-p 8080:5000` instead?
 
-A last optimization is to add a `.dockerignore` file to the folder. This file is similar to the `.gitignore` file and allows you to exclude files from the Docker context (when building an image). Add the `database` and `node_modules` folder, all Docker related files, and the `README.md` to the `.dockerignore` file.
+:question: **What happens if you try to run the container without the `-p` flag?** Can you still access the API?
 
-Rebuild and restart your containers using a Docker compose command. Now run the `ls` command inside your container and check that these files are not present in the container: `docker compose exec webapp ls -la`. If so, you've successfully optimized your Docker image.
+:question: **Run `docker images` after building.** What information does this show you about your image?
 
-This image is not so difficult and cannot be optimized that much, but it's a best practice to think about the base image you're using and the layers you're creating. Try to keep the image as small as possible. Docker listed a complete list of best practices for writing Dockerfiles: <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>.
 
-## 1.9 Testing the application
+:question: **Use `docker ps` to see running containers.** What additional information would `docker ps -a` show you?
 
-At last, we want to test the application using integration tests written in [Mocha](https://mochajs.org/). The tests are located in the `resources/01-dockerlab/webapp/tests/animals.spec.js` file and can be run using the `npm test` command.
+Test the endpoints using the following commands:
 
-Add a new service to the Docker Compose file to run the tests. Set the environment variable `API_URL` to the URL of the `webapp` service. Notice that you can use the service name as hostname in Docker Compose. Use the `depends_on` option to make sure that the application is started before the tests are run. Re-use the existing Docker image to run the tests, **only** change the command in the `docker-compose.yml` file and **not** in the `Dockerfile`.
+**Windows (PowerShell):**
 
-To run the tests, start the webapp and database services in the background. If both containers are up and running, run the test container **using a separate Docker compose command**. If you try to start the API and run the tests at the same time, the tests will fail because the API and the database are not ready yet.
+```bash
+Invoke-WebRequest -Uri http://localhost:5000/health
 
-If you configured everything correctly, you should see three passing tests. If not, read the error message and try to fix the problem.
+# Windows (PowerShell):
+Invoke-WebRequest -Uri "http://localhost:5000/predict" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{"features": [1.2, 3.4, 5.6, 7.8]}'
+```
 
-## 1.10 Pushing the Docker image to Docker Hub
+**macOS/Linux:**
+
+```bash
+curl http://localhost:5000/health
+
+curl -X POST http://localhost:5000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"features": [1.2, 3.4, 5.6, 7.8]}'
+```
+
+### 1.4 Container registry basics
 
 In a real-world scenario, you would push the Docker image to a Docker registry instead of using your local machine as a repository.
 
 A Docker registry is a repository for Docker images. You can use a public registry like [Docker Hub](https://hub.docker.com/) or a private registry like [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/), [AWS Elastic Container Registry](https://aws.amazon.com/ecr/) or [Google Artifact Registry](https://cloud.google.com/artifact-registry).
 
-We're going to push our `webapp` image to [Docker Hub](https://hub.docker.com/). Sign up or sign in to [Docker Hub](https://hub.docker.com/). Then create a new repository called `webapp`. Make sure it's a **public** repository. It should get a name in the form of `<your-username>/webapp`.
+We're going to push our `ml-flask-app` image to [Docker Hub](https://hub.docker.com/). Sign up or sign in to [Docker Hub](https://hub.docker.com/). Then create a new repository called `ml-flask-app`. Make sure it's a **public** repository. It should get a name in the form of `<your-username>/ml-flask-app`.
 
 Now that we have a repository, we can push our image to Docker Hub. But first we need to tag our image. You can tag an image using the `docker tag` command. The command should look like this:
 
 ```bash
-docker tag webapp <your-username>/webapp
+docker tag ml-flask-app <your-username>/ml-flask-app:0.0.1
 ```
 
 Sign in to Docker Hub using the `docker login` command, your username and password. Now push the image to Docker Hub using the `docker push` command:
 
 ```bash
-docker push <your-username>/webapp
+docker push <your-username>/ml-flask-app:0.0.1
 ```
 
-To test if your image is successfully pushed to Docker Hub, you can remove all images for the webapp from your local machine and then pull it from Docker Hub. Use `docker image rm` to remove all images for the webapp. Use the `docker images` command to check if all images are removed. You should only have Portainer and MySQL images left.
+Verify the image was pushed by visiting your repository on Docker Hub.
 
-If so, copy your current `docker-compose.yml` to `docker-compose-mysql.yml`. Alter the `docker-compose.yml` file so that it uses the image from Docker Hub instead of building the image locally. You should be able to start **and** test the application using the image from Docker Hub. Make sure to first start the webapp and database services in the background and then run the tests.
+Remove the local image using the `docker image rm` command:
+
+```bash
+docker image rm <your-username>/ml-flask-app:0.0.1
+```
+
+Now try to pull the image from Docker Hub using the `docker pull` command:
+
+```bash
+docker pull <your-username>/ml-flask-app:0.0.1
+```
+
+:question: **What is the purpose of tagging an image before pushing?** What naming conventions should you follow for production images?
+
+:question: **What are the benefits of using container registries?** How do they fit into a CI/CD pipeline?
+
+---
+
+## Part 2. Triton Serving
+
+NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc..
+
+**Note**: The GPU acceleration features work optimally with NVIDIA GPUs. While Triton can run on CPU-only systems, students with AMD GPUs may not have access to the full GPU acceleration capabilities that NVIDIA provides.
+
+It has following benefits:
+
+- **Scalability**: Can serve multiple models simultaneously
+- **Performance**: Optimized for GPU and CPU inference
+- **Flexibility**: Supports different model formats
+- **Monitoring**: Extensive metrics and health checks
+
+### 2.1 Model repository
+
+Make sure you have the following folder structure in the `resources/01-dockerlab` folder:
+
+```text
+model_repository/
+└── example_model/
+    └── 1/
+        └── model.savedmodel/
+```
+
+
+:question: **Why is the model stored in a folder named `1`?** What does this number represent?
+
+Create a `config.pbtxt` file in the `model_repository/example_model` folder with the following content:
+
+```protobuf
+name: "example_model"
+platform: "tensorflow_savedmodel"
+max_batch_size: 8
+input [
+  {
+    name: "keras_tensor"
+    data_type: TYPE_FP32
+    dims: [4]
+  }
+]
+output [
+  {
+    name: "output_0"
+    data_type: TYPE_FP32
+    dims: [1]
+  }
+]
+```
+
+:question: **What is the purpose of the `config.pbtxt` file?** Why is it essential for Triton to understand how to serve your model?
+:question: **Analyze the config.pbtxt file.** What does each field represent?
+
+### 2.2 Run the Triton server
+
+Run the Triton server using the official image with volume mounting. Make sure you execute the command from the `resources/01-dockerlab` folder.
+
+**Windows:**
+
+```powershell
+docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 `
+  -v ${PWD}/model_repository:/models `
+  nvcr.io/nvidia/tritonserver:23.10-py3 `
+  tritonserver --model-repository=/models
+```
+
+**macOS/Linux:**
+
+```bash
+docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
+  -v $(pwd)/model_repository:/models \
+  nvcr.io/nvidia/tritonserver:23.10-py3 \
+  tritonserver --model-repository=/models
+```
+
+:question: **What is the purpose of the volume mapping (`-v` option)?**
+
+### 2.3 Test Triton endpoints
+
+Check the model status endpoint to verify the model is loaded:
+
+**Windows (PowerShell):**
+
+```powershell
+Invoke-WebRequest http://localhost:8000/v2/models/example_model
+```
+
+**macOS/Linux:**
+
+```bash
+curl http://localhost:8000/v2/models/example_model
+```
+
+:question: **What information does the model status endpoint provide?** How can you use this to debug model loading issues?
+
+Try the inference endpoint:
+
+**Windows (PowerShell):**
+
+```powershell
+Invoke-WebRequest http://localhost:8000/v2/models/example_model/infer `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{
+    "inputs": [
+      {
+        "name": "keras_tensor",
+        "shape": [1, 4],
+        "datatype": "FP32",
+        "data": [[1.2, 3.4, 5.6, 7.8]]
+      }
+    ]
+  }'
+```
+
+**macOS/Linux:**
+
+```bash
+curl -X POST http://localhost:8000/v2/models/example_model/infer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "inputs": [
+      {
+        "name": "keras_tensor",
+        "shape": [1, 4],
+        "datatype": "FP32",
+        "data": [[1.2, 3.4, 5.6, 7.8]]
+      }
+    ]
+  }'
+```
+
+:question: **Test the inference endpoint and analyze the response.** What format does the output take? How does it differ from the Flask API response?
+
+:question: Triton also supports gRPC **What is the difference between HTTP and gRPC for model inference?** When would you choose one over the other?
+
+### 2.4 Hosting public models
+
+Triton allows you to serve multiple models simultaneously. Add a publicly available model to demonstrate this capability.
+
+Choose a model from public repository, you can find many models at:
+
+- <https://catalog.ngc.nvidia.com/models>
+- <https://tfhub.dev/>
+- <https://huggingface.co/models>
+
+**What to look for:**
+
+- Choose a model that's compatible with Triton (ONNX, TensorRT, or TensorFlow SavedModel format)
+- Look for models with clear documentation and download instructions
+- Consider model size - smaller models will download and load faster for this exercise
+- Popular categories include image classification, object detection, or text processing models
+
+**Getting started:**
+
+1. Browse the model repositories above to find something interesting
+2. Check the model's documentation for download links and format requirements
+3. Download the model files to your local machine
+4. Create a new model directory in your Triton model repository
+5. Copy the model files and create a `config.pbtxt` file for the new model
+6. Restart your Triton container to load the new model
+
+---
+
+## Part 3. Docker Compose
+
+A docker run command can become quite long when you need to specify all the options. Luckily, there's a tool called Docker Compose that allows you to define a multi-container application in a single file. Docker Compose is already installed for those who use Docker Desktop. If you're using Docker Engine, you need to install Docker Compose separately using the instructions on the Docker website.
+
+Docker Compose uses YAML files to configure your application's services, networks, and volumes, making it much easier to manage complex applications with multiple containers.
+
+⚠️ Docker Compose is now a plugin and should be used as `docker compose` and not `docker-compose`.
+
+### 3.1 Creating a docker-compose.yml
+
+Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to define a service called `ml-flask-app` and a service called `triton-server`.
+
+💡 It's a good idea to use the `build` option when you're still changing the Docker image. This way, Docker Compose will automatically rebuild the image when you start the container.
+
+**For the `ml-flask-app` service:**
+
+- [ ] Use `build: .` to build from your Dockerfile
+- [ ] Map port 5000 from container to host
+
+**For the `triton-server` service:**
+
+- [ ] Use the Triton image: `nvcr.io/nvidia/tritonserver:23.10-py3`
+- [ ] Map ports 8000, 8001, and 8002
+- [ ] Mount the model_repository volume to `/models`
+- [ ] Set the command to start Triton with the model repository
+
+Start both services in the background:
+
+```bash
+docker compose up -d
+```
+
+View the running services:
+
+```bash
+docker compose ps
+```
+
+:question: **How can you view the logs of the services?**
+
+:question: **What does the `-d` flag do in `docker compose up -d`?** When would you use it vs. not using it?
+
+:question: **How would you stop the services?** What command would you use to stop and remove all containers, networks, and volumes defined in the `docker-compose.yml` file?
 
 ## Reflection
 
-This setup oversimplifies the real world. In the real world, you would probably use a managed database service like [Azure Database](https://azure.microsoft.com/en-us/products/mysql) or [Amazon RDS](https://aws.amazon.com/rds/). These services are easier to use, are more robust than a self-hosted database but tend to be expensive. Nevertheless, it's important to know how to run a database in a container. You might need it on your local machine, in a CI/CD pipeline or to reduce costs in a small project.
+This lab has taught you:
 
-You would also use a managed CI/CD service like [Jenkins](https://www.jenkins.io/) or [GitHub Actions](https://docs.github.com/en/actions) to run the tests and deploy the application. But more on that in a later module.
-
-However, the setup hands you some best practices for app deployment:
-
-- Use Docker to package your application and its dependencies.
-- Don't expose the database port to the outside world.
-- Try to re-use a Dockerfile rather than writing one per environment.
-- Think about the layers you're creating when writing a Dockerfile.
-- Think about backing up your data (even in local environments).
-
-## Possible extensions
-
-- Alter the API setup so that it waits for the database to be ready before starting the API.
-- Alter the test setup so that the container waits for the API to be ready before running the tests.
-- Set up a service from the [Awesome selfhosted list](https://github.com/awesome-selfhosted/awesome-selfhosted)
+- **Docker basics** for ML model hosting with Flask
+- **Triton Inference Server** for production-ready model serving
+- **Container registry** best practices
+- **Public model repositories** integration
+- **Docker Compose** for multi-container orchestration
 
 ## Clean-up
 
-**After demonstrating the results**, you can remove all containers and volumes using the `docker compose down` command with the right options (like `-v` or `-f`). Also make sure all images are removed from your local machine.
+After you've demonstrated your solution, you can stop and remove all containers.
 
-:question: Which command do you need to use to remove everything?
+To clean up your Docker environment by removing all unused images and volumes, run:
+
+```bash
+# Remove all images
+docker image prune -a
+
+# Remove all volumes
+docker volume prune
+```
