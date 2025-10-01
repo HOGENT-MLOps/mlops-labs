@@ -327,6 +327,8 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
   tritonserver --model-repository=/models
 ```
 
+> :warning: If the `--gpus all` flag causes an error, remove it to run Triton on CPU only.
+
 :question: **What is the purpose of the volume mapping (`-v` option)?**
 
 ### 2.3 Test Triton endpoints
