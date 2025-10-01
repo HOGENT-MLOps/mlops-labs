@@ -302,6 +302,7 @@ output [
 ```
 
 :question: **What is the purpose of the `config.pbtxt` file?** Why is it essential for Triton to understand how to serve your model?
+
 :question: **Analyze the config.pbtxt file.** What does each field represent?
 
 ### 2.2 Run the Triton server
