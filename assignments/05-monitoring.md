@@ -1,4 +1,4 @@
-# Lab 6: Monitoring and alerting
+# Lab 5: Monitoring and alerting
 
 In this lab, you'll setup a monitoring solution based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
@@ -94,7 +94,7 @@ flowchart
   - Discuss the answers during the demo session
 - Show that you updated the cheat sheet with the commands you need to remember
 
-## 6.1 Mocking the model
+## 5.1 Mocking the model
 
 First, you have to set up the mocked model in [modelmock.py](../monitoring/modelmock.py) that starts a Prometheus metrics server. This metrics server will later on be be accessed by Prometheus to poll the metric.
 
@@ -115,7 +115,7 @@ Note: if you would like to stop the Prometheus metric server, follow the followi
 
 You'll see that your terminal prompt has changed back to normal.
 
-## 6.2 Setting up Prometheus
+## 5.2 Setting up Prometheus
 
 To set up the Prometheus polling server and other services, we'll use `docker compose`. Create a `docker-compose.yml` file with a [Prometheus service](https://hub.docker.com/r/prom/prometheus). You can use the `prometheus.yml` config file below and map it to `/etc/prometheus/prometheus.yml` (remember the Docker lab). Make sure this is persistent (i.e. survives even if the container is removed and replaced). Chances are that this will give an error at first, but don't despair as the solution is probably easier than you think. Make sure that you [understand](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) everything in the Prometheus config file.
 
@@ -158,7 +158,7 @@ If you select the `Graph` tab instead of the `Table` tab, you'll see the metric 
 
 ![](./img/05-monitoring/prometheus-graph.png)
 
-## 6.3 Grafana
+## 5.3 Grafana
 
 You have probably noticed that the interface of Prometheus to query and see metrics is limited. Thankfully, we can use [Grafana](https://grafana.com/) to create beautiful dashboards on top of a Prometheus polling server. Add a [Grafana service](https://hub.docker.com/r/grafana/grafana-oss) to your `docker-compose.yml` and start the Docker Compose file. You should be able to access the Grafana website at <http://localhost:3000> [^1]. Now let's configure the Grafana service:
 
@@ -185,9 +185,9 @@ You have probably noticed that the interface of Prometheus to query and see metr
 
 ![](./img/05-monitoring/grafana-threshold.png)
 
-## 6.4 Alertmanager
+## 5.4 Alertmanager
 
-### 6.4.1 Generating alerts
+### 5.4.1 Generating alerts
 
 We would like to receive notifications when the mocked model's metric goes above 0.75. Luckily, Prometheus allows use to define [alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) which can do that (and much more). Create the following file `rules.yml`:
 
@@ -246,7 +246,7 @@ As long as there haven't been any results, the page will be empty. Keep a watch 
 
 You can press on `Info` to see the annotations.
 
-### 6.4.2 Adding a receiver
+### 5.4.2 Adding a receiver
 
 There are various channels possible on which you can receive notifications. As students don't have permissions to create a Microsoft Team and you probably use Discord to talk to other students, we'll set up a [Discord](https://discord.com/) receiver, so you get notified if the mocked model's metric reaches a value above 0.75. Discord isn't the most professional tool for this, but it is free and is supported by default in AlertManager. Note that except for the receivers listed in the [documentation](https://prometheus.io/docs/alerting/latest/configuration/), there are also a lot of third party receivers available not listed in the documentation.
 
@@ -282,11 +282,11 @@ If all goes well, you should start seeing Discord notifications whenever the moc
 
 ![](./img/05-monitoring/discord-alert.png)
 
-## 6.5 A more realistic use case
+## 5.5 A more realistic use case
 
 Monitoring is often used to not just monitor the accuracy of models, but for various metrics, such as server CPU/RAM load, storage shortages... . We'll use a virtual machine here to see how this can be done with Prometheus, Grafana and AlertManager. If we want to monitor the hardware metrics from a Linux machine, we can use [Node Exporter](https://prometheus.io/docs/guides/node-exporter/). This sets up a Prometheus metrics server for all available hardware metrics on the machine. You don't need the `modelmock.py` script anymore, so you can shut it off from here.
 
-### 6.5.1 Set up monitoring and visualization
+### 5.5.1 Set up monitoring and visualization
 
 1. Create an [AlmaLinux](https://almalinux.org/) virtual machine however you want (manual, [osboxes.org](https://www.osboxes.org/), [Vagrant](https://www.vagrantup.com/)...). Just make sure it has the latest AlmaLinux version, and it is accessible from your host machine.
 
@@ -362,7 +362,7 @@ Monitoring is often used to not just monitor the accuracy of models, but for var
 
 9. If you stop `stress-ng` (with Ctrl+C or wait for the timeout), you'll also see this reflected on the dashboard.
 
-### 6.5.2 Set up alerting
+### 5.5.2 Set up alerting
 
 Alerting is very handy for cases like this! You can be alerted if the CPU is high for some time, if the storage is getting full, if a machine is out of RAM and starts swapping... . Let's take the first case: let's monitor the CPU and send out an alert if has a high usage (> 90%) for 3 minutes. Add a rule to `rules.yml`, you'll probably need the [`for`](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#defining-alerting-rules) here.
 
@@ -409,7 +409,7 @@ Timeline of events:
 - 13u47m40: end first stress test.
 - 13u47m46: Resolve alert on Discord.
 
-### 6.5.3 Alerting fatigue
+### 5.5.3 Alerting fatigue
 
 In a real life situation, most time will probably be spend tuning the parameters of the monitoring configuration and alert rules. It is hard, but essential to make sure you do not have too much false positives, but als not too much false negatives. False positives give a lot of alerts: this will lead to "alert fatigue" where you think most of the alerts will not be imported or true, as most of them are false positives anyway. False negatives means that you don't know about most things going wrong as you don't get alerts for those problems. You should already know these terms (_false/true positive/negative_) from other machine learning courses. The balance between these terms is specific to each use case and situation, and it takes a lot of tuning to get it to an acceptable level.
 
