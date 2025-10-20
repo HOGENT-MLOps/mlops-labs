@@ -22,7 +22,7 @@ In this lab, you will learn how to use Docker effectively in MLOps contexts. You
 
 - Show that you installed Docker and Docker Compose by running the following commands:
   - `docker --version`
-  - `docker compose --version`
+  - `docker compose version`
 - Show that you created a Dockerfile to host an ML model using Flask
   - Show that you can build the Docker image using your Dockerfile
   - Show that you can run the Docker container from your image
