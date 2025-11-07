@@ -1,11 +1,38 @@
-# VS Code settings and stuff
-.vscode
+# Python stuff
+__pycache__/
 
-# Node.js app dependencies and related files
-node_modules/
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Python virtual environments
+# Flask stuff
+instance/
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.envrc
+.venv
+env/
 venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Visual Studio Code
+.vscode/
+
+# Lab 2 generated dataset
+dataset/
+mlruns/
+mlartifacts/
+prefect_home/
 
 # Model files
 model_repository/
+*.h5
+*.keras
+*.tflite
