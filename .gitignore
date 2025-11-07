@@ -36,3 +36,6 @@ model_repository/
 *.h5
 *.keras
 *.tflite
+
+# macOS
+.DS_Store
