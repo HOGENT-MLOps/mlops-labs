@@ -40,7 +40,7 @@ Open the notebook `resources/02-ml-workflow/ml_workflow.ipynb` in [Google Colab]
 
 ![Upload notebook](./img/02-ml-workflow/upload-notebook.png)
 
-You can also run the notebook locally if you have the required dependencies installed.
+You can also run the notebook locally if you have the required dependencies installed. When running the notebook locally, make sure to not push the `dataset` folder or any model files (`.h5`, `.keras`...) to your repository. Add it to the `.gitignore` file if necessary.
 
 ### 2.2.2. Download the notebook
 
@@ -90,6 +90,8 @@ prefect server start
 Open the Prefect server in your browser by navigating to `http://localhost:4200`. You should see the Prefect dashboard.
 
 :question: Why do we need to set the `PREFECT_HOME` environment variable?
+
+Make sure that the Prefect home folder is not pushed to your GitHub repository. Add it to the `.gitignore` file if necessary.
 
 ### 2.3.3. Create the pipeline
 
@@ -145,6 +147,8 @@ Run your pipeline and check if the logs and metrics are visible in the MLFlow da
 At last register your model in MLFlow by using the [`mlflow.register_model` function](https://mlflow.org/docs/latest/model-registry.html#adding-an-mlflow-model-to-the-model-registry). It should be visible in the MLFlow dashboard under the menu item `Models`. Give it a proper name.
 
 Add some screenshots of the graphs, metrics, artifacts and the registered model to your lab report.
+
+Make sure no MLFlow folders like `mlruns` or `mlartifacts` are pushed to your GitHub repository. Add them to the `.gitignore` file if necessary.
 
 ## 2.5. Performing a prediction
 
