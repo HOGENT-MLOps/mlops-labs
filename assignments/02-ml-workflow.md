@@ -40,7 +40,7 @@ Open the notebook `resources/02-ml-workflow/ml_workflow.ipynb` in [Google Colab]
 
 ![Upload notebook](./img/02-ml-workflow/upload-notebook.png)
 
-You can also run the notebook locally if you have the required dependencies installed.
+You can also run the notebook locally if you have the required dependencies installed. When running the notebook locally, make sure to not push the `dataset` folder or any model files (`.h5`, `.keras`...) to your repository. Add it to the `.gitignore` file if necessary.
 
 ### 2.2.2. Download the notebook
 
@@ -90,6 +90,8 @@ prefect server start
 Open the Prefect server in your browser by navigating to `http://localhost:4200`. You should see the Prefect dashboard.
 
 :question: Why do we need to set the `PREFECT_HOME` environment variable?
+
+Make sure that the Prefect home folder is not pushed to your GitHub repository. Add it to the `.gitignore` file if necessary.
 
 ### 2.3.3. Create the pipeline
 
@@ -146,13 +148,17 @@ At last register your model in MLFlow by using the [`mlflow.register_model` func
 
 Add some screenshots of the graphs, metrics, artifacts and the registered model to your lab report.
 
+Make sure no MLFlow folders like `mlruns` or `mlartifacts` are pushed to your GitHub repository. Add them to the `.gitignore` file if necessary.
+
 ## 2.5. Performing a prediction
 
 Now that you have a registered model in MLFlow, you can make a prediction with it. Create a new Python script `predict.py` in the `resources/02-ml-workflow` folder. In this script, you should load the registered model from MLFlow and make a prediction with it. Pick two random image (one apple and one orange) from the internet and use it as input for your prediction.
 
-:question: Why do you need to use the registered model from MLFlow and not the model file directly?
+You can use the following documentation to help you load the registered model and make a prediction: <https://mlflow.org/docs/3.3.1/ml/model-registry/tutorial/#load-a-registered-model>.
 
-:question: What's the purpose of the MLFlow Model Registry?
+:warning: Do not set a tracking URI in this script. If needed to alter the MLFlow server address, use [`mlflow.set_registry_uri`](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.config.html#mlflow.config.set_registry_uri) function instead.
+
+:question: What's the purpose of the MLFlow Model Registry? Why do you need to use the registered model from MLFlow and not the model file directly?
 
 ## Possible extensions
 
