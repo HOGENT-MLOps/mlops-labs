@@ -154,6 +154,10 @@ Make sure no MLFlow folders like `mlruns` or `mlartifacts` are pushed to your Gi
 
 Now that you have a registered model in MLFlow, you can make a prediction with it. Create a new Python script `predict.py` in the `resources/02-ml-workflow` folder. In this script, you should load the registered model from MLFlow and make a prediction with it. Pick two random image (one apple and one orange) from the internet and use it as input for your prediction.
 
+You can use the following documentation to help you load the registered model and make a prediction: <https://mlflow.org/docs/3.3.1/ml/model-registry/tutorial/#load-a-registered-model>.
+
+:warning: Do not set a tracking URI in this script. If needed to alter the MLFlow server address, use [`mlflow.set_registry_uri`](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.config.html#mlflow.config.set_registry_uri) function instead.
+
 :question: Why do you need to use the registered model from MLFlow and not the model file directly?
 
 :question: What's the purpose of the MLFlow Model Registry?
