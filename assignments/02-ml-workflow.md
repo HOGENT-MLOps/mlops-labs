@@ -158,9 +158,7 @@ You can use the following documentation to help you load the registered model an
 
 :warning: Do not set a tracking URI in this script. If needed to alter the MLFlow server address, use [`mlflow.set_registry_uri`](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.config.html#mlflow.config.set_registry_uri) function instead.
 
-:question: Why do you need to use the registered model from MLFlow and not the model file directly?
-
-:question: What's the purpose of the MLFlow Model Registry?
+:question: What's the purpose of the MLFlow Model Registry? Why do you need to use the registered model from MLFlow and not the model file directly?
 
 ## Possible extensions
 
