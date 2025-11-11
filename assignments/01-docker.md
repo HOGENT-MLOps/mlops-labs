@@ -485,3 +485,9 @@ docker image prune -a
 # Remove all volumes
 docker volume prune
 ```
+
+## Possible extensions
+
+- Add a `.dockerignore` file to exclude unnecessary files from the Docker build context, see <https://docs.docker.com/build/concepts/context/#dockerignore-files>
+- Add health checks to your Docker Compose configuration to monitor container health and enable automatic restarts, see <https://docs.docker.com/compose/compose-file/05-services/#healthcheck>
+- Create a CI/CD pipeline using GitHub Actions to automatically build and push your Docker images to Docker Hub when code is pushed to the repository, see <https://docs.docker.com/build/ci/github-actions/>
