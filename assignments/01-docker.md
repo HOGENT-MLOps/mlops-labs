@@ -152,9 +152,9 @@ Now you need to create your own Dockerfile. Your Dockerfile should:
 
 - [ ] Use a Python 3.12 base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
-- [ ] Copy the model
 - [ ] Copy the requirements.txt file first (for better layer caching)
 - [ ] Install Python dependencies using `pip` (consider using `--no-cache-dir` to reduce image size)
+- [ ] Copy the model
 - [ ] Copy your application code (app.py)
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
