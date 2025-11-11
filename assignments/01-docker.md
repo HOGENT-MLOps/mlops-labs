@@ -416,6 +416,12 @@ Choose a model from public repository, you can find many models at:
 5. Copy the model files and create a `config.pbtxt` file for the new model
 6. Restart your Triton container to load the new model
 
+### 2.5 Test the public model
+
+Test the endpoints of the public model you added. Use the model status and inference endpoints as shown in the previous section, adjusting for the new model's name and input/output specifications.
+
+> :bulb: **Tip**: Refer to the model's documentation for specific input formats and expected outputs. You may need to write a small Python script to format the input data correctly, send the inference request and parse the output.
+
 ---
 
 ## Part 3. Docker Compose
