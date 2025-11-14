@@ -255,11 +255,7 @@ docker pull <your-username>/ml-flask-app:0.0.1
 
 ## Part 2. Triton Serving
 
-NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc..
-
-**Note**: The GPU acceleration features work optimally with NVIDIA GPUs. While Triton can run on CPU-only systems, students with AMD GPUs may not have access to the full GPU acceleration capabilities that NVIDIA provides.
-
-It has following benefits:
+NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc.. It has following benefits:
 
 - **Scalability**: Can serve multiple models simultaneously
 - **Performance**: Optimized for GPU and CPU inference
@@ -318,7 +314,7 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 `
   tritonserver --model-repository=/models
 ```
 
-**macOS/Linux:**
+**Linux:**
 
 ```bash
 docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
@@ -327,7 +323,16 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
   tritonserver --model-repository=/models
 ```
 
-> :warning: If the `--gpus all` flag causes an error, remove it to run Triton on CPU only.
+**macOS:**
+
+```bash
+docker run -p 8000:8000 -p 8001:8001 -p 8002:8002 \
+  -v $(pwd)/model_repository:/models \
+  nvcr.io/nvidia/tritonserver:23.10-py3 \
+  tritonserver --model-repository=/models
+```
+
+> :warning: **Note**: The GPU acceleration features only work with NVIDIA GPUs (on Linux and Windows). If the `--gpus all` flag causes an error, remove it to run Triton on CPU only. Log the error in your lab report.
 
 :question: **What is the purpose of the volume mapping (`-v` option)?**
 
@@ -448,6 +453,7 @@ Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to def
 - [ ] Use the Triton image: `nvcr.io/nvidia/tritonserver:23.10-py3`
 - [ ] Map ports 8000, 8001, and 8002
 - [ ] Mount the model_repository volume to `/models`
+- [ ] Add the necessary config for the `--gpus all` option (if applicable)
 - [ ] Set the command to start Triton with the model repository
 
 Start both services in the background:
