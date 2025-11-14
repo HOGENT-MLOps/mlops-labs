@@ -14,11 +14,10 @@ In this lab assignment, you will progressively improve a Python script to calcul
 
 - Show that you can calculate prime numbers in a range using a brute-force method.
 - Show that you can optimize the algorithm by reducing redundant calculations.
-- Implement a heuristic-based approach (like the Sieve of Eratosthenes) for better efficiency.
-- Compare the performance of each approach using time measurements.
-- Write a well-documented lab report in Markdown explaining each approach.
-- Provide a visualization of the performance difference using graphs.
-- Push your final Python scripts to a Git repository.
+- Show that you have implemented a heuristic-based approach (like the Sieve of Eratosthenes) for better efficiency.
+- Show that you have compared the performance of each approach using time measurements.
+- Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+  - Include a visualization of the performance difference using graphs.
 
 ## 1.1 Setting up the Environment
 

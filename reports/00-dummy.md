@@ -32,7 +32,7 @@ The execution time for finding primes between 0 and 10_000 was **0.16 seconds**.
 
 - Why use `int(math.sqrt(n)) + 1`?
 
-    By looping up to the square root of `n`, we can eliminate unnecessary checks. If `n` has a factor larger than `sqrt(n)`, then it must also have a smaller factor, so we don't need to check numbers beyond the square root. The `+1` ensures we include the integer value of the square root in the loop.
+  By looping up to the square root of `n`, we can eliminate unnecessary checks. If `n` has a factor larger than `sqrt(n)`, then it must also have a smaller factor, so we don't need to check numbers beyond the square root. The `+1` ensures we include the integer value of the square root in the loop.
 
 I have also added the optimized code to [find_primes.py](../resources/00-dummy/find_primes.py).
 
@@ -78,17 +78,17 @@ To visualize the performance of the different algorithms, I plotted the executio
 
 - Brute-force vs. optimized approach:
 
-    ![](./img/00-dummy/brute-vs-optimized.png)
+  ![](./img/00-dummy/brute-vs-optimized.png)
 
 - Brute-force vs. optimized vs sieve approach:
 
-    ![](./img/00-dummy/brute-vs-optimized-vs-sieve.png)
+  ![](./img/00-dummy/brute-vs-optimized-vs-sieve.png)
 
-    Although it looks like the optimized and the sieve approach have similar times when the limit is very large, there is still a difference. In the next figure we zoom in at the end of the curves:
+  Although it looks like the optimized and the sieve approach have similar times when the limit is very large, there is still a difference. In the next figure we zoom in at the end of the curves:
 
-    ![](./img/00-dummy/brute-vs-optimized-vs-sieve-zoomed-in.png)
+  ![](./img/00-dummy/brute-vs-optimized-vs-sieve-zoomed-in.png)
 
-    The execution times of the optimized version ($O(\sqrt{n})$) does not go up as fast as the brute force ($O(n)$), but still go up faster than the execution times of the sieve method ($O(n \log \log n)$).
+  The execution times of the optimized version ($O(\sqrt{n})$) does not go up as fast as the brute force ($O(n)$), but still go up faster than the execution times of the sieve method ($O(n \log \log n)$).
 
 The execution times are listed below:
 
@@ -134,6 +134,19 @@ The graph clearly shows the dramatic performance improvements as we move from th
 ### Conclusion:
 
 The brute-force method is highly inefficient for large ranges, but applying mathematical optimizations like checking up to the square root of `n` significantly improves performance. However, the Sieve of Eratosthenes stands out as the most efficient algorithm for generating prime numbers in a range, easily outperforming other methods in terms of execution time.
+
+## Evaluation criteria
+
+- [x] Show that you can calculate prime numbers in a range using a brute-force method.
+- [x] Show that you can optimize the algorithm by reducing redundant calculations.
+- [x] Show that you have implemented a heuristic-based approach (like the Sieve of Eratosthenes) for better efficiency.
+- [x] Show that you have compared the performance of each approach using time measurements.
+- [x] Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+  - [x] Include a visualization of the performance difference using graphs.
+
+## Issues
+
+None
 
 ## Reflection
 
