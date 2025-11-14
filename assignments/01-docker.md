@@ -255,7 +255,7 @@ docker pull <your-username>/ml-flask-app:0.0.1
 
 ## Part 2. Triton Serving
 
-NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc.. It has following benefits:
+NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc.. It has the following benefits:
 
 - **Scalability**: Can serve multiple models simultaneously
 - **Performance**: Optimized for GPU and CPU inference
