@@ -152,9 +152,9 @@ Now you need to create your own Dockerfile. Your Dockerfile should:
 
 - [ ] Use a Python 3.12 base image (consider using a slim version for smaller size)
 - [ ] Set a working directory inside the container
-- [ ] Copy the model
 - [ ] Copy the requirements.txt file first (for better layer caching)
 - [ ] Install Python dependencies using `pip` (consider using `--no-cache-dir` to reduce image size)
+- [ ] Copy the model
 - [ ] Copy your application code (app.py)
 - [ ] Expose port 5000
 - [ ] Set the command to run your Flask application
@@ -255,11 +255,7 @@ docker pull <your-username>/ml-flask-app:0.0.1
 
 ## Part 2. Triton Serving
 
-NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc..
-
-**Note**: The GPU acceleration features work optimally with NVIDIA GPUs. While Triton can run on CPU-only systems, students with AMD GPUs may not have access to the full GPU acceleration capabilities that NVIDIA provides.
-
-It has following benefits:
+NVIDIA Triton Inference Server is an open-source inference server that is used for production deployments, it supports multiple frameworks such as TensorFlow, PyTorch, ONNX, scikit-learn, etc.. It has the following benefits:
 
 - **Scalability**: Can serve multiple models simultaneously
 - **Performance**: Optimized for GPU and CPU inference
@@ -318,7 +314,7 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 `
   tritonserver --model-repository=/models
 ```
 
-**macOS/Linux:**
+**Linux:**
 
 ```bash
 docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
@@ -327,7 +323,16 @@ docker run --gpus all -p 8000:8000 -p 8001:8001 -p 8002:8002 \
   tritonserver --model-repository=/models
 ```
 
-> :warning: If the `--gpus all` flag causes an error, remove it to run Triton on CPU only.
+**macOS:**
+
+```bash
+docker run -p 8000:8000 -p 8001:8001 -p 8002:8002 \
+  -v $(pwd)/model_repository:/models \
+  nvcr.io/nvidia/tritonserver:23.10-py3 \
+  tritonserver --model-repository=/models
+```
+
+> :warning: **Note**: The GPU acceleration features only work with NVIDIA GPUs (on Linux and Windows). If the `--gpus all` flag causes an error, remove it to run Triton on CPU only. Log the error in your lab report.
 
 :question: **What is the purpose of the volume mapping (`-v` option)?**
 
@@ -416,6 +421,12 @@ Choose a model from public repository, you can find many models at:
 5. Copy the model files and create a `config.pbtxt` file for the new model
 6. Restart your Triton container to load the new model
 
+### 2.5 Test the public model
+
+Test the endpoints of the public model you added. Use the model status and inference endpoints as shown in the previous section, adjusting for the new model's name and input/output specifications.
+
+> :bulb: **Tip**: Refer to the model's documentation for specific input formats and expected outputs. You may need to write a small Python script to format the input data correctly, send the inference request and parse the output.
+
 ---
 
 ## Part 3. Docker Compose
@@ -442,6 +453,7 @@ Create a `docker-compose.yml` file in the `resources/01-dockerlab` folder to def
 - [ ] Use the Triton image: `nvcr.io/nvidia/tritonserver:23.10-py3`
 - [ ] Map ports 8000, 8001, and 8002
 - [ ] Mount the model_repository volume to `/models`
+- [ ] Add the necessary config for the `--gpus all` option (if applicable)
 - [ ] Set the command to start Triton with the model repository
 
 Start both services in the background:
@@ -485,3 +497,9 @@ docker image prune -a
 # Remove all volumes
 docker volume prune
 ```
+
+## Possible extensions
+
+- Add a `.dockerignore` file to exclude unnecessary files from the Docker build context, see <https://docs.docker.com/build/concepts/context/#dockerignore-files>
+- Add health checks to your Docker Compose configuration to monitor container health and enable automatic restarts, see <https://docs.docker.com/compose/compose-file/05-services/#healthcheck>
+- Create a CI/CD pipeline using GitHub Actions to automatically build and push your Docker images to Docker Hub when code is pushed to the repository, see <https://docs.docker.com/build/ci/github-actions/>
