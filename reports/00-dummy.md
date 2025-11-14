@@ -139,11 +139,10 @@ The brute-force method is highly inefficient for large ranges, but applying math
 
 - [x] Show that you can calculate prime numbers in a range using a brute-force method.
 - [x] Show that you can optimize the algorithm by reducing redundant calculations.
-- [x] Implement a heuristic-based approach (like the Sieve of Eratosthenes) for better efficiency.
-- [x] Compare the performance of each approach using time measurements.
-- [x] Write a well-documented lab report in Markdown explaining each approach.
-- [x] Provide a visualization of the performance difference using graphs.
-- [x] Push your final Python scripts to a Git repository.
+- [x] Show that you have implemented a heuristic-based approach (like the Sieve of Eratosthenes) for better efficiency.
+- [x] Show that you have compared the performance of each approach using time measurements.
+- [x] Show that you wrote an elaborate lab report in Markdown and pushed it to the repository
+  - [x] Include a visualization of the performance difference using graphs.
 
 ## Issues
 
