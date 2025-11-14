@@ -135,6 +135,19 @@ The graph clearly shows the dramatic performance improvements as we move from th
 
 The brute-force method is highly inefficient for large ranges, but applying mathematical optimizations like checking up to the square root of `n` significantly improves performance. However, the Sieve of Eratosthenes stands out as the most efficient algorithm for generating prime numbers in a range, easily outperforming other methods in terms of execution time.
 
+## Evaluation criteria
+
+- [x] Implemented brute-force prime number calculation
+- [x] Implemented optimized prime number calculation using square root approach
+- [x] Implemented Sieve of Eratosthenes algorithm
+- [x] Measured and compared performance of all three methods
+- [x] Created visualizations showing performance differences
+- [x] Documented code with comments and explanations
+
+## Issues
+
+None
+
 ## Reflection
 
 ### What was difficult?
